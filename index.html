@@ -3,129 +3,519 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>cubedhub.com</title>
-  <meta name="description" content="cubedhub.com 一站式網站入口 — 遊戲攻略、健康生活、在家工作、香港旅遊、巴士資訊、3x3 籃球及 AI 工具">
+  <title>CubedHub — 一站式網站入口</title>
+  <meta name="description" content="CubedHub 匯集遊戲攻略、健康生活、在家工作、香港旅遊、巴士資訊、3x3 籃球及 AI 工具，一站探索所有精彩内容。">
   <meta name="google-adsense-account" content="ca-pub-4900630860092971">
 
-  <meta property="og:title" content="cubedhub.com">
-  <meta property="og:description" content="一站式網站入口 — 遊戲攻略、健康生活、在家工作、香港旅遊、巴士資訊、3x3 籃球及 AI 工具">
+  <meta property="og:title" content="CubedHub — 一站式網站入口">
+  <meta property="og:description" content="匯集遊戲攻略、健康生活、在家工作、香港旅遊、巴士資訊、3x3 籃球及 AI 工具，一站探索所有精彩内容。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://cubedhub.com/">
   <meta property="og:locale" content="zh_Hant">
+  <meta property="og:image" content="https://cubedhub.com/og-image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CubedHub — 一站式網站入口">
+  <meta name="twitter:description" content="匯集遊戲攻略、健康生活、在家工作、香港旅遊、巴士資訊、3x3 籃球及 AI 工具。">
+
+  <link rel="canonical" href="https://cubedhub.com/">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4900630860092971" crossorigin="anonymous"></script>
-
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-132PFXDSM9"></script>
   <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-132PFXDSM9');</script>
-  <script src="https://cdn.tailwindcss.com"></script>
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "CubedHub",
     "url": "https://cubedhub.com/",
-    "description": "攻略・工具・健康・旅遊一站式平台"
+    "description": "攻略・工具・健康・旅遊一站式平台",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://cubedhub.com/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
   }
   </script>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { font-size: 16px; scroll-behavior: smooth; }
+
+    :root {
+      --bg-primary: #0a0a1a;
+      --bg-secondary: #12122a;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --color-game: #8B5CF6;
+      --color-health: #10B981;
+      --color-wfh: #F59E0B;
+      --color-hk: #3B82F6;
+      --color-bus: #EF4444;
+      --color-hk3x3: #F97316;
+      --color-ai: #06B6D4;
+      --glow-game: rgba(139,92,246,0.3);
+      --glow-health: rgba(16,185,129,0.3);
+      --glow-wfh: rgba(245,158,11,0.3);
+      --glow-hk: rgba(59,130,246,0.3);
+      --glow-bus: rgba(239,68,68,0.3);
+      --glow-hk3x3: rgba(249,115,22,0.3);
+      --glow-ai: rgba(6,182,212,0.3);
+      --card-bg: rgba(255,255,255,0.04);
+      --card-border: rgba(255,255,255,0.06);
+      --card-radius: 1.25rem;
+    }
+
     body {
       font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #f0f4f8;
-      color: #1e293b;
+      background: var(--bg-primary);
+      color: var(--text-primary);
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
       line-height: 1.6;
+      overflow-x: hidden;
     }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -20%, rgba(139,92,246,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(6,182,212,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 40% at 20% 70%, rgba(16,185,129,0.06) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
     a { text-decoration: none; color: inherit; }
-    .container { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 1.25rem; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
 
     header {
-      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-      color: #fff;
-      padding: 3rem 0 2.5rem;
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
+      padding: 4rem 0 2rem;
+      position: relative;
     }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+    }
+
+    .hero-content { max-width: 720px; margin: 0 auto; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 100px;
+      padding: 0.4rem 1.2rem;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.04em;
+      margin-bottom: 1.5rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-health);
+      display: inline-block;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 0.4; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
     header h1 {
-      font-size: 2.25rem;
-      font-weight: 700;
-      letter-spacing: 0.02em;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
     }
+
+    header h1 .gradient-text {
+      background: linear-gradient(135deg, #8B5CF6, #06B6D4, #10B981);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
     header p {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--text-secondary);
+      max-width: 560px;
+      margin: 0 auto 2rem;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(6,182,212,0.2));
+      border: 1px solid rgba(139,92,246,0.25);
+      color: #fff;
+      padding: 0.85rem 2rem;
+      border-radius: 60px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-cta:hover {
+      background: linear-gradient(135deg, rgba(139,92,246,0.35), rgba(6,182,212,0.35));
+      border-color: rgba(139,92,246,0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(139,92,246,0.2);
+    }
+
+    .hero-cta .arrow-down {
+      display: inline-block;
+      transition: transform 0.3s;
+      font-size: 1.1rem;
+    }
+
+    .hero-cta:hover .arrow-down {
+      transform: translateY(3px);
+    }
+
+    .section-label {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-label .tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-ai);
+      background: rgba(6,182,212,0.1);
+      border: 1px solid rgba(6,182,212,0.15);
+      padding: 0.3rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-label h2 {
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      font-weight: 800;
+    }
+
+    .section-label p {
+      color: var(--text-secondary);
       margin-top: 0.5rem;
-      font-size: 1.05rem;
-      opacity: 0.9;
-      font-weight: 400;
+      font-size: 0.95rem;
     }
 
     .grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 1.25rem;
-      padding: 2.5rem 0 3rem;
+      padding: 1rem 0 4rem;
     }
+
     .card {
-      background: #fff;
-      border-radius: 1rem;
-      padding: 1.5rem 1.25rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      border-left: 4px solid #2563eb;
-    }
-    .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(37,99,235,0.12);
-    }
-    .card .icon { font-size: 2rem; flex-shrink: 0; }
-    .card .info { flex: 1; min-width: 0; }
-    .card .info .domain {
-      font-size: 0.8rem;
-      color: #2563eb;
-      font-weight: 500;
       display: block;
-      margin-bottom: 0.1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--card-radius);
+      padding: 1.75rem 1.5rem;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative;
+      overflow: hidden;
     }
-    .card .info h2 {
-      font-size: 1.1rem;
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: var(--card-accent);
+      box-shadow: 0 20px 60px var(--card-glow), 0 0 40px var(--card-glow);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card:hover::after {
+      opacity: 1;
+    }
+
+    .card .icon-wrap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      background: var(--card-bg-light);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .card:hover .icon-wrap {
+      background: var(--card-accent-bg);
+      border-color: var(--card-accent);
+      transform: scale(1.05);
+      box-shadow: 0 0 20px var(--card-glow);
+    }
+
+    .card .domain-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--card-accent);
+      text-transform: lowercase;
+      letter-spacing: 0.02em;
+      margin-bottom: 0.4rem;
+      display: block;
+      opacity: 0.7;
+    }
+
+    .card h3 {
+      font-size: 1.15rem;
       font-weight: 700;
-      color: #0f172a;
+      margin-bottom: 0.4rem;
+      transition: color 0.3s ease;
     }
-    .card .info p {
-      font-size: 0.88rem;
-      color: #64748b;
-      margin-top: 0.15rem;
+
+    .card p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
     }
-    .card .arrow {
-      color: #94a3b8;
-      font-size: 1.25rem;
-      flex-shrink: 0;
-      transition: transform 0.2s;
+
+    .card .card-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1.2rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: all 0.3s ease;
     }
-    .card:hover .arrow { transform: translateX(4px); color: #2563eb; }
+
+    .card .card-arrow svg {
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover .card-arrow {
+      color: var(--card-accent);
+    }
+
+    .card:hover .card-arrow svg {
+      transform: translateX(4px);
+    }
+
+    .card[data-color="game"] {
+      --card-accent: var(--color-game);
+      --card-glow: var(--glow-game);
+      --card-accent-bg: rgba(139,92,246,0.12);
+      --card-bg-light: rgba(139,92,246,0.08);
+    }
+    .card[data-color="game"]::before {
+      background: linear-gradient(135deg, rgba(139,92,246,0.06), transparent 60%);
+    }
+
+    .card[data-color="health"] {
+      --card-accent: var(--color-health);
+      --card-glow: var(--glow-health);
+      --card-accent-bg: rgba(16,185,129,0.12);
+      --card-bg-light: rgba(16,185,129,0.08);
+    }
+    .card[data-color="health"]::before {
+      background: linear-gradient(135deg, rgba(16,185,129,0.06), transparent 60%);
+    }
+
+    .card[data-color="wfh"] {
+      --card-accent: var(--color-wfh);
+      --card-glow: var(--glow-wfh);
+      --card-accent-bg: rgba(245,158,11,0.12);
+      --card-bg-light: rgba(245,158,11,0.08);
+    }
+    .card[data-color="wfh"]::before {
+      background: linear-gradient(135deg, rgba(245,158,11,0.06), transparent 60%);
+    }
+
+    .card[data-color="hk"] {
+      --card-accent: var(--color-hk);
+      --card-glow: var(--glow-hk);
+      --card-accent-bg: rgba(59,130,246,0.12);
+      --card-bg-light: rgba(59,130,246,0.08);
+    }
+    .card[data-color="hk"]::before {
+      background: linear-gradient(135deg, rgba(59,130,246,0.06), transparent 60%);
+    }
+
+    .card[data-color="bus"] {
+      --card-accent: var(--color-bus);
+      --card-glow: var(--glow-bus);
+      --card-accent-bg: rgba(239,68,68,0.12);
+      --card-bg-light: rgba(239,68,68,0.08);
+    }
+    .card[data-color="bus"]::before {
+      background: linear-gradient(135deg, rgba(239,68,68,0.06), transparent 60%);
+    }
+
+    .card[data-color="hk3x3"] {
+      --card-accent: var(--color-hk3x3);
+      --card-glow: var(--glow-hk3x3);
+      --card-accent-bg: rgba(249,115,22,0.12);
+      --card-bg-light: rgba(249,115,22,0.08);
+    }
+    .card[data-color="hk3x3"]::before {
+      background: linear-gradient(135deg, rgba(249,115,22,0.06), transparent 60%);
+    }
+
+    .card[data-color="ai"] {
+      --card-accent: var(--color-ai);
+      --card-glow: var(--glow-ai);
+      --card-accent-bg: rgba(6,182,212,0.12);
+      --card-bg-light: rgba(6,182,212,0.08);
+    }
+    .card[data-color="ai"]::before {
+      background: linear-gradient(135deg, rgba(6,182,212,0.06), transparent 60%);
+    }
 
     footer {
-      margin-top: auto;
-      background: #1e293b;
-      color: #94a3b8;
+      border-top: 1px solid rgba(255,255,255,0.05);
       text-align: center;
-      padding: 1.5rem 0;
-      font-size: 0.88rem;
+      padding: 2.5rem 0;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+
+    footer .footer-brand {
+      font-size: 1.1rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #8B5CF6, #06B6D4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.3rem;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.5;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .scroll-indicator .mouse {
+      width: 20px;
+      height: 32px;
+      border: 2px solid var(--text-muted);
+      border-radius: 12px;
+      position: relative;
+    }
+
+    .scroll-indicator .mouse::after {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 8px;
+      background: var(--text-muted);
+      border-radius: 3px;
+      animation: scroll-wheel 2s ease-in-out infinite;
+    }
+
+    @keyframes scroll-wheel {
+      0%, 100% { opacity: 0.3; transform: translateX(-50%) translateY(0); }
+      50% { opacity: 1; transform: translateX(-50%) translateY(6px); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-6px); }
     }
 
     @media (min-width: 600px) {
       .grid { grid-template-columns: repeat(2, 1fr); }
+      header { min-height: 80vh; }
     }
+
     @media (min-width: 960px) {
       .grid { grid-template-columns: repeat(3, 1fr); }
+      .card { padding: 2rem 1.75rem; }
+      .card .icon-wrap { width: 54px; height: 54px; font-size: 1.7rem; }
+    }
+
+    @media (min-width: 1200px) {
+      .container { padding: 0 2rem; }
     }
   </style>
 </head>
@@ -133,88 +523,119 @@
 
 <header>
   <div class="container">
-    <h1>cubedhub.com</h1>
-    <p>一站式網站入口</p>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        7 個品牌 · 一站探索
+      </div>
+      <h1>
+        探索 <span class="gradient-text">CubedHub</span><br>
+        精彩世界
+      </h1>
+      <p>遊戲攻略、健康生活、在家工作、香港旅遊、巴士資訊、3x3 籃球及 AI 工具 —— 全部匯集於此。</p>
+      <a href="#explore" class="hero-cta">
+        開始探索
+        <span class="arrow-down">↓</span>
+      </a>
+    </div>
+    <div class="scroll-indicator">
+      <div class="mouse"></div>
+      <span>往下</span>
+    </div>
   </div>
 </header>
 
-<main class="container">
+<main class="container" id="explore">
+  <div class="section-label">
+    <span class="tag">Explore</span>
+    <h2>我們的品牌</h2>
+    <p>點擊以下卡片，前往各子站探索。</p>
+  </div>
+
   <div class="grid">
-    <a href="https://game.cubedhub.com/" class="card">
-      <span class="icon">🎮</span>
-      <div class="info">
-        <span class="domain">game.cubedhub.com</span>
-        <h2>遊戲攻略</h2>
-        <p>遊戲攻略、指南</p>
-      </div>
-      <span class="arrow">→</span>
+    <a href="https://game.cubedhub.com/" class="card" data-color="game" target="_blank" rel="noopener">
+      <div class="icon-wrap">🎮</div>
+      <span class="domain-label">game.cubedhub.com</span>
+      <h3>遊戲攻略</h3>
+      <p>遊戲攻略、指南</p>
+      <span class="card-arrow">
+        前往探索
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </span>
     </a>
 
-    <a href="https://health.cubedhub.com/" class="card">
-      <span class="icon">🏥</span>
-      <div class="info">
-        <span class="domain">health.cubedhub.com</span>
-        <h2>健康生活</h2>
-        <p>健康資訊</p>
-      </div>
-      <span class="arrow">→</span>
+    <a href="https://health.cubedhub.com/" class="card" data-color="health" target="_blank" rel="noopener">
+      <div class="icon-wrap">💪</div>
+      <span class="domain-label">health.cubedhub.com</span>
+      <h3>健康生活</h3>
+      <p>健康資訊與貼士</p>
+      <span class="card-arrow">
+        前往探索
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </span>
     </a>
 
-    <a href="https://wfh.cubedhub.com/" class="card">
-      <span class="icon">🏠</span>
-      <div class="info">
-        <span class="domain">wfh.cubedhub.com</span>
-        <h2>在家工作</h2>
-        <p>WFH 工具與技巧</p>
-      </div>
-      <span class="arrow">→</span>
+    <a href="https://wfh.cubedhub.com/" class="card" data-color="wfh" target="_blank" rel="noopener">
+      <div class="icon-wrap">🏠</div>
+      <span class="domain-label">wfh.cubedhub.com</span>
+      <h3>在家工作</h3>
+      <p>WFH 工具與技巧</p>
+      <span class="card-arrow">
+        前往探索
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </span>
     </a>
 
-    <a href="https://hk.cubedhub.com/" class="card">
-      <span class="icon">🗺️</span>
-      <div class="info">
-        <span class="domain">hk.cubedhub.com</span>
-        <h2>香港旅遊</h2>
-        <p>香港旅遊便利站</p>
-      </div>
-      <span class="arrow">→</span>
+    <a href="https://hk.cubedhub.com/" class="card" data-color="hk" target="_blank" rel="noopener">
+      <div class="icon-wrap">🗺️</div>
+      <span class="domain-label">hk.cubedhub.com</span>
+      <h3>香港旅遊</h3>
+      <p>香港旅遊便利站</p>
+      <span class="card-arrow">
+        前往探索
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </span>
     </a>
 
-    <a href="https://bus.cubedhub.com/" class="card">
-      <span class="icon">🚌</span>
-      <div class="info">
-        <span class="domain">bus.cubedhub.com</span>
-        <h2>香港巴士</h2>
-        <p>香港巴士便利站</p>
-      </div>
-      <span class="arrow">→</span>
+    <a href="https://bus.cubedhub.com/" class="card" data-color="bus" target="_blank" rel="noopener">
+      <div class="icon-wrap">🚌</div>
+      <span class="domain-label">bus.cubedhub.com</span>
+      <h3>香港巴士</h3>
+      <p>香港巴士便利站</p>
+      <span class="card-arrow">
+        前往探索
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </span>
     </a>
 
-    <a href="https://hk3x3.cubedhub.com/" class="card">
-      <span class="icon">🏀</span>
-      <div class="info">
-        <span class="domain">hk3x3.cubedhub.com</span>
-        <h2>3x3 籃球</h2>
-        <p>香港學界 3x3 籃球攻略</p>
-      </div>
-      <span class="arrow">→</span>
+    <a href="https://hk3x3.cubedhub.com/" class="card" data-color="hk3x3" target="_blank" rel="noopener">
+      <div class="icon-wrap">🏀</div>
+      <span class="domain-label">hk3x3.cubedhub.com</span>
+      <h3>3x3 籃球</h3>
+      <p>香港學界 3x3 籃球攻略</p>
+      <span class="card-arrow">
+        前往探索
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </span>
     </a>
 
-    <a href="https://ai.cubedhub.com/" class="card">
-      <span class="icon">🤖</span>
-      <div class="info">
-        <span class="domain">ai.cubedhub.com</span>
-        <h2>AI 工具</h2>
-        <p>AI 工具</p>
-      </div>
-      <span class="arrow">→</span>
+    <a href="https://ai.cubedhub.com/" class="card" data-color="ai" target="_blank" rel="noopener">
+      <div class="icon-wrap">🤖</div>
+      <span class="domain-label">ai.cubedhub.com</span>
+      <h3>AI 工具</h3>
+      <p>AI 工具導航</p>
+      <span class="card-arrow">
+        前往探索
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </span>
     </a>
   </div>
 </main>
 
 <footer>
   <div class="container">
-    &copy; 2026 cubedhub.com. All rights reserved.
+    <div class="footer-brand">CubedHub</div>
+    <p>&copy; 2026 cubedhub.com. All rights reserved.</p>
   </div>
 </footer>
 
