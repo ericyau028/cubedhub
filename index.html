@@ -3,22 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CubedHub — 一站式網站入口</title>
+  <title>CubedHub — 一站探索 · 精彩世界</title>
   <meta name="description" content="CubedHub 匯集遊戲攻略、健康生活、在家工作、香港旅遊、巴士資訊、3x3 籃球及 AI 工具，一站探索所有精彩内容。">
+  <meta name="keywords" content="CubedHub, 遊戲攻略, 健康生活, 在家工作, 香港旅遊, 香港巴士, 3x3 籃球, AI 工具">
+  <meta name="author" content="CubedHub">
   <meta name="google-adsense-account" content="ca-pub-4900630860092971">
+  <meta name="robots" content="index, follow">
 
-  <meta property="og:title" content="CubedHub — 一站式網站入口">
+  <meta property="og:title" content="CubedHub — 一站探索 · 精彩世界">
   <meta property="og:description" content="匯集遊戲攻略、健康生活、在家工作、香港旅遊、巴士資訊、3x3 籃球及 AI 工具，一站探索所有精彩内容。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://cubedhub.com/">
   <meta property="og:locale" content="zh_Hant">
   <meta property="og:image" content="https://cubedhub.com/og-image.png">
+  <meta property="og:site_name" content="CubedHub">
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="CubedHub — 一站式網站入口">
+  <meta name="twitter:title" content="CubedHub — 一站探索 · 精彩世界">
   <meta name="twitter:description" content="匯集遊戲攻略、健康生活、在家工作、香港旅遊、巴士資訊、3x3 籃球及 AI 工具。">
 
   <link rel="canonical" href="https://cubedhub.com/">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,7 +54,8 @@
 
     :root {
       --bg-primary: #0a0a1a;
-      --bg-secondary: #12122a;
+      --bg-secondary: #111127;
+      --bg-tertiary: #0e0e22;
       --text-primary: #f1f5f9;
       --text-secondary: #94a3b8;
       --text-muted: #64748b;
@@ -67,9 +73,7 @@
       --glow-bus: rgba(239,68,68,0.3);
       --glow-hk3x3: rgba(249,115,22,0.3);
       --glow-ai: rgba(6,182,212,0.3);
-      --card-bg: rgba(255,255,255,0.04);
-      --card-border: rgba(255,255,255,0.06);
-      --card-radius: 1.25rem;
+      --nav-height: 64px;
     }
 
     body {
@@ -81,20 +85,9 @@
       overflow-x: hidden;
     }
 
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 50% -20%, rgba(139,92,246,0.12) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(6,182,212,0.08) 0%, transparent 50%),
-        radial-gradient(ellipse 50% 40% at 20% 70%, rgba(16,185,129,0.06) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
     a { text-decoration: none; color: inherit; }
     img { max-width: 100%; display: block; }
+    ul { list-style: none; }
 
     .container {
       width: 100%;
@@ -105,27 +98,275 @@
       z-index: 1;
     }
 
-    header {
-      min-height: 85vh;
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      z-index: 1000;
+      transition: background 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease;
+      background: transparent;
+    }
+
+    .navbar.scrolled {
+      background: rgba(10, 10, 26, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      height: 100%;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+      flex-shrink: 0;
+    }
+
+    .nav-logo img {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+    }
+
+    .nav-logo span {
+      background: linear-gradient(135deg, #8B5CF6, #06B6D4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .nav-links a {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      padding: 0.4rem 0.7rem;
+      border-radius: 8px;
+      transition: color 0.3s ease, background 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+    }
+
+    .hamburger:hover { background: rgba(255,255,255,0.06); }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text-primary);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    /* Mobile Menu */
+    .mobile-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 998;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .mobile-overlay.open {
+      display: block;
+      opacity: 1;
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 280px;
+      height: 100%;
+      background: var(--bg-secondary);
+      border-left: 1px solid rgba(255,255,255,0.06);
+      z-index: 999;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      padding: 5rem 1.5rem 2rem;
+      overflow-y: auto;
+    }
+
+    .mobile-menu.open { transform: translateX(0); }
+
+    .mobile-menu a {
+      display: block;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-menu a:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .mobile-menu .mobile-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: color 0.3s ease;
+    }
+
+    .mobile-menu .mobile-close:hover { color: #fff; }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 4rem 0 2rem;
       position: relative;
+      overflow: hidden;
+      padding-top: var(--nav-height);
     }
 
-    header::after {
-      content: '';
+    .hero-bg {
       position: absolute;
-      bottom: -2px;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
     }
 
-    .hero-content { max-width: 720px; margin: 0 auto; }
+    .hero-bg .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.4;
+      animation: orb-float 12s ease-in-out infinite;
+    }
+
+    .hero-bg .orb:nth-child(1) {
+      width: 500px;
+      height: 500px;
+      background: rgba(139,92,246,0.2);
+      top: -10%;
+      left: -5%;
+      animation-delay: 0s;
+    }
+
+    .hero-bg .orb:nth-child(2) {
+      width: 400px;
+      height: 400px;
+      background: rgba(6,182,212,0.15);
+      bottom: -10%;
+      right: -5%;
+      animation-delay: -4s;
+    }
+
+    .hero-bg .orb:nth-child(3) {
+      width: 300px;
+      height: 300px;
+      background: rgba(16,185,129,0.1);
+      bottom: 20%;
+      left: 30%;
+      animation-delay: -8s;
+    }
+
+    @keyframes orb-float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -30px) scale(1.05); }
+      66% { transform: translate(-20px, 20px) scale(0.95); }
+    }
+
+    .hero-particles {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-particles span {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      animation: particle-drift linear infinite;
+    }
+
+    .hero-particles span:nth-child(1) { left: 10%; top: 20%; animation-duration: 18s; animation-delay: 0s; }
+    .hero-particles span:nth-child(2) { left: 25%; top: 60%; animation-duration: 22s; animation-delay: -3s; width: 3px; height: 3px; }
+    .hero-particles span:nth-child(3) { left: 45%; top: 30%; animation-duration: 20s; animation-delay: -6s; width: 5px; height: 5px; }
+    .hero-particles span:nth-child(4) { left: 65%; top: 70%; animation-duration: 16s; animation-delay: -2s; }
+    .hero-particles span:nth-child(5) { left: 80%; top: 15%; animation-duration: 24s; animation-delay: -8s; width: 3px; height: 3px; }
+    .hero-particles span:nth-child(6) { left: 15%; top: 80%; animation-duration: 19s; animation-delay: -5s; }
+    .hero-particles span:nth-child(7) { left: 55%; top: 10%; animation-duration: 21s; animation-delay: -10s; width: 6px; height: 6px; }
+    .hero-particles span:nth-child(8) { left: 90%; top: 50%; animation-duration: 17s; animation-delay: -7s; }
+    .hero-particles span:nth-child(9) { left: 35%; top: 45%; animation-duration: 23s; animation-delay: -4s; width: 4px; height: 4px; }
+    .hero-particles span:nth-child(10) { left: 72%; top: 85%; animation-duration: 15s; animation-delay: -9s; width: 3px; height: 3px; }
+
+    @keyframes particle-drift {
+      0% { transform: translateY(0) translateX(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 720px;
+      padding: 0 1.5rem;
+    }
 
     .hero-badge {
       display: inline-flex;
@@ -156,7 +397,7 @@
       50% { opacity: 1; transform: scale(1.2); }
     }
 
-    header h1 {
+    .hero h1 {
       font-size: clamp(2.5rem, 6vw, 4rem);
       font-weight: 900;
       line-height: 1.15;
@@ -164,14 +405,14 @@
       margin-bottom: 1rem;
     }
 
-    header h1 .gradient-text {
+    .hero h1 .gradient-text {
       background: linear-gradient(135deg, #8B5CF6, #06B6D4, #10B981);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
-    header p {
+    .hero p {
       font-size: clamp(1rem, 2vw, 1.2rem);
       color: var(--text-secondary);
       max-width: 560px;
@@ -207,257 +448,11 @@
       font-size: 1.1rem;
     }
 
-    .hero-cta:hover .arrow-down {
-      transform: translateY(3px);
-    }
-
-    .section-label {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-
-    .section-label .tag {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--color-ai);
-      background: rgba(6,182,212,0.1);
-      border: 1px solid rgba(6,182,212,0.15);
-      padding: 0.3rem 1rem;
-      border-radius: 100px;
-      margin-bottom: 0.75rem;
-    }
-
-    .section-label h2 {
-      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
-      font-weight: 800;
-    }
-
-    .section-label p {
-      color: var(--text-secondary);
-      margin-top: 0.5rem;
-      font-size: 0.95rem;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.25rem;
-      padding: 1rem 0 4rem;
-    }
-
-    .card {
-      display: block;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: var(--card-radius);
-      padding: 1.75rem 1.5rem;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      pointer-events: none;
-    }
-
-    .card::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity 0.5s ease;
-      pointer-events: none;
-    }
-
-    .card:hover {
-      transform: translateY(-6px);
-      border-color: var(--card-accent);
-      box-shadow: 0 20px 60px var(--card-glow), 0 0 40px var(--card-glow);
-    }
-
-    .card:hover::before {
-      opacity: 1;
-    }
-
-    .card:hover::after {
-      opacity: 1;
-    }
-
-    .card .icon-wrap {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 48px;
-      height: 48px;
-      border-radius: 16px;
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      background: var(--card-bg-light);
-      border: 1px solid rgba(255,255,255,0.06);
-      transition: all 0.3s ease;
-      position: relative;
-    }
-
-    .card:hover .icon-wrap {
-      background: var(--card-accent-bg);
-      border-color: var(--card-accent);
-      transform: scale(1.05);
-      box-shadow: 0 0 20px var(--card-glow);
-    }
-
-    .card .domain-label {
-      font-size: 0.72rem;
-      font-weight: 500;
-      color: var(--card-accent);
-      text-transform: lowercase;
-      letter-spacing: 0.02em;
-      margin-bottom: 0.4rem;
-      display: block;
-      opacity: 0.7;
-    }
-
-    .card h3 {
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin-bottom: 0.4rem;
-      transition: color 0.3s ease;
-    }
-
-    .card p {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      line-height: 1.5;
-    }
-
-    .card .card-arrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      margin-top: 1.2rem;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      transition: all 0.3s ease;
-    }
-
-    .card .card-arrow svg {
-      transition: transform 0.3s ease;
-    }
-
-    .card:hover .card-arrow {
-      color: var(--card-accent);
-    }
-
-    .card:hover .card-arrow svg {
-      transform: translateX(4px);
-    }
-
-    .card[data-color="game"] {
-      --card-accent: var(--color-game);
-      --card-glow: var(--glow-game);
-      --card-accent-bg: rgba(139,92,246,0.12);
-      --card-bg-light: rgba(139,92,246,0.08);
-    }
-    .card[data-color="game"]::before {
-      background: linear-gradient(135deg, rgba(139,92,246,0.06), transparent 60%);
-    }
-
-    .card[data-color="health"] {
-      --card-accent: var(--color-health);
-      --card-glow: var(--glow-health);
-      --card-accent-bg: rgba(16,185,129,0.12);
-      --card-bg-light: rgba(16,185,129,0.08);
-    }
-    .card[data-color="health"]::before {
-      background: linear-gradient(135deg, rgba(16,185,129,0.06), transparent 60%);
-    }
-
-    .card[data-color="wfh"] {
-      --card-accent: var(--color-wfh);
-      --card-glow: var(--glow-wfh);
-      --card-accent-bg: rgba(245,158,11,0.12);
-      --card-bg-light: rgba(245,158,11,0.08);
-    }
-    .card[data-color="wfh"]::before {
-      background: linear-gradient(135deg, rgba(245,158,11,0.06), transparent 60%);
-    }
-
-    .card[data-color="hk"] {
-      --card-accent: var(--color-hk);
-      --card-glow: var(--glow-hk);
-      --card-accent-bg: rgba(59,130,246,0.12);
-      --card-bg-light: rgba(59,130,246,0.08);
-    }
-    .card[data-color="hk"]::before {
-      background: linear-gradient(135deg, rgba(59,130,246,0.06), transparent 60%);
-    }
-
-    .card[data-color="bus"] {
-      --card-accent: var(--color-bus);
-      --card-glow: var(--glow-bus);
-      --card-accent-bg: rgba(239,68,68,0.12);
-      --card-bg-light: rgba(239,68,68,0.08);
-    }
-    .card[data-color="bus"]::before {
-      background: linear-gradient(135deg, rgba(239,68,68,0.06), transparent 60%);
-    }
-
-    .card[data-color="hk3x3"] {
-      --card-accent: var(--color-hk3x3);
-      --card-glow: var(--glow-hk3x3);
-      --card-accent-bg: rgba(249,115,22,0.12);
-      --card-bg-light: rgba(249,115,22,0.08);
-    }
-    .card[data-color="hk3x3"]::before {
-      background: linear-gradient(135deg, rgba(249,115,22,0.06), transparent 60%);
-    }
-
-    .card[data-color="ai"] {
-      --card-accent: var(--color-ai);
-      --card-glow: var(--glow-ai);
-      --card-accent-bg: rgba(6,182,212,0.12);
-      --card-bg-light: rgba(6,182,212,0.08);
-    }
-    .card[data-color="ai"]::before {
-      background: linear-gradient(135deg, rgba(6,182,212,0.06), transparent 60%);
-    }
-
-    footer {
-      border-top: 1px solid rgba(255,255,255,0.05);
-      text-align: center;
-      padding: 2.5rem 0;
-      color: var(--text-muted);
-      font-size: 0.82rem;
-    }
-
-    footer .footer-brand {
-      font-size: 1.1rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #8B5CF6, #06B6D4);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 0.3rem;
-    }
+    .hero-cta:hover .arrow-down { transform: translateY(3px); }
 
     .scroll-indicator {
       position: absolute;
-      bottom: 2rem;
+      bottom: 2.5rem;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
@@ -470,6 +465,7 @@
       text-transform: uppercase;
       opacity: 0.5;
       animation: float 3s ease-in-out infinite;
+      z-index: 2;
     }
 
     .scroll-indicator .mouse {
@@ -503,26 +499,290 @@
       50% { transform: translateX(-50%) translateY(-6px); }
     }
 
-    @media (min-width: 600px) {
-      .grid { grid-template-columns: repeat(2, 1fr); }
-      header { min-height: 80vh; }
+    /* ===== SECTIONS ===== */
+    .section-site {
+      padding: 5rem 0;
+      position: relative;
+      overflow: hidden;
     }
 
-    @media (min-width: 960px) {
-      .grid { grid-template-columns: repeat(3, 1fr); }
-      .card { padding: 2rem 1.75rem; }
-      .card .icon-wrap { width: 54px; height: 54px; font-size: 1.7rem; }
+    .section-site:nth-child(odd) {
+      background: var(--bg-primary);
     }
 
-    @media (min-width: 1200px) {
-      .container { padding: 0 2rem; }
+    .section-site:nth-child(even) {
+      background: var(--bg-secondary);
+    }
+
+    .section-inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .section-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .section-icon-wrap {
+      width: 140px;
+      height: 140px;
+      border-radius: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      position: relative;
+      transition: all 0.5s ease;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .section-icon-wrap::after {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.25;
+      z-index: -1;
+    }
+
+    .section-icon-wrap[data-accent="game"] { background: rgba(139,92,246,0.12); border-color: rgba(139,92,246,0.2); }
+    .section-icon-wrap[data-accent="game"]::after { background: rgba(139,92,246,0.4); }
+    .section-icon-wrap[data-accent="health"] { background: rgba(16,185,129,0.12); border-color: rgba(16,185,129,0.2); }
+    .section-icon-wrap[data-accent="health"]::after { background: rgba(16,185,129,0.4); }
+    .section-icon-wrap[data-accent="wfh"] { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.2); }
+    .section-icon-wrap[data-accent="wfh"]::after { background: rgba(245,158,11,0.4); }
+    .section-icon-wrap[data-accent="hk"] { background: rgba(59,130,246,0.12); border-color: rgba(59,130,246,0.2); }
+    .section-icon-wrap[data-accent="hk"]::after { background: rgba(59,130,246,0.4); }
+    .section-icon-wrap[data-accent="bus"] { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.2); }
+    .section-icon-wrap[data-accent="bus"]::after { background: rgba(239,68,68,0.4); }
+    .section-icon-wrap[data-accent="hk3x3"] { background: rgba(249,115,22,0.12); border-color: rgba(249,115,22,0.2); }
+    .section-icon-wrap[data-accent="hk3x3"]::after { background: rgba(249,115,22,0.4); }
+    .section-icon-wrap[data-accent="ai"] { background: rgba(6,182,212,0.12); border-color: rgba(6,182,212,0.2); }
+    .section-icon-wrap[data-accent="ai"]::after { background: rgba(6,182,212,0.4); }
+
+    .section-domain {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: lowercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+      display: inline-block;
+    }
+
+    .section-domain[data-accent="game"] { color: var(--color-game); }
+    .section-domain[data-accent="health"] { color: var(--color-health); }
+    .section-domain[data-accent="wfh"] { color: var(--color-wfh); }
+    .section-domain[data-accent="hk"] { color: var(--color-hk); }
+    .section-domain[data-accent="bus"] { color: var(--color-bus); }
+    .section-domain[data-accent="hk3x3"] { color: var(--color-hk3x3); }
+    .section-domain[data-accent="ai"] { color: var(--color-ai); }
+
+    .section-text h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+
+    .section-text .tagline {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+      line-height: 1.5;
+    }
+
+    .section-text ul {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .section-text ul li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .section-text ul li .check {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      margin-top: 2px;
+    }
+
+    .section-text ul li .check[data-accent="game"] { background: rgba(139,92,246,0.15); color: var(--color-game); }
+    .section-text ul li .check[data-accent="health"] { background: rgba(16,185,129,0.15); color: var(--color-health); }
+    .section-text ul li .check[data-accent="wfh"] { background: rgba(245,158,11,0.15); color: var(--color-wfh); }
+    .section-text ul li .check[data-accent="hk"] { background: rgba(59,130,246,0.15); color: var(--color-hk); }
+    .section-text ul li .check[data-accent="bus"] { background: rgba(239,68,68,0.15); color: var(--color-bus); }
+    .section-text ul li .check[data-accent="hk3x3"] { background: rgba(249,115,22,0.15); color: var(--color-hk3x3); }
+    .section-text ul li .check[data-accent="ai"] { background: rgba(6,182,212,0.15); color: var(--color-ai); }
+
+    .section-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.6rem;
+      border-radius: 60px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: 1px solid;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .section-cta[data-accent="game"] { background: rgba(139,92,246,0.12); border-color: rgba(139,92,246,0.25); color: var(--color-game); }
+    .section-cta[data-accent="game"]:hover { background: rgba(139,92,246,0.25); border-color: rgba(139,92,246,0.5); box-shadow: 0 8px 30px rgba(139,92,246,0.2); transform: translateY(-2px); }
+    .section-cta[data-accent="health"] { background: rgba(16,185,129,0.12); border-color: rgba(16,185,129,0.25); color: var(--color-health); }
+    .section-cta[data-accent="health"]:hover { background: rgba(16,185,129,0.25); border-color: rgba(16,185,129,0.5); box-shadow: 0 8px 30px rgba(16,185,129,0.2); transform: translateY(-2px); }
+    .section-cta[data-accent="wfh"] { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.25); color: var(--color-wfh); }
+    .section-cta[data-accent="wfh"]:hover { background: rgba(245,158,11,0.25); border-color: rgba(245,158,11,0.5); box-shadow: 0 8px 30px rgba(245,158,11,0.2); transform: translateY(-2px); }
+    .section-cta[data-accent="hk"] { background: rgba(59,130,246,0.12); border-color: rgba(59,130,246,0.25); color: var(--color-hk); }
+    .section-cta[data-accent="hk"]:hover { background: rgba(59,130,246,0.25); border-color: rgba(59,130,246,0.5); box-shadow: 0 8px 30px rgba(59,130,246,0.2); transform: translateY(-2px); }
+    .section-cta[data-accent="bus"] { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.25); color: var(--color-bus); }
+    .section-cta[data-accent="bus"]:hover { background: rgba(239,68,68,0.25); border-color: rgba(239,68,68,0.5); box-shadow: 0 8px 30px rgba(239,68,68,0.2); transform: translateY(-2px); }
+    .section-cta[data-accent="hk3x3"] { background: rgba(249,115,22,0.12); border-color: rgba(249,115,22,0.25); color: var(--color-hk3x3); }
+    .section-cta[data-accent="hk3x3"]:hover { background: rgba(249,115,22,0.25); border-color: rgba(249,115,22,0.5); box-shadow: 0 8px 30px rgba(249,115,22,0.2); transform: translateY(-2px); }
+    .section-cta[data-accent="ai"] { background: rgba(6,182,212,0.12); border-color: rgba(6,182,212,0.25); color: var(--color-ai); }
+    .section-cta[data-accent="ai"]:hover { background: rgba(6,182,212,0.25); border-color: rgba(6,182,212,0.5); box-shadow: 0 8px 30px rgba(6,182,212,0.2); transform: translateY(-2px); }
+
+    .section-cta svg {
+      transition: transform 0.3s ease;
+    }
+
+    .section-cta:hover svg {
+      transform: translateX(4px);
+    }
+
+    /* ===== REVEAL ANIMATION ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.05);
+      text-align: center;
+      padding: 2.5rem 0;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      background: var(--bg-primary);
+    }
+
+    footer .footer-brand {
+      font-size: 1.1rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #8B5CF6, #06B6D4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.3rem;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (min-width: 768px) {
+      .section-inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+      }
+
+      .section-site:nth-child(even) .section-inner .section-visual {
+        order: 2;
+      }
+
+      .section-site:nth-child(even) .section-inner .section-text {
+        order: 1;
+      }
+
+      .section-icon-wrap {
+        width: 180px;
+        height: 180px;
+        font-size: 5rem;
+        border-radius: 40px;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .section-site { padding: 3.5rem 0; }
+      .section-text h2 { font-size: 1.5rem; }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="container">
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar" role="navigation" aria-label="主導航">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo" aria-label="CubedHub 首頁">
+        <img src="images/logo.png" alt="CubedHub Logo" width="32" height="32">
+        <span>CubedHub</span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="#game">遊戲攻略</a>
+        <a href="#health">健康生活</a>
+        <a href="#wfh">在家工作</a>
+        <a href="#hk">香港旅遊</a>
+        <a href="#bus">香港巴士</a>
+        <a href="#hk3x3">3x3 籃球</a>
+        <a href="#ai">AI 工具</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="開啟選單" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+  <div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="行動選單">
+    <button class="mobile-close" id="mobileClose" aria-label="關閉選單">&times;</button>
+    <a href="#game">遊戲攻略</a>
+    <a href="#health">健康生活</a>
+    <a href="#wfh">在家工作</a>
+    <a href="#hk">香港旅遊</a>
+    <a href="#bus">香港巴士</a>
+    <a href="#hk3x3">3x3 籃球</a>
+    <a href="#ai">AI 工具</a>
+  </div>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <div class="orb"></div>
+      <div class="orb"></div>
+      <div class="orb"></div>
+    </div>
+    <div class="hero-particles">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
     <div class="hero-content">
       <div class="hero-badge">
         <span class="hero-badge-dot"></span>
@@ -533,111 +793,202 @@
         精彩世界
       </h1>
       <p>遊戲攻略、健康生活、在家工作、香港旅遊、巴士資訊、3x3 籃球及 AI 工具 —— 全部匯集於此。</p>
-      <a href="#explore" class="hero-cta">
+      <a href="#game" class="hero-cta">
         開始探索
-        <span class="arrow-down">↓</span>
+        <span class="arrow-down">&darr;</span>
       </a>
     </div>
     <div class="scroll-indicator">
       <div class="mouse"></div>
       <span>往下</span>
     </div>
-  </div>
-</header>
+  </section>
 
-<main class="container" id="explore">
-  <div class="section-label">
-    <span class="tag">Explore</span>
-    <h2>我們的品牌</h2>
-    <p>點擊以下卡片，前往各子站探索。</p>
-  </div>
+  <!-- ===== SECTIONS ===== -->
 
-  <div class="grid">
-    <a href="https://game.cubedhub.com/" class="card" data-color="game" target="_blank" rel="noopener">
-      <div class="icon-wrap">🎮</div>
-      <span class="domain-label">game.cubedhub.com</span>
-      <h3>遊戲攻略</h3>
-      <p>遊戲攻略、指南</p>
-      <span class="card-arrow">
-        前往探索
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </span>
-    </a>
+  <!-- 1. Game -->
+  <section class="section-site" id="game">
+    <div class="container">
+      <div class="section-inner">
+        <div class="section-visual reveal">
+          <div class="section-icon-wrap" data-accent="game">🎮</div>
+        </div>
+        <div class="section-text reveal reveal-delay-1">
+          <span class="section-domain" data-accent="game">game.cubedhub.com</span>
+          <h2>遊戲攻略</h2>
+          <p class="tagline">提供各類熱門遊戲的最新攻略、角色培養指南與關卡解析，助你輕鬆通關。</p>
+          <ul>
+            <li><span class="check" data-accent="game">&#10003;</span> 最新手遊與端遊攻略</li>
+            <li><span class="check" data-accent="game">&#10003;</span> 角色培養與裝備推薦</li>
+            <li><span class="check" data-accent="game">&#10003;</span> 關卡解析與實用技巧</li>
+          </ul>
+          <a href="https://game.cubedhub.com/" class="section-cta" data-accent="game" target="_blank" rel="noopener">
+            前往攻略站
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <a href="https://health.cubedhub.com/" class="card" data-color="health" target="_blank" rel="noopener">
-      <div class="icon-wrap">💪</div>
-      <span class="domain-label">health.cubedhub.com</span>
-      <h3>健康生活</h3>
-      <p>健康資訊與貼士</p>
-      <span class="card-arrow">
-        前往探索
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </span>
-    </a>
+  <!-- 2. Health -->
+  <section class="section-site" id="health">
+    <div class="container">
+      <div class="section-inner">
+        <div class="section-visual reveal">
+          <div class="section-icon-wrap" data-accent="health">💪</div>
+        </div>
+        <div class="section-text reveal reveal-delay-1">
+          <span class="section-domain" data-accent="health">health.cubedhub.com</span>
+          <h2>健康生活</h2>
+          <p class="tagline">科學健康知識、運動健身指南與飲食建議，陪你打造更好的生活品質。</p>
+          <ul>
+            <li><span class="check" data-accent="health">&#10003;</span> 健康知識與醫療資訊</li>
+            <li><span class="check" data-accent="health">&#10003;</span> 運動健身與飲食建議</li>
+            <li><span class="check" data-accent="health">&#10003;</span> 心理健康與生活平衡</li>
+          </ul>
+          <a href="https://health.cubedhub.com/" class="section-cta" data-accent="health" target="_blank" rel="noopener">
+            前往健康站
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <a href="https://wfh.cubedhub.com/" class="card" data-color="wfh" target="_blank" rel="noopener">
-      <div class="icon-wrap">🏠</div>
-      <span class="domain-label">wfh.cubedhub.com</span>
-      <h3>在家工作</h3>
-      <p>WFH 工具與技巧</p>
-      <span class="card-arrow">
-        前往探索
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </span>
-    </a>
+  <!-- 3. WFH -->
+  <section class="section-site" id="wfh">
+    <div class="container">
+      <div class="section-inner">
+        <div class="section-visual reveal">
+          <div class="section-icon-wrap" data-accent="wfh">🏠</div>
+        </div>
+        <div class="section-text reveal reveal-delay-1">
+          <span class="section-domain" data-accent="wfh">wfh.cubedhub.com</span>
+          <h2>在家工作</h2>
+          <p class="tagline">WFH 必備工具與生產力技巧，讓你在家工作也能高效產出。</p>
+          <ul>
+            <li><span class="check" data-accent="wfh">&#10003;</span> 遠端協作工具推薦</li>
+            <li><span class="check" data-accent="wfh">&#10003;</span> 時間管理與生產力技巧</li>
+            <li><span class="check" data-accent="wfh">&#10003;</span> 在家工作環境設置</li>
+          </ul>
+          <a href="https://wfh.cubedhub.com/" class="section-cta" data-accent="wfh" target="_blank" rel="noopener">
+            前往 WFH 站
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <a href="https://hk.cubedhub.com/" class="card" data-color="hk" target="_blank" rel="noopener">
-      <div class="icon-wrap">🗺️</div>
-      <span class="domain-label">hk.cubedhub.com</span>
-      <h3>香港旅遊</h3>
-      <p>香港旅遊便利站</p>
-      <span class="card-arrow">
-        前往探索
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </span>
-    </a>
+  <!-- 4. HK Travel -->
+  <section class="section-site" id="hk">
+    <div class="container">
+      <div class="section-inner">
+        <div class="section-visual reveal">
+          <div class="section-icon-wrap" data-accent="hk">🗺️</div>
+        </div>
+        <div class="section-text reveal reveal-delay-1">
+          <span class="section-domain" data-accent="hk">hk.cubedhub.com</span>
+          <h2>香港旅遊</h2>
+          <p class="tagline">香港旅遊便利站 —— 景點、美食、交通、住宿一站式旅遊攻略。</p>
+          <ul>
+            <li><span class="check" data-accent="hk">&#10003;</span> 香港景點與隱藏美食</li>
+            <li><span class="check" data-accent="hk">&#10003;</span> 交通路線與住宿推薦</li>
+            <li><span class="check" data-accent="hk">&#10003;</span> 行程規劃與實用貼士</li>
+          </ul>
+          <a href="https://hk.cubedhub.com/" class="section-cta" data-accent="hk" target="_blank" rel="noopener">
+            前往旅遊站
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <a href="https://bus.cubedhub.com/" class="card" data-color="bus" target="_blank" rel="noopener">
-      <div class="icon-wrap">🚌</div>
-      <span class="domain-label">bus.cubedhub.com</span>
-      <h3>香港巴士</h3>
-      <p>香港巴士便利站</p>
-      <span class="card-arrow">
-        前往探索
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </span>
-    </a>
+  <!-- 5. Bus -->
+  <section class="section-site" id="bus">
+    <div class="container">
+      <div class="section-inner">
+        <div class="section-visual reveal">
+          <div class="section-icon-wrap" data-accent="bus">🚌</div>
+        </div>
+        <div class="section-text reveal reveal-delay-1">
+          <span class="section-domain" data-accent="bus">bus.cubedhub.com</span>
+          <h2>香港巴士</h2>
+          <p class="tagline">香港巴士路線、班次查詢與 ETA 資訊，出門搭車更方便。</p>
+          <ul>
+            <li><span class="check" data-accent="bus">&#10003;</span> 九巴/城巴路線查詢</li>
+            <li><span class="check" data-accent="bus">&#10003;</span> 實時 ETA 班次預報</li>
+            <li><span class="check" data-accent="bus">&#10003;</span> 巴士路線圖與轉乘建議</li>
+          </ul>
+          <a href="https://bus.cubedhub.com/" class="section-cta" data-accent="bus" target="_blank" rel="noopener">
+            前往巴士站
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <a href="https://hk3x3.cubedhub.com/" class="card" data-color="hk3x3" target="_blank" rel="noopener">
-      <div class="icon-wrap">🏀</div>
-      <span class="domain-label">hk3x3.cubedhub.com</span>
-      <h3>3x3 籃球</h3>
-      <p>香港學界 3x3 籃球攻略</p>
-      <span class="card-arrow">
-        前往探索
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </span>
-    </a>
+  <!-- 6. HK3x3 -->
+  <section class="section-site" id="hk3x3">
+    <div class="container">
+      <div class="section-inner">
+        <div class="section-visual reveal">
+          <div class="section-icon-wrap" data-accent="hk3x3">🏀</div>
+        </div>
+        <div class="section-text reveal reveal-delay-1">
+          <span class="section-domain" data-accent="hk3x3">hk3x3.cubedhub.com</span>
+          <h2>3x3 籃球</h2>
+          <p class="tagline">香港學界 3x3 籃球賽事資訊、球隊排名與攻略大全。</p>
+          <ul>
+            <li><span class="check" data-accent="hk3x3">&#10003;</span> 學界 3x3 賽事資訊</li>
+            <li><span class="check" data-accent="hk3x3">&#10003;</span> 球隊排名與賽果追蹤</li>
+            <li><span class="check" data-accent="hk3x3">&#10003;</span> 籃球訓練與戰術攻略</li>
+          </ul>
+          <a href="https://hk3x3.cubedhub.com/" class="section-cta" data-accent="hk3x3" target="_blank" rel="noopener">
+            前往籃球站
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <a href="https://ai.cubedhub.com/" class="card" data-color="ai" target="_blank" rel="noopener">
-      <div class="icon-wrap">🤖</div>
-      <span class="domain-label">ai.cubedhub.com</span>
-      <h3>AI 工具</h3>
-      <p>AI 工具導航</p>
-      <span class="card-arrow">
-        前往探索
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </span>
-    </a>
-  </div>
-</main>
+  <!-- 7. AI -->
+  <section class="section-site" id="ai">
+    <div class="container">
+      <div class="section-inner">
+        <div class="section-visual reveal">
+          <div class="section-icon-wrap" data-accent="ai">🤖</div>
+        </div>
+        <div class="section-text reveal reveal-delay-1">
+          <span class="section-domain" data-accent="ai">ai.cubedhub.com</span>
+          <h2>AI 工具</h2>
+          <p class="tagline">精選 AI 工具導航，涵蓋文案生成、繪圖、程式開發等各類應用。</p>
+          <ul>
+            <li><span class="check" data-accent="ai">&#10003;</span> AI 工具分類導航</li>
+            <li><span class="check" data-accent="ai">&#10003;</span> 實用 AI 應用推薦</li>
+            <li><span class="check" data-accent="ai">&#10003;</span> 使用技巧與比較評測</li>
+          </ul>
+          <a href="https://ai.cubedhub.com/" class="section-cta" data-accent="ai" target="_blank" rel="noopener">
+            前往 AI 站
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<footer>
-  <div class="container">
-    <div class="footer-brand">CubedHub</div>
-    <p>&copy; 2026 cubedhub.com. All rights reserved.</p>
-  </div>
-</footer>
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="container">
+      <div class="footer-brand">CubedHub</div>
+      <p>&copy; 2026 cubedhub.com. All rights reserved.</p>
+    </div>
+  </footer>
 
+  <script src="js/main.js"></script>
 </body>
 </html>
