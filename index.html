@@ -3,12 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CubedHub - 攻略・工具・健康・旅遊一站式平台</title>
-  <meta name="description" content="CubedHub 提供遊戲攻略、AI 工具導航、健康瘦身指南、香港旅遊資訊及在家工作資源，一站式為你服務。">
+  <title>cubedhub.com</title>
+  <meta name="description" content="cubedhub.com 一站式網站入口 — 遊戲攻略、健康生活、在家工作、香港旅遊、巴士資訊、3x3 籃球及 AI 工具">
   <meta name="google-adsense-account" content="ca-pub-4900630860092971">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://cubedhub.com/">
+
+  <meta property="og:title" content="cubedhub.com">
+  <meta property="og:description" content="一站式網站入口 — 遊戲攻略、健康生活、在家工作、香港旅遊、巴士資訊、3x3 籃球及 AI 工具">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cubedhub.com/">
+  <meta property="og:locale" content="zh_Hant">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4900630860092971" crossorigin="anonymous"></script>
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-132PFXDSM9"></script>
   <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-132PFXDSM9');</script>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -22,66 +32,191 @@
   }
   </script>
   <style>
-    body { font-family: 'Inter', 'Noto Sans TC', system-ui, sans-serif; }
-    .gradient-bg { background: linear-gradient(135deg, #0f1117 0%, #1a1d2e 50%, #0f1117 100%); }
-    .card-hover { transition: transform 0.2s, box-shadow 0.2s; }
-    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(99,102,241,0.15); }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f0f4f8;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+    .container { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 1.25rem; }
+
+    header {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: #fff;
+      padding: 3rem 0 2.5rem;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    header p {
+      margin-top: 0.5rem;
+      font-size: 1.05rem;
+      opacity: 0.9;
+      font-weight: 400;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      padding: 2.5rem 0 3rem;
+    }
+    .card {
+      background: #fff;
+      border-radius: 1rem;
+      padding: 1.5rem 1.25rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border-left: 4px solid #2563eb;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(37,99,235,0.12);
+    }
+    .card .icon { font-size: 2rem; flex-shrink: 0; }
+    .card .info { flex: 1; min-width: 0; }
+    .card .info .domain {
+      font-size: 0.8rem;
+      color: #2563eb;
+      font-weight: 500;
+      display: block;
+      margin-bottom: 0.1rem;
+    }
+    .card .info h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .card .info p {
+      font-size: 0.88rem;
+      color: #64748b;
+      margin-top: 0.15rem;
+    }
+    .card .arrow {
+      color: #94a3b8;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+    .card:hover .arrow { transform: translateX(4px); color: #2563eb; }
+
+    footer {
+      margin-top: auto;
+      background: #1e293b;
+      color: #94a3b8;
+      text-align: center;
+      padding: 1.5rem 0;
+      font-size: 0.88rem;
+    }
+
+    @media (min-width: 600px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 960px) {
+      .grid { grid-template-columns: repeat(3, 1fr); }
+    }
   </style>
 </head>
-<body class="gradient-bg text-gray-200 min-h-screen">
-  <div class="max-w-6xl mx-auto px-6 py-16">
-    <!-- Logo -->
-    <div class="text-center mb-16">
-      <h1 class="text-5xl font-bold text-white mb-4">
-        <span class="text-indigo-400">Cubed</span>Hub
-      </h1>
-      <p class="text-xl text-gray-400 max-w-2xl mx-auto">
-        攻略・工具・健康・旅遊 — 一站式網路平台
-      </p>
-    </div>
+<body>
 
-    <!-- Site Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <a href="https://game.cubedhub.com/" class="card-hover block p-6 rounded-xl bg-[#1a1d2e] border border-[#2a2d3e]">
-        <div class="text-4xl mb-3">🎮</div>
-        <h2 class="text-xl font-bold text-white mb-2">遊戲攻略站</h2>
-        <p class="text-gray-400 text-sm">瑪奇Mobile・幻獸帕魯・黑神話悟空 — 最新攻略指南</p>
-        <div class="mt-3 text-indigo-400 text-sm font-semibold">前往 →</div>
-      </a>
-
-      <a href="https://ai.cubedhub.com/" class="card-hover block p-6 rounded-xl bg-[#1a1d2e] border border-[#2a2d3e]">
-        <div class="text-4xl mb-3">🤖</div>
-        <h2 class="text-xl font-bold text-white mb-2">AI 工具導航</h2>
-        <p class="text-gray-400 text-sm">2026 精選 AI 工具・Deepseek・ChatGPT 完整教學</p>
-        <div class="mt-3 text-indigo-400 text-sm font-semibold">前往 →</div>
-      </a>
-
-      <a href="https://health.cubedhub.com/" class="card-hover block p-6 rounded-xl bg-[#1a1d2e] border border-[#2a2d3e]">
-        <div class="text-4xl mb-3">💪</div>
-        <h2 class="text-xl font-bold text-white mb-2">健康瘦身指南</h2>
-        <p class="text-gray-400 text-sm">科學減重・健康飲食・居家運動 — 可持續的健康生活</p>
-        <div class="mt-3 text-indigo-400 text-sm font-semibold">前往 →</div>
-      </a>
-
-      <a href="https://hk.cubedhub.com/" class="card-hover block p-6 rounded-xl bg-[#1a1d2e] border border-[#2a2d3e]">
-        <div class="text-4xl mb-3">🗺️</div>
-        <h2 class="text-xl font-bold text-white mb-2">香港旅遊資訊</h2>
-        <p class="text-gray-400 text-sm">公廁地圖・免費 WiFi・行李寄存・休息站指南</p>
-        <div class="mt-3 text-indigo-400 text-sm font-semibold">前往 →</div>
-      </a>
-
-      <a href="https://wfh.cubedhub.com/" class="card-hover block p-6 rounded-xl bg-[#1a1d2e] border border-[#2a2d3e]">
-        <div class="text-4xl mb-3">🏠</div>
-        <h2 class="text-xl font-bold text-white mb-2">在家工作資源站</h2>
-        <p class="text-gray-400 text-sm">遠距工具・效率技巧・遠端面試指南 — WFH 必備</p>
-        <div class="mt-3 text-indigo-400 text-sm font-semibold">前往 →</div>
-      </a>
-    </div>
-
-    <!-- Footer -->
-    <footer class="mt-16 text-center text-gray-600 text-sm border-t border-[#2a2d3e] pt-8">
-      <p>&copy; 2026 CubedHub — All rights reserved.</p>
-    </footer>
+<header>
+  <div class="container">
+    <h1>cubedhub.com</h1>
+    <p>一站式網站入口</p>
   </div>
+</header>
+
+<main class="container">
+  <div class="grid">
+    <a href="https://game.cubedhub.com/" class="card">
+      <span class="icon">🎮</span>
+      <div class="info">
+        <span class="domain">game.cubedhub.com</span>
+        <h2>遊戲攻略</h2>
+        <p>遊戲攻略、指南</p>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+
+    <a href="https://health.cubedhub.com/" class="card">
+      <span class="icon">🏥</span>
+      <div class="info">
+        <span class="domain">health.cubedhub.com</span>
+        <h2>健康生活</h2>
+        <p>健康資訊</p>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+
+    <a href="https://wfh.cubedhub.com/" class="card">
+      <span class="icon">🏠</span>
+      <div class="info">
+        <span class="domain">wfh.cubedhub.com</span>
+        <h2>在家工作</h2>
+        <p>WFH 工具與技巧</p>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+
+    <a href="https://hk.cubedhub.com/" class="card">
+      <span class="icon">🗺️</span>
+      <div class="info">
+        <span class="domain">hk.cubedhub.com</span>
+        <h2>香港旅遊</h2>
+        <p>香港旅遊便利站</p>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+
+    <a href="https://bus.cubedhub.com/" class="card">
+      <span class="icon">🚌</span>
+      <div class="info">
+        <span class="domain">bus.cubedhub.com</span>
+        <h2>香港巴士</h2>
+        <p>香港巴士便利站</p>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+
+    <a href="https://hk3x3.cubedhub.com/" class="card">
+      <span class="icon">🏀</span>
+      <div class="info">
+        <span class="domain">hk3x3.cubedhub.com</span>
+        <h2>3x3 籃球</h2>
+        <p>香港學界 3x3 籃球攻略</p>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+
+    <a href="https://ai.cubedhub.com/" class="card">
+      <span class="icon">🤖</span>
+      <div class="info">
+        <span class="domain">ai.cubedhub.com</span>
+        <h2>AI 工具</h2>
+        <p>AI 工具</p>
+      </div>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    &copy; 2026 cubedhub.com. All rights reserved.
+  </div>
+</footer>
+
 </body>
 </html>
