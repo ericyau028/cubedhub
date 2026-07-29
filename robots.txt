@@ -1,0 +1,4 @@
+Sitemap: https://cubedhub.com/sitemap.xml
+
+User-agent: *
+Allow: /
