@@ -1143,6 +1143,108 @@
     </div>
   </footer>
 
+  <!-- Cookie Consent Banner -->
+  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-label="Cookie 同意">
+    <div class="cookie-banner-inner">
+      <div class="cookie-banner-text">
+        <p>本網站使用 Cookie 以改善您的瀏覽體驗、分析網站流量並提供個人化廣告。繼續使用本網站即表示您同意我們使用 Cookie。了解詳情請參閱 <a href="privacy-policy.html" class="cookie-link">隱私權政策</a>。</p>
+      </div>
+      <div class="cookie-banner-actions">
+        <button id="cookie-accept" class="cookie-btn cookie-btn-primary">接受全部</button>
+        <button id="cookie-reject" class="cookie-btn cookie-btn-secondary">拒絕</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(10, 10, 26, 0.97);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      z-index: 9999;
+      padding: 1rem 1.5rem;
+      transform: translateY(100%);
+      transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .cookie-banner.show { transform: translateY(0); }
+    .cookie-banner-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .cookie-banner-text { flex: 1; min-width: 240px; }
+    .cookie-banner-text p {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      margin: 0;
+    }
+    .cookie-link { color: #818cf8; text-decoration: underline; }
+    .cookie-link:hover { color: #a5b4fc; }
+    .cookie-banner-actions { display: flex; gap: 0.6rem; flex-shrink: 0; }
+    .cookie-btn {
+      padding: 0.55rem 1.2rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+    .cookie-btn-primary {
+      background: linear-gradient(135deg, #8B5CF6, #06B6D4);
+      color: #fff;
+    }
+    .cookie-btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .cookie-btn-secondary {
+      background: rgba(255,255,255,0.08);
+      color: var(--text-secondary);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .cookie-btn-secondary:hover { background: rgba(255,255,255,0.12); color: #fff; }
+  </style>
+
+  <script>
+    (function(){
+      var banner = document.getElementById('cookie-banner');
+      var acceptBtn = document.getElementById('cookie-accept');
+      var rejectBtn = document.getElementById('cookie-reject');
+      var consent = localStorage.getItem('cookie_consent');
+
+      if (!consent) {
+        setTimeout(function(){ banner.classList.add('show'); }, 500);
+      }
+
+      function handleConsent(value) {
+        localStorage.setItem('cookie_consent', value);
+        banner.classList.remove('show');
+        if (value === 'accepted') {
+          // Enable GA
+          window['ga-disable-G-132PFXDSM9'] = false;
+          // Enable AdSense
+          var ads = document.querySelectorAll('ins.adsbygoogle');
+          if (ads.length) { (adsbygoogle = window.adsbygoogle || []).push({}); }
+        } else {
+          // Disable GA
+          window['ga-disable-G-132PFXDSM9'] = true;
+        }
+      }
+
+      acceptBtn.addEventListener('click', function(){ handleConsent('accepted'); });
+      rejectBtn.addEventListener('click', function(){ handleConsent('rejected'); });
+    })();
+  </script>
+
   <script src="js/main.js"></script>
 </body>
 </html>
