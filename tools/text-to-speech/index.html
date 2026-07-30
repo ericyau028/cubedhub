@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>文字轉語音 — 免費線上語音朗讀工具</title>
+  <meta name="description" content="免費線上文字轉語音工具，支援中文、粵語、英文等多種語言，可調節語速與音調，讓瀏覽器幫你朗讀文字。">
+  <meta name="google-adsense-account" content="ca-pub-4900630860092971">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="文字轉語音 — 免費線上語音朗讀工具">
+  <meta property="og:description" content="免費線上文字轉語音工具，支援中文、粵語、英文等多種語言，可調節語速與音調，讓瀏覽器幫你朗讀文字。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cubedhub.com/tools/text-to-speech/">
+  <link rel="canonical" href="https://cubedhub.com/tools/text-to-speech/">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#0a0a1a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4900630860092971" crossorigin="anonymous"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a1a;
+      --bg-card: #111127;
+      --bg-input: #1a1a35;
+      --border: rgba(255,255,255,0.08);
+      --text: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent: #8B5CF6;
+      --accent-light: #a78bfa;
+      --radius: 12px;
+    }
+    html { font-size: 16px; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+    }
+    .container { max-width: 640px; margin: 0 auto; padding: 0 1.25rem; width: 100%; }
+
+    /* Nav */
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 0;
+    }
+    .nav-brand {
+      font-weight: 700; font-size: 1.1rem; color: #fff;
+      display: flex; align-items: center; gap: 0.5rem; text-decoration: none;
+    }
+    .nav-brand span { background: linear-gradient(135deg, #8B5CF6, #06B6D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .nav-back { color: var(--text-muted); font-size: 0.85rem; text-decoration: none; }
+    .nav-back:hover { color: var(--text-secondary); }
+
+    /* Hero */
+    .hero { text-align: center; padding: 2rem 0 1rem; }
+    .hero h1 { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.4rem; }
+    .hero p { color: var(--text-secondary); font-size: 0.85rem; max-width: 460px; margin: 0 auto; }
+
+    /* Card */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Input */
+    .input-group { margin-bottom: 1.25rem; }
+    .input-group:last-child { margin-bottom: 0; }
+    .input-group label {
+      display: block; font-size: 0.8rem; font-weight: 600;
+      color: var(--text-secondary); margin-bottom: 0.4rem;
+    }
+    .input-group textarea {
+      width: 100%; padding: 0.75rem 1rem;
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: var(--radius); color: var(--text);
+      font-size: 0.9rem; font-family: inherit;
+      transition: border-color 0.3s; resize: vertical;
+    }
+    .input-group textarea:focus {
+      outline: none; border-color: var(--accent);
+    }
+    .input-group textarea { min-height: 140px; }
+
+    /* Select */
+    .select-wrap {
+      position: relative;
+    }
+    .select-wrap select {
+      width: 100%; padding: 0.7rem 1rem;
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: var(--radius); color: var(--text);
+      font-size: 0.9rem; font-family: inherit;
+      transition: border-color 0.3s;
+      appearance: none; cursor: pointer;
+    }
+    .select-wrap select:focus { outline: none; border-color: var(--accent); }
+    .select-wrap::after {
+      content: ''; position: absolute; right: 14px; top: 50%;
+      margin-top: -2px; border-left: 5px solid transparent;
+      border-right: 5px solid transparent; border-top: 6px solid var(--text-muted);
+      pointer-events: none;
+    }
+
+    /* Slider controls */
+    .slider-control { display: flex; align-items: center; gap: 0.75rem; }
+    .slider-control input[type="range"] {
+      flex: 1; height: 4px; appearance: none;
+      background: var(--border); border-radius: 2px; outline: none;
+    }
+    .slider-control input[type="range"]::-webkit-slider-thumb {
+      appearance: none; width: 18px; height: 18px;
+      background: var(--accent); border-radius: 50%; cursor: pointer;
+    }
+    .slider-control input[type="range"]::-moz-range-thumb {
+      width: 18px; height: 18px; background: var(--accent);
+      border-radius: 50%; cursor: pointer; border: none;
+    }
+    .slider-label {
+      font-size: 0.8rem; color: var(--text-muted); min-width: 36px; text-align: right;
+      font-family: monospace;
+    }
+
+    .slider-value {
+      font-size: 0.8rem; color: var(--text-muted); min-width: 32px; text-align: center;
+      font-family: monospace;
+    }
+
+    /* Buttons */
+    .btn-group { display: flex; gap: 0.6rem; margin-top: 1rem; flex-wrap: wrap; justify-content: center; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.7rem 1.4rem; border-radius: var(--radius);
+      font-size: 0.85rem; font-weight: 600; border: none;
+      cursor: pointer; transition: all 0.3s ease; text-decoration: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #8B5CF6, #7c3aed);
+      color: #fff;
+    }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(139,92,246,0.3); }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn-secondary {
+      background: rgba(255,255,255,0.06); color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .btn-secondary:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-danger {
+      background: rgba(239,68,68,0.15); color: #f87171;
+      border: 1px solid rgba(239,68,68,0.2);
+    }
+    .btn-danger:hover { background: rgba(239,68,68,0.25); }
+
+    /* Highlight text */
+    .text-display {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      max-height: 200px; overflow-y: auto;
+      font-size: 0.9rem; line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+    .text-display .word {
+      transition: background 0.15s, color 0.15s;
+      border-radius: 3px; padding: 0 1px;
+    }
+    .text-display .word.active {
+      background: var(--accent);
+      color: #fff;
+      border-radius: 3px; padding: 0 1px;
+    }
+
+    /* Status */
+    .status {
+      text-align: center; font-size: 0.8rem;
+      color: var(--text-muted); margin-bottom: 0.5rem;
+      min-height: 1.2em;
+    }
+    .status.playing { color: var(--accent-light); }
+    .status.paused { color: #fbbf24; }
+
+    /* Char count */
+    .char-count {
+      text-align: right; font-size: 0.75rem;
+      color: var(--text-muted); margin-top: 0.3rem;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: auto; text-align: center;
+      padding: 2rem 0; color: var(--text-muted); font-size: 0.8rem;
+    }
+    .footer a { color: var(--text-muted); }
+    .footer a:hover { color: var(--text-secondary); }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      background: #1a1a35; border: 1px solid var(--border);
+      padding: 0.7rem 1.4rem; border-radius: 10px; font-size: 0.85rem;
+      color: var(--text); opacity: 0; transition: opacity 0.4s;
+      pointer-events: none; z-index: 999;
+    }
+    .toast.show { opacity: 1; }
+
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 1.25rem; }
+      .card { padding: 1.25rem; }
+      .btn { padding: 0.6rem 1.1rem; font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="url(#g)"/><defs><linearGradient id="g" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#8B5CF6"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs></svg>
+        <span>CubedHub</span>
+      </a>
+      <a href="/" class="nav-back">&larr; 首頁</a>
+    </nav>
+  </div>
+
+  <div class="container">
+    <div class="hero">
+      <h1>文字轉語音</h1>
+      <p>免費線上文字轉語音工具，支援中文、粵語、英文等多種語言，可調節語速與音調，讓瀏覽器幫你朗讀文字。</p>
+    </div>
+
+    <div class="card">
+      <div class="input-group">
+        <label for="tts-text">輸入文字</label>
+        <textarea id="tts-text" placeholder="請輸入要朗讀的文字..."></textarea>
+        <div class="char-count" id="char-count">0 字</div>
+      </div>
+
+      <div class="input-group">
+        <label for="voice-select">語言 / 語音</label>
+        <div class="select-wrap">
+          <select id="voice-select">
+            <option value="">載入語音中...</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>語速：<span id="rate-value" class="slider-value">1.0x</span></label>
+        <div class="slider-control">
+          <span style="font-size:0.7rem;color:var(--text-muted);">0.5x</span>
+          <input type="range" id="rate-slider" min="0.5" max="2" step="0.1" value="1">
+          <span style="font-size:0.7rem;color:var(--text-muted);">2x</span>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>音調：<span id="pitch-value" class="slider-value">1.0</span></label>
+        <div class="slider-control">
+          <span style="font-size:0.7rem;color:var(--text-muted);">0.5</span>
+          <input type="range" id="pitch-slider" min="0.5" max="2" step="0.1" value="1">
+          <span style="font-size:0.7rem;color:var(--text-muted);">2</span>
+        </div>
+      </div>
+
+      <div class="status" id="status"></div>
+
+      <div id="text-display" class="text-display" style="display:none;"></div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="play-btn">播放</button>
+        <button class="btn btn-secondary" id="pause-btn" disabled>暫停</button>
+        <button class="btn btn-danger" id="stop-btn" disabled>停止</button>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:0.5rem 0 1.5rem;color:var(--text-muted);font-size:0.75rem;">— 廣告 —</div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="/privacy-policy.html">隱私權政策</a> &middot; <a href="/contact.html">聯絡我們</a></p>
+      <p style="margin-top:0.3rem;">&copy; 2026 cubedhub.com</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    (function(){
+      var textarea = document.getElementById('tts-text');
+      var voiceSelect = document.getElementById('voice-select');
+      var rateSlider = document.getElementById('rate-slider');
+      var pitchSlider = document.getElementById('pitch-slider');
+      var rateValue = document.getElementById('rate-value');
+      var pitchValue = document.getElementById('pitch-value');
+      var playBtn = document.getElementById('play-btn');
+      var pauseBtn = document.getElementById('pause-btn');
+      var stopBtn = document.getElementById('stop-btn');
+      var statusEl = document.getElementById('status');
+      var textDisplay = document.getElementById('text-display');
+      var charCount = document.getElementById('char-count');
+      var toast = document.getElementById('toast');
+
+      var synth = window.speechSynthesis;
+      var utterance = null;
+      var isPaused = false;
+      var isSpeaking = false;
+      var wordSpans = [];
+      var currentWordIndex = -1;
+      var allVoices = [];
+
+      // Char count
+      textarea.addEventListener('input', function(){
+        var len = textarea.value.length;
+        charCount.textContent = len + ' 字';
+        if (!isSpeaking) buildWordDisplay();
+      });
+
+      // Rate & pitch display
+      rateSlider.addEventListener('input', function(){
+        rateValue.textContent = parseFloat(rateSlider.value).toFixed(1) + 'x';
+      });
+      pitchSlider.addEventListener('input', function(){
+        pitchValue.textContent = parseFloat(pitchSlider.value).toFixed(1);
+      });
+
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(function(){ toast.classList.remove('show'); }, 2500);
+      }
+
+      function setStatus(msg, cls) {
+        statusEl.textContent = msg;
+        statusEl.className = 'status' + (cls ? ' ' + cls : '');
+      }
+
+      // Load voices
+      function loadVoices() {
+        var voices = synth.getVoices();
+        if (!voices || voices.length === 0) {
+          setTimeout(loadVoices, 200);
+          return;
+        }
+        allVoices = voices;
+        var filtered = voices.filter(function(v){
+          var lang = v.lang || '';
+          return lang.startsWith('zh') || lang.startsWith('yue') || lang.startsWith('en');
+        });
+        if (filtered.length === 0) filtered = voices;
+        voiceSelect.innerHTML = '';
+        filtered.forEach(function(v, i){
+          var opt = document.createElement('option');
+          opt.value = i;
+          var label = v.name + ' (' + v.lang + ')';
+          if (v.default) label += ' [預設]';
+          opt.textContent = label;
+          if (v.default) opt.selected = true;
+          voiceSelect.appendChild(opt);
+        });
+      }
+
+      loadVoices();
+      if (synth.onvoiceschanged !== undefined) {
+        synth.onvoiceschanged = loadVoices;
+      }
+
+      // Build word-level display for highlighting
+      function buildWordDisplay() {
+        var text = textarea.value.trim();
+        if (!text) { textDisplay.style.display = 'none'; return; }
+        textDisplay.style.display = 'block';
+        // Split into words (Chinese chars individually, English words grouped)
+        var words = [];
+        var buffer = '';
+        for (var i = 0; i < text.length; i++) {
+          var ch = text[i];
+          var code = ch.charCodeAt(0);
+          // CJK range
+          if ((code >= 0x4E00 && code <= 0x9FFF) || (code >= 0x3400 && code <= 0x4DBF) || (code >= 0x3000 && code <= 0x303F) || ch === '　') {
+            if (buffer) { words.push(buffer); buffer = ''; }
+            words.push(ch);
+          } else if (ch === ' ' || ch === '\n' || ch === '\t') {
+            if (buffer) { words.push(buffer); buffer = ''; }
+            words.push(ch);
+          } else {
+            buffer += ch;
+          }
+        }
+        if (buffer) words.push(buffer);
+
+        wordSpans = [];
+        textDisplay.innerHTML = '';
+        words.forEach(function(w, idx){
+          var span = document.createElement('span');
+          span.className = 'word';
+          if (w === ' ' || w === '\n' || w === '\t') {
+            span.textContent = w === '\n' ? '\n' : w;
+            if (w === '\n') span.style.display = 'block';
+          } else {
+            span.textContent = w;
+          }
+          span.dataset.index = idx;
+          textDisplay.appendChild(span);
+          wordSpans.push(span);
+        });
+      }
+
+      // Called on each boundary event
+      function onBoundary(e) {
+        if (!wordSpans.length) return;
+        // Remove active from all
+        if (currentWordIndex >= 0 && wordSpans[currentWordIndex]) {
+          wordSpans[currentWordIndex].classList.remove('active');
+        }
+        // Estimate which word — SpeechSynthesisEvent gives charIndex
+        var charIdx = e.charIndex || 0;
+        // Find the span that contains this char index
+        var charCount = 0;
+        var found = -1;
+        var text = textarea.value;
+        for (var i = 0; i < wordSpans.length; i++) {
+          var spanLen = wordSpans[i].textContent.length;
+          if (charIdx >= charCount && charIdx < charCount + spanLen) {
+            found = i;
+            break;
+          }
+          charCount += spanLen;
+        }
+        if (found >= 0 && found < wordSpans.length) {
+          currentWordIndex = found;
+          wordSpans[found].classList.add('active');
+          // Auto-scroll into view
+          wordSpans[found].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+      }
+
+      function onEnd() {
+        isSpeaking = false;
+        isPaused = false;
+        playBtn.textContent = '播放';
+        playBtn.disabled = false;
+        pauseBtn.disabled = true;
+        pauseBtn.textContent = '暫停';
+        stopBtn.disabled = true;
+        setStatus('');
+        if (currentWordIndex >= 0 && wordSpans[currentWordIndex]) {
+          wordSpans[currentWordIndex].classList.remove('active');
+        }
+        currentWordIndex = -1;
+      }
+
+      function speak() {
+        var text = textarea.value.trim();
+        if (!text) { showToast('請輸入要朗讀的文字'); return; }
+        if (synth.speaking && !isPaused) return;
+
+        if (isPaused) {
+          synth.resume();
+          isPaused = false;
+          playBtn.textContent = '播放';
+          pauseBtn.textContent = '暫停';
+          setStatus('朗讀中...', 'playing');
+          return;
+        }
+
+        // Stop any current speech
+        if (synth.speaking) { synth.cancel(); }
+
+        buildWordDisplay();
+
+        utterance = new SpeechSynthesisUtterance(text);
+        var idx = parseInt(voiceSelect.value);
+        if (!isNaN(idx) && allVoices[idx]) {
+          utterance.voice = allVoices[idx];
+        }
+        utterance.rate = parseFloat(rateSlider.value);
+        utterance.pitch = parseFloat(pitchSlider.value);
+
+        utterance.onboundary = onBoundary;
+        utterance.onstart = function(){
+          isSpeaking = true;
+          isPaused = false;
+          playBtn.disabled = true;
+          pauseBtn.disabled = false;
+          stopBtn.disabled = false;
+          setStatus('朗讀中...', 'playing');
+        };
+        utterance.onend = onEnd;
+        utterance.onerror = function(e){
+          if (e.error !== 'canceled') {
+            showToast('朗讀發生錯誤');
+          }
+          onEnd();
+        };
+        utterance.onpause = function(){
+          isPaused = true;
+          playBtn.textContent = '繼續';
+          pauseBtn.textContent = '暫停';
+          pauseBtn.disabled = false;
+          setStatus('已暫停', 'paused');
+        };
+
+        synth.speak(utterance);
+      }
+
+      function togglePause() {
+        if (!synth.speaking) return;
+        if (!isPaused) {
+          synth.pause();
+        } else {
+          synth.resume();
+          isPaused = false;
+          playBtn.textContent = '播放';
+          pauseBtn.textContent = '暫停';
+          setStatus('朗讀中...', 'playing');
+        }
+      }
+
+      function stopSpeech() {
+        if (synth.speaking) {
+          synth.cancel();
+        }
+        onEnd();
+      }
+
+      playBtn.addEventListener('click', speak);
+      pauseBtn.addEventListener('click', togglePause);
+      stopBtn.addEventListener('click', stopSpeech);
+
+      // Auto-build display on load
+      buildWordDisplay();
+    })();
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+</body>
+</html>

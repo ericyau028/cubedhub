@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>字數統計工具 — 免費線上字數計算</title>
+  <meta name="description" content="免費線上字數統計工具，即時計算字元數、字數、段落數、閱讀時間與關鍵字密度分析。">
+  <meta name="google-adsense-account" content="ca-pub-4900630860092971">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="字數統計工具 — 免費線上字數計算">
+  <meta property="og:description" content="免費線上字數統計工具，即時計算字元數、字數、段落數、閱讀時間與關鍵字密度分析。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cubedhub.com/tools/word-counter/">
+  <link rel="manifest" href="manifest.json">
+  <link rel="canonical" href="https://cubedhub.com/tools/word-counter/">
+  <meta name="theme-color" content="#0a0a1a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4900630860092971" crossorigin="anonymous"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a1a;
+      --bg-card: #111127;
+      --bg-input: #1a1a35;
+      --border: rgba(255,255,255,0.08);
+      --text: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent: #8B5CF6;
+      --accent-light: #a78bfa;
+      --radius: 12px;
+    }
+    html { font-size: 16px; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+    }
+    .container { max-width: 720px; margin: 0 auto; padding: 0 1.25rem; width: 100%; }
+
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 0;
+    }
+    .nav-brand {
+      font-weight: 700; font-size: 1.1rem; color: #fff;
+      display: flex; align-items: center; gap: 0.5rem; text-decoration: none;
+    }
+    .nav-brand span { background: linear-gradient(135deg, #8B5CF6, #06B6D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .nav-back { color: var(--text-muted); font-size: 0.85rem; text-decoration: none; }
+    .nav-back:hover { color: var(--text-secondary); }
+
+    .hero { text-align: center; padding: 2.5rem 0 1.5rem; }
+    .hero h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .hero p { color: var(--text-secondary); font-size: 0.9rem; max-width: 480px; margin: 0 auto; }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .textarea-wrap { position: relative; }
+    .textarea-wrap textarea {
+      width: 100%; min-height: 260px; padding: 1rem;
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: var(--radius); color: var(--text);
+      font-size: 0.95rem; font-family: inherit; line-height: 1.7;
+      transition: border-color 0.3s; resize: vertical;
+    }
+    .textarea-wrap textarea:focus {
+      outline: none; border-color: var(--accent);
+    }
+    .char-limit {
+      text-align: right; font-size: 0.78rem; color: var(--text-muted);
+      margin-top: 0.4rem;
+    }
+    .char-limit.warning { color: #f59e0b; }
+    .char-limit.danger { color: #ef4444; }
+
+    .clear-btn {
+      position: absolute; top: 0.75rem; right: 0.75rem;
+      background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+      color: var(--text-muted); width: 32px; height: 32px;
+      border-radius: 8px; cursor: pointer; display: flex;
+      align-items: center; justify-content: center; font-size: 1.1rem;
+      transition: all 0.2s;
+    }
+    .clear-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.75rem;
+    }
+    .stat-item {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 1rem; text-align: center;
+    }
+    .stat-item .num {
+      font-size: 1.5rem; font-weight: 800; color: var(--accent-light);
+      line-height: 1.2;
+    }
+    .stat-item .label {
+      font-size: 0.75rem; color: var(--text-muted); margin-top: 0.3rem;
+    }
+
+    .keywords-card { margin-top: 0; }
+    .keywords-card h3 {
+      font-size: 0.9rem; font-weight: 600; color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+    }
+    .keyword-bar-wrap { display: flex; flex-direction: column; gap: 0.45rem; }
+    .keyword-row {
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .keyword-row .kw { font-size: 0.85rem; min-width: 80px; color: var(--text); }
+    .keyword-row .bar-wrap {
+      flex: 1; height: 6px; background: rgba(255,255,255,0.06);
+      border-radius: 3px; overflow: hidden;
+    }
+    .keyword-row .bar {
+      height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-light));
+      border-radius: 3px; transition: width 0.3s;
+    }
+    .keyword-row .count {
+      font-size: 0.78rem; color: var(--text-muted); min-width: 28px; text-align: right;
+      font-family: monospace;
+    }
+    .keyword-empty {
+      color: var(--text-muted); font-size: 0.85rem; text-align: center;
+      padding: 1rem 0;
+    }
+
+    .btn-group { display: flex; gap: 0.6rem; margin-top: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.7rem 1.4rem; border-radius: var(--radius);
+      font-size: 0.85rem; font-weight: 600; border: none;
+      cursor: pointer; transition: all 0.3s ease; text-decoration: none;
+    }
+    .btn-secondary {
+      background: rgba(255,255,255,0.06); color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+    .footer {
+      margin-top: auto; text-align: center;
+      padding: 2rem 0; color: var(--text-muted); font-size: 0.8rem;
+    }
+    .footer a { color: var(--text-muted); }
+    .footer a:hover { color: var(--text-secondary); }
+
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 1.3rem; }
+      .card { padding: 1.25rem; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-item .num { font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="url(#g)"/><defs><linearGradient id="g" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#8B5CF6"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs></svg>
+        <span>CubedHub</span>
+      </a>
+      <a href="/" class="nav-back">&larr; 首頁</a>
+    </nav>
+  </div>
+
+  <div class="container">
+    <div class="hero">
+      <h1>字數統計工具</h1>
+      <p>即時計算字元數、字數、段落數、閱讀時間與關鍵字密度分析</p>
+    </div>
+
+    <div class="card">
+      <div class="textarea-wrap">
+        <textarea id="text-input" placeholder="在此輸入或貼上文字..." spellcheck="false"></textarea>
+        <button class="clear-btn" id="clear-btn" title="清除文字">✕</button>
+      </div>
+      <div class="char-limit" id="char-limit">0 / 100,000</div>
+    </div>
+
+    <div class="card">
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-item"><div class="num" id="char-count">0</div><div class="label">字元數（含空格）</div></div>
+        <div class="stat-item"><div class="num" id="char-nospace">0</div><div class="label">字元數（不含空格）</div></div>
+        <div class="stat-item"><div class="num" id="word-count">0</div><div class="label">字數</div></div>
+        <div class="stat-item"><div class="num" id="sent-count">0</div><div class="label">句子數</div></div>
+        <div class="stat-item"><div class="num" id="para-count">0</div><div class="label">段落數</div></div>
+        <div class="stat-item"><div class="num" id="reading-time">0</div><div class="label">閱讀時間（分鐘）</div></div>
+        <div class="stat-item"><div class="num" id="speaking-time">0</div><div class="label">朗讀時間（分鐘）</div></div>
+      </div>
+    </div>
+
+    <div class="card keywords-card">
+      <h3>關鍵字密度分析（前 10 名）</h3>
+      <div id="keyword-list"><div class="keyword-empty">輸入文字後將自動分析</div></div>
+    </div>
+
+    <div class="btn-group" style="margin-bottom:1.5rem;">
+      <button class="btn btn-secondary" id="copy-btn">複製統計數據</button>
+    </div>
+
+    <div style="text-align:center;padding:0.5rem 0 1.5rem;color:var(--text-muted);font-size:0.75rem;">— 廣告 —</div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="/privacy-policy.html">隱私權政策</a> &middot; <a href="/contact.html">聯絡我們</a></p>
+      <p style="margin-top:0.3rem;">&copy; 2026 cubedhub.com</p>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      var input = document.getElementById('text-input');
+      var clearBtn = document.getElementById('clear-btn');
+      var charLimit = document.getElementById('char-limit');
+      var MAX_CHARS = 100000;
+
+      var stats = {
+        char: document.getElementById('char-count'),
+        charNospace: document.getElementById('char-nospace'),
+        word: document.getElementById('word-count'),
+        sent: document.getElementById('sent-count'),
+        para: document.getElementById('para-count'),
+        reading: document.getElementById('reading-time'),
+        speaking: document.getElementById('speaking-time')
+      };
+
+      function updateStats() {
+        var text = input.value;
+        var len = text.length;
+
+        charLimit.textContent = len.toLocaleString() + ' / ' + MAX_CHARS.toLocaleString();
+        charLimit.className = 'char-limit' + (len > MAX_CHARS * 0.9 ? ' danger' : len > MAX_CHARS * 0.75 ? ' warning' : '');
+
+        if (len > MAX_CHARS) {
+          input.value = text.substring(0, MAX_CHARS);
+          text = input.value;
+          len = text.length;
+        }
+
+        var charNospace = text.replace(/\s/g, '').length;
+        var words = text.trim() ? text.trim().split(/[\s\u3000]+/).filter(Boolean).length : 0;
+        var sents = text ? (text.match(/[。！？.!?]+/g) || []).length : 0;
+        if (text.trim() && !/[。！？.!?]$/.test(text.trim())) sents++;
+        var paras = text ? text.split(/\n\s*\n/).filter(function(p){ return p.trim(); }).length : 0;
+        if (!paras && text.trim()) paras = 1;
+
+        var readingTime = Math.max(1, Math.round(words / 200));
+        var speakingTime = Math.max(1, Math.round(words / 130 * 10) / 10);
+
+        stats.char.textContent = len.toLocaleString();
+        stats.charNospace.textContent = charNospace.toLocaleString();
+        stats.word.textContent = words.toLocaleString();
+        stats.sent.textContent = sents.toLocaleString();
+        stats.para.textContent = paras.toLocaleString();
+        stats.reading.textContent = readingTime;
+        stats.speaking.textContent = speakingTime.toFixed(1);
+
+        updateKeywords(text);
+        localStorage.setItem('wc_text', text);
+      }
+
+      function updateKeywords(text) {
+        var container = document.getElementById('keyword-list');
+        var cleaned = text.toLowerCase().replace(/[^\w\u4e00-\u9fff\-']+/g, ' ').trim();
+        if (!cleaned) {
+          container.innerHTML = '<div class="keyword-empty">' + (text ? '無可分析的關鍵字' : '輸入文字後將自動分析') + '</div>';
+          return;
+        }
+        var tokens = cleaned.split(/\s+/).filter(Boolean);
+        if (tokens.length < 2) {
+          container.innerHTML = '<div class="keyword-empty">需要至少 2 個字詞才能分析</div>';
+          return;
+        }
+        // Filter out common short words for CJK + Latin mix
+        var stopwords = new Set(['the','a','an','is','are','was','were','be','been','being','have','has','had','do','does','did','will','would','could','should','may','might','shall','can','need','dare','ought','used','to','of','in','for','on','with','at','by','from','up','about','into','over','after','all','each','every','both','few','more','most','some','any','no','nor','not','only','own','same','so','than','too','very','just','because','as','until','while','that','this','these','those','it','its','i','me','my','we','our','you','your','he','him','his','she','her','they','them','their','what','which','who','whom','when','where','why','how','and','but','or','if','then','else','also']);
+        var freq = {};
+        tokens.forEach(function(w){
+          if (w.length < 2) return;
+          if (stopwords.has(w)) return;
+          freq[w] = (freq[w] || 0) + 1;
+        });
+        var sorted = Object.keys(freq).sort(function(a,b){ return freq[b] - freq[a] || a.localeCompare(b); }).slice(0, 10);
+        if (sorted.length === 0) {
+          container.innerHTML = '<div class="keyword-empty">無足夠關鍵字可供分析</div>';
+          return;
+        }
+        var maxCount = freq[sorted[0]];
+        var html = '<div class="keyword-bar-wrap">';
+        sorted.forEach(function(kw){
+          var pct = (freq[kw] / maxCount * 100).toFixed(0);
+          html += '<div class="keyword-row"><span class="kw">' + escHtml(kw) + '</span><div class="bar-wrap"><div class="bar" style="width:' + pct + '%"></div></div><span class="count">' + freq[kw] + '</span></div>';
+        });
+        html += '</div>';
+        container.innerHTML = html;
+      }
+
+      function escHtml(s) {
+        var d = document.createElement('div');
+        d.appendChild(document.createTextNode(s));
+        return d.innerHTML;
+      }
+
+      // Load saved text
+      var saved = localStorage.getItem('wc_text');
+      if (saved) {
+        input.value = saved;
+      }
+      updateStats();
+
+      input.addEventListener('input', updateStats);
+
+      clearBtn.addEventListener('click', function(){
+        input.value = '';
+        updateStats();
+        input.focus();
+      });
+
+      document.getElementById('copy-btn').addEventListener('click', function(){
+        var text = input.value;
+        var lines = [
+          '字數統計報告',
+          '─────────────',
+          '字元數（含空格）: ' + stats.char.textContent,
+          '字元數（不含空格）: ' + stats.charNospace.textContent,
+          '字數: ' + stats.word.textContent,
+          '句子數: ' + stats.sent.textContent,
+          '段落數: ' + stats.para.textContent,
+          '閱讀時間: ' + stats.reading.textContent + ' 分鐘',
+          '朗讀時間: ' + stats.speaking.textContent + ' 分鐘'
+        ];
+        // Add keywords if available
+        var kwItems = document.querySelectorAll('#keyword-list .keyword-row');
+        if (kwItems.length > 0) {
+          lines.push('─────────────');
+          lines.push('關鍵字密度（前 ' + kwItems.length + ' 名）:');
+          kwItems.forEach(function(row){
+            var kw = row.querySelector('.kw').textContent;
+            var count = row.querySelector('.count').textContent;
+            lines.push('  ' + kw + ': ' + count + ' 次');
+          });
+        }
+        navigator.clipboard.writeText(lines.join('\n')).then(function(){
+          var btn = document.getElementById('copy-btn');
+          btn.textContent = '已複製 ✓';
+          setTimeout(function(){ btn.textContent = '複製統計數據'; }, 2000);
+        });
+      });
+
+      // Handle paste event to respect max chars
+      input.addEventListener('paste', function(){
+        setTimeout(updateStats, 10);
+      });
+    })();
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+</body>
+</html>

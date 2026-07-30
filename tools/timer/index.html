@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>番茄鐘計時器 — 免費線上專注計時工具</title>
+  <meta name="description" content="免費線上番茄鐘計時器，支援自訂時間、進度環動畫、完成通知音效，幫助你提升專注力與工作效率。">
+  <meta name="google-adsense-account" content="ca-pub-4900630860092971">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="番茄鐘計時器 — 免費線上專注計時工具">
+  <meta property="og:description" content="免費線上番茄鐘計時器，支援自訂時間、進度環動畫、完成通知音效，幫助你提升專注力與工作效率。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cubedhub.com/tools/timer/">
+  <link rel="manifest" href="manifest.json">
+  <link rel="canonical" href="https://cubedhub.com/tools/timer/">
+  <meta name="theme-color" content="#0a0a1a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4900630860092971" crossorigin="anonymous"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a1a;
+      --bg-card: #111127;
+      --bg-input: #1a1a35;
+      --border: rgba(255,255,255,0.08);
+      --text: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent: #8B5CF6;
+      --accent-light: #a78bfa;
+      --radius: 12px;
+    }
+    html { font-size: 16px; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+    }
+    .container { max-width: 640px; margin: 0 auto; padding: 0 1.25rem; width: 100%; }
+
+    /* Nav */
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 0;
+    }
+    .nav-brand {
+      font-weight: 700; font-size: 1.1rem; color: #fff;
+      display: flex; align-items: center; gap: 0.5rem; text-decoration: none;
+    }
+    .nav-brand span { background: linear-gradient(135deg, #8B5CF6, #06B6D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .nav-back { color: var(--text-muted); font-size: 0.85rem; text-decoration: none; }
+    .nav-back:hover { color: var(--text-secondary); }
+
+    /* Hero */
+    .hero { text-align: center; padding: 2.5rem 0 1.5rem; }
+    .hero h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .hero p { color: var(--text-secondary); font-size: 0.9rem; max-width: 420px; margin: 0 auto; }
+
+    /* Card */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Mode tabs */
+    .mode-tabs {
+      display: flex; gap: 0.4rem; margin-bottom: 1.25rem;
+      background: var(--bg-input); border-radius: 10px; padding: 0.3rem;
+    }
+    .mode-tab {
+      flex: 1; padding: 0.55rem 0.5rem; border: none; border-radius: 8px;
+      background: transparent; color: var(--text-muted); font-size: 0.8rem;
+      font-weight: 600; cursor: pointer; transition: all 0.3s;
+      font-family: inherit;
+    }
+    .mode-tab:hover { color: var(--text-secondary); }
+    .mode-tab.active {
+      background: var(--accent); color: #fff;
+      box-shadow: 0 4px 16px rgba(139,92,246,0.3);
+    }
+
+    /* Custom time row */
+    .custom-row {
+      display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+      margin-bottom: 1.25rem;
+    }
+    .custom-row label {
+      font-size: 0.8rem; color: var(--text-secondary); font-weight: 500;
+    }
+    .custom-input {
+      width: 72px; padding: 0.4rem 0.6rem; text-align: center;
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-size: 0.85rem;
+      font-family: inherit; font-weight: 600;
+      transition: border-color 0.3s;
+    }
+    .custom-input:focus { outline: none; border-color: var(--accent); }
+    .custom-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+    .custom-row .unit { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* Timer ring */
+    .timer-ring-wrap {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 0.5rem 0 1rem;
+    }
+    .timer-ring {
+      position: relative; width: 280px; height: 280px;
+    }
+    .timer-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .timer-ring .bg-circle { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 6; }
+    .timer-ring .progress-circle {
+      fill: none; stroke: url(#progressGradient); stroke-width: 6;
+      stroke-linecap: round;
+      stroke-dasharray: 879.646;
+      stroke-dashoffset: 879.646;
+      transition: stroke-dashoffset 0.3s linear;
+    }
+    .timer-ring .progress-circle.running { transition: stroke-dashoffset 0.15s linear; }
+    .timer-center {
+      position: absolute; inset: 0; display: flex;
+      flex-direction: column; align-items: center; justify-content: center;
+    }
+    .timer-display {
+      font-size: 3.2rem; font-weight: 700; letter-spacing: 0.04em;
+      font-variant-numeric: tabular-nums; color: #fff;
+    }
+    .timer-display.break-time { color: var(--accent-light); }
+    .timer-label {
+      font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem;
+      font-weight: 500; letter-spacing: 0.06em;
+    }
+
+    /* Buttons */
+    .btn-group { display: flex; gap: 0.6rem; margin-top: 0.5rem; flex-wrap: wrap; justify-content: center; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.7rem 1.4rem; border-radius: var(--radius);
+      font-size: 0.85rem; font-weight: 600; border: none;
+      cursor: pointer; transition: all 0.3s ease; text-decoration: none;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #8B5CF6, #7c3aed);
+      color: #fff;
+    }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(139,92,246,0.3); }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn-secondary {
+      background: rgba(255,255,255,0.06); color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .btn-secondary:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-danger {
+      background: rgba(239,68,68,0.15); color: #f87171;
+      border: 1px solid rgba(239,68,68,0.2);
+    }
+    .btn-danger:hover { background: rgba(239,68,68,0.25); }
+
+    /* Options row */
+    .options-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 0.75rem; margin-top: 0.75rem;
+      border-top: 1px solid var(--border); flex-wrap: wrap; gap: 0.6rem;
+    }
+    .toggle-wrap {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.8rem; color: var(--text-secondary); cursor: pointer;
+    }
+    .toggle-wrap input[type="checkbox"] {
+      appearance: none; width: 38px; height: 22px;
+      background: var(--bg-input); border-radius: 12px;
+      border: 1px solid var(--border); cursor: pointer;
+      transition: all 0.3s; position: relative; flex-shrink: 0;
+    }
+    .toggle-wrap input[type="checkbox"]::after {
+      content: ''; position: absolute; top: 2px; left: 2px;
+      width: 16px; height: 16px; background: var(--text-muted);
+      border-radius: 50%; transition: all 0.3s;
+    }
+    .toggle-wrap input[type="checkbox"]:checked {
+      background: var(--accent); border-color: var(--accent);
+    }
+    .toggle-wrap input[type="checkbox"]:checked::after {
+      background: #fff; left: 18px;
+    }
+    .session-count {
+      font-size: 0.8rem; color: var(--text-muted);
+      display: flex; align-items: center; gap: 0.3rem;
+    }
+    .session-count strong { color: var(--accent-light); font-size: 0.95rem; }
+
+    /* Footer */
+    .footer {
+      margin-top: auto; text-align: center;
+      padding: 2rem 0; color: var(--text-muted); font-size: 0.8rem;
+    }
+    .footer a { color: var(--text-muted); }
+    .footer a:hover { color: var(--text-secondary); }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      background: #1a1a35; border: 1px solid var(--border);
+      padding: 0.7rem 1.4rem; border-radius: 10px; font-size: 0.85rem;
+      color: var(--text); opacity: 0; transition: opacity 0.4s;
+      pointer-events: none; z-index: 999;
+    }
+    .toast.show { opacity: 1; }
+
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 1.3rem; }
+      .card { padding: 1.25rem; }
+      .timer-ring { width: 220px; height: 220px; }
+      .timer-display { font-size: 2.6rem; }
+      .mode-tab { font-size: 0.72rem; padding: 0.45rem 0.3rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="url(#g)"/><defs><linearGradient id="g" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#8B5CF6"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs></svg>
+        <span>CubedHub</span>
+      </a>
+      <a href="/" class="nav-back">&larr; 首頁</a>
+    </nav>
+  </div>
+
+  <div class="container">
+    <div class="hero">
+      <h1>番茄鐘計時器</h1>
+      <p>免費線上番茄鐘計時器，支援自訂時間、進度環動畫、完成通知音效，幫助你提升專注力與工作效率。</p>
+    </div>
+
+    <div class="card">
+      <!-- Mode tabs -->
+      <div class="mode-tabs" id="modeTabs">
+        <button class="mode-tab active" data-mode="pomodoro">專注 25min</button>
+        <button class="mode-tab" data-mode="shortBreak">短休息 5min</button>
+        <button class="mode-tab" data-mode="longBreak">長休息 15min</button>
+      </div>
+
+      <!-- Custom time -->
+      <div class="custom-row">
+        <label for="customMin">自訂時間</label>
+        <input type="number" class="custom-input" id="customMin" min="1" max="120" value="25" placeholder="25">
+        <span class="unit">分鐘</span>
+      </div>
+
+      <!-- Timer ring -->
+      <div class="timer-ring-wrap">
+        <div class="timer-ring">
+          <svg viewBox="0 0 320 320">
+            <defs>
+              <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#8B5CF6"/>
+                <stop offset="100%" stop-color="#06B6D4"/>
+              </linearGradient>
+            </defs>
+            <circle class="bg-circle" cx="160" cy="160" r="140"/>
+            <circle class="progress-circle" id="progressCircle" cx="160" cy="160" r="140"/>
+          </svg>
+          <div class="timer-center">
+            <div class="timer-display" id="timerDisplay">25:00</div>
+            <div class="timer-label" id="timerLabel">專注時間</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="btn-group">
+        <button class="btn btn-primary" id="btnStart">開始</button>
+        <button class="btn btn-secondary" id="btnPause" style="display:none;">暫停</button>
+        <button class="btn btn-primary" id="btnResume" style="display:none;">繼續</button>
+        <button class="btn btn-danger" id="btnReset">重設</button>
+      </div>
+
+      <!-- Options -->
+      <div class="options-row">
+        <label class="toggle-wrap">
+          <input type="checkbox" id="autoStartToggle">
+          自動開始下一個
+        </label>
+        <span class="session-count">
+          今日完成 <strong id="sessionCount">0</strong> 個番茄鐘
+        </span>
+      </div>
+    </div>
+
+    <!-- Ad placement -->
+    <div style="text-align:center;padding:0.5rem 0 1.5rem;color:var(--text-muted);font-size:0.75rem;">— 廣告 —</div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="/privacy-policy.html">隱私權政策</a> &middot; <a href="/contact.html">聯絡我們</a></p>
+      <p style="margin-top:0.3rem;">&copy; 2026 cubedhub.com</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    (function(){
+      /* ---- DOM refs ---- */
+      var modeTabs = document.getElementById('modeTabs');
+      var tabBtns = modeTabs.querySelectorAll('.mode-tab');
+      var customMin = document.getElementById('customMin');
+      var timerDisplay = document.getElementById('timerDisplay');
+      var timerLabel = document.getElementById('timerLabel');
+      var progressCircle = document.getElementById('progressCircle');
+      var btnStart = document.getElementById('btnStart');
+      var btnPause = document.getElementById('btnPause');
+      var btnResume = document.getElementById('btnResume');
+      var btnReset = document.getElementById('btnReset');
+      var autoStartToggle = document.getElementById('autoStartToggle');
+      var sessionCountEl = document.getElementById('sessionCount');
+      var toast = document.getElementById('toast');
+
+      var CIRCUMFERENCE = 2 * Math.PI * 140;
+
+      /* ---- State ---- */
+      var mode = 'pomodoro';
+      var status = 'idle';
+      var endTime = null;
+      var pauseRemaining = 0;
+      var totalMs = 25 * 60 * 1000;
+      var config = {
+        pomodoro: 25,
+        shortBreak: 5,
+        longBreak: 15
+      };
+      var customMode = false;
+      var autoStart = false;
+      var sessionCount = 0;
+      var sessionDate = '';
+      var rafId = null;
+      var audioCtx = null;
+
+      /* ---- Init ---- */
+      (function init() {
+        loadPrefs();
+        updateSessionDisplay();
+        resetTimer();
+      })();
+
+      function loadPrefs() {
+        try {
+          var saved = localStorage.getItem('pomodoro_prefs');
+          if (saved) {
+            var prefs = JSON.parse(saved);
+            if (prefs.config) config = prefs.config;
+            if (prefs.autoStart !== undefined) {
+              autoStart = prefs.autoStart;
+              autoStartToggle.checked = autoStart;
+            }
+            if (prefs.mode) mode = prefs.mode;
+            if (prefs.customMode) customMode = prefs.customMode;
+            if (prefs.customMin) customMin.value = prefs.customMin;
+          }
+          var sessionData = localStorage.getItem('pomodoro_sessions');
+          if (sessionData) {
+            var data = JSON.parse(sessionData);
+            var today = getToday();
+            if (data.date === today) {
+              sessionCount = data.count || 0;
+            } else {
+              sessionCount = 0;
+              localStorage.setItem('pomodoro_sessions', JSON.stringify({ date: today, count: 0 }));
+            }
+          } else {
+            localStorage.setItem('pomodoro_sessions', JSON.stringify({ date: getToday(), count: 0 }));
+          }
+        } catch(e) {}
+      }
+
+      function savePrefs() {
+        try {
+          localStorage.setItem('pomodoro_prefs', JSON.stringify({
+            config: config,
+            autoStart: autoStart,
+            mode: mode,
+            customMode: customMode,
+            customMin: parseInt(customMin.value) || 25
+          }));
+        } catch(e) {}
+      }
+
+      function getToday() {
+        var d = new Date();
+        return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+      }
+
+      /* ---- Mode tabs ---- */
+      tabBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          if (status !== 'idle') return;
+          tabBtns.forEach(function(b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          mode = btn.getAttribute('data-mode');
+          customMode = false;
+          customMin.value = config[mode];
+          savePrefs();
+          resetTimer();
+        });
+      });
+
+      /* ---- Custom time ---- */
+      customMin.addEventListener('input', function() {
+        if (status !== 'idle') return;
+        var val = parseInt(customMin.value) || 25;
+        if (val < 1) { customMin.value = 1; val = 1; }
+        if (val > 120) { customMin.value = 120; val = 120; }
+        customMode = true;
+        tabBtns.forEach(function(b) { b.classList.remove('active'); });
+        savePrefs();
+        resetTimer();
+      });
+
+      /* ---- Controls ---- */
+      btnStart.addEventListener('click', startTimer);
+      btnPause.addEventListener('click', pauseTimer);
+      btnResume.addEventListener('click', resumeTimer);
+      btnReset.addEventListener('click', resetTimer);
+
+      autoStartToggle.addEventListener('change', function() {
+        autoStart = autoStartToggle.checked;
+        savePrefs();
+      });
+
+      function getDurationMs() {
+        if (customMode) {
+          return (parseInt(customMin.value) || 25) * 60 * 1000;
+        }
+        return config[mode] * 60 * 1000;
+      }
+
+      function getModeLabel(m) {
+        switch(m) {
+          case 'pomodoro': return '專注時間';
+          case 'shortBreak': return '短休息';
+          case 'longBreak': return '長休息';
+          default: return '';
+        }
+      }
+
+      function formatTime(ms) {
+        var totalSec = Math.max(0, Math.ceil(ms / 1000));
+        var m = Math.floor(totalSec / 60);
+        var s = totalSec % 60;
+        return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+      }
+
+      function resetTimer() {
+        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+        status = 'idle';
+        endTime = null;
+        pauseRemaining = 0;
+        totalMs = getDurationMs();
+        timerDisplay.textContent = formatTime(totalMs);
+        timerDisplay.className = 'timer-display' + (mode !== 'pomodoro' ? ' break-time' : '');
+        timerLabel.textContent = getModeLabel(mode);
+        progressCircle.setAttribute('stroke-dashoffset', CIRCUMFERENCE);
+        btnStart.style.display = '';
+        btnPause.style.display = 'none';
+        btnResume.style.display = 'none';
+        btnStart.disabled = false;
+        document.title = '番茄鐘計時器 — 免費線上專注計時工具';
+      }
+
+      function startTimer() {
+        if (status === 'running') return;
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        status = 'running';
+        totalMs = getDurationMs();
+        endTime = performance.now() + totalMs;
+        pauseRemaining = 0;
+        btnStart.style.display = 'none';
+        btnPause.style.display = '';
+        btnResume.style.display = 'none';
+        btnReset.disabled = false;
+        progressCircle.classList.add('running');
+        tick();
+      }
+
+      function pauseTimer() {
+        if (status !== 'running') return;
+        status = 'paused';
+        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+        pauseRemaining = endTime - performance.now();
+        btnPause.style.display = 'none';
+        btnResume.style.display = '';
+        progressCircle.classList.remove('running');
+      }
+
+      function resumeTimer() {
+        if (status !== 'paused') return;
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        status = 'running';
+        endTime = performance.now() + pauseRemaining;
+        btnResume.style.display = 'none';
+        btnPause.style.display = '';
+        progressCircle.classList.add('running');
+        tick();
+      }
+
+      function tick() {
+        if (status !== 'running') return;
+        var now = performance.now();
+        var remaining = endTime - now;
+
+        if (remaining <= 0) {
+          remaining = 0;
+          status = 'idle';
+          if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+          progressCircle.classList.remove('running');
+          onComplete();
+          return;
+        }
+
+        updateDisplay(remaining);
+        rafId = requestAnimationFrame(tick);
+      }
+
+      function updateDisplay(remaining) {
+        var elapsed = totalMs - remaining;
+        var progress = Math.min(elapsed / totalMs, 1);
+        var offset = CIRCUMFERENCE * (1 - progress);
+        timerDisplay.textContent = formatTime(remaining);
+        progressCircle.setAttribute('stroke-dashoffset', offset);
+        var secs = Math.ceil(remaining / 1000);
+        var m = Math.floor(secs / 60);
+        var s = secs % 60;
+        document.title = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0') + ' — 番茄鐘計時器';
+      }
+
+      function onComplete() {
+        timerDisplay.textContent = '00:00';
+        progressCircle.setAttribute('stroke-dashoffset', 0);
+        document.title = '時間到！ — 番茄鐘計時器';
+
+        playBeep();
+
+        if (mode === 'pomodoro') {
+          incrementSession();
+        }
+
+        showNotification();
+
+        btnStart.style.display = '';
+        btnPause.style.display = 'none';
+        btnResume.style.display = 'none';
+        btnStart.textContent = autoStart ? '即將開始...' : '重新開始';
+
+        if (autoStart) {
+          setTimeout(function() {
+            if (mode === 'pomodoro') {
+              switchToMode('shortBreak');
+            } else {
+              switchToMode('pomodoro');
+            }
+            btnStart.textContent = '開始';
+            startTimer();
+          }, 3000);
+        } else {
+          setTimeout(function() {
+            if (status === 'idle') {
+              btnStart.textContent = '開始';
+            }
+          }, 3000);
+        }
+      }
+
+      function switchToMode(newMode) {
+        mode = newMode;
+        customMode = false;
+        tabBtns.forEach(function(b) {
+          b.classList.remove('active');
+          if (b.getAttribute('data-mode') === newMode) b.classList.add('active');
+        });
+        customMin.value = config[newMode];
+        savePrefs();
+        totalMs = getDurationMs();
+        timerDisplay.textContent = formatTime(totalMs);
+        timerDisplay.className = 'timer-display' + (mode !== 'pomodoro' ? ' break-time' : '');
+        timerLabel.textContent = getModeLabel(mode);
+        progressCircle.setAttribute('stroke-dashoffset', CIRCUMFERENCE);
+      }
+
+      function incrementSession() {
+        var today = getToday();
+        if (sessionDate !== today) {
+          sessionDate = today;
+          sessionCount = 0;
+        }
+        sessionCount++;
+        localStorage.setItem('pomodoro_sessions', JSON.stringify({ date: today, count: sessionCount }));
+        updateSessionDisplay();
+      }
+
+      function updateSessionDisplay() {
+        sessionCountEl.textContent = sessionCount;
+      }
+
+      /* ---- Notification ---- */
+      function showNotification() {
+        if ('Notification' in window) {
+          if (Notification.permission === 'granted') {
+            new Notification('番茄鐘計時器', { body: '時間到！' });
+          } else if (Notification.permission !== 'denied') {
+            Notification.requestPermission();
+          }
+        }
+        showToast('時間到！');
+      }
+
+      /* ---- Beep sound ---- */
+      function playBeep() {
+        try {
+          if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          }
+          if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+          }
+          var osc = audioCtx.createOscillator();
+          var gain = audioCtx.createGain();
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.frequency.value = 880;
+          osc.type = 'sine';
+          gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+          osc.start(audioCtx.currentTime);
+          osc.stop(audioCtx.currentTime + 0.5);
+        } catch(e) {}
+      }
+
+      /* ---- Toast ---- */
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(function(){ toast.classList.remove('show'); }, 2500);
+      }
+
+    })();
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+</body>
+</html>

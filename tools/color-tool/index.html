@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>色碼工具 — 免費線上顏色轉換與調色盤生成</title>
+  <meta name="description" content="免費線上色碼工具，HEX/RGB/HSL 三向轉換、配色方案生成、對比度檢測，設計師必備工具。">
+  <meta name="google-adsense-account" content="ca-pub-4900630860092971">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="色碼工具 — 免費線上顏色轉換與調色盤生成">
+  <meta property="og:description" content="HEX/RGB/HSL 三向轉換、配色方案生成、對比度檢測，設計師必備工具。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cubedhub.com/tools/color-tool/">
+  <link rel="manifest" href="manifest.json">
+  <link rel="canonical" href="https://cubedhub.com/tools/color-tool/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4900630860092971" crossorigin="anonymous"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a1a;
+      --bg-card: #111127;
+      --bg-input: #1a1a35;
+      --border: rgba(255,255,255,0.08);
+      --text: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent: #8B5CF6;
+      --accent-light: #a78bfa;
+      --radius: 12px;
+      --success: #10B981;
+      --danger: #EF4444;
+    }
+    html { font-size: 16px; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+    }
+    .container { max-width: 720px; margin: 0 auto; padding: 0 1.25rem; width: 100%; }
+
+    /* Nav */
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 0;
+    }
+    .nav-brand {
+      font-weight: 700; font-size: 1.1rem; color: #fff;
+      display: flex; align-items: center; gap: 0.5rem; text-decoration: none;
+    }
+    .nav-brand span { background: linear-gradient(135deg, #8B5CF6, #06B6D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .nav-back { color: var(--text-muted); font-size: 0.85rem; text-decoration: none; }
+    .nav-back:hover { color: var(--text-secondary); }
+
+    /* Hero */
+    .hero { text-align: center; padding: 2rem 0 1rem; }
+    .hero h1 { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.4rem; }
+    .hero p { color: var(--text-secondary); font-size: 0.85rem; max-width: 480px; margin: 0 auto; }
+
+    /* Card */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .card-title {
+      font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .card-title svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    /* Input */
+    .input-group { margin-bottom: 1rem; }
+    .input-group label {
+      display: block; font-size: 0.78rem; font-weight: 600;
+      color: var(--text-secondary); margin-bottom: 0.35rem;
+    }
+    .input-group input[type="text"], .input-group input[type="number"] {
+      width: 100%; padding: 0.65rem 0.85rem;
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: var(--radius); color: var(--text);
+      font-size: 0.85rem; font-family: inherit;
+      transition: border-color 0.3s;
+    }
+    .input-group input:focus { outline: none; border-color: var(--accent); }
+
+    /* Color Picker Row */
+    .picker-row {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .picker-row input[type="color"] {
+      width: 56px; height: 56px; border: none; border-radius: 12px;
+      cursor: pointer; background: none; padding: 0; flex-shrink: 0;
+    }
+    .picker-row input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+    .picker-row input[type="color"]::-webkit-color-swatch { border-radius: 12px; border: 2px solid var(--border); }
+
+    /* Preview */
+    .preview-box {
+      width: 100%; height: 80px; border-radius: 12px;
+      border: 1px solid var(--border); margin-bottom: 1rem;
+      transition: background 0.2s;
+    }
+
+    /* Conversion Grid */
+    .conv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .conv-item { display: flex; align-items: center; gap: 0.5rem; }
+    .conv-item input { flex: 1; }
+    .conv-item .copy-btn {
+      flex-shrink: 0; width: 34px; height: 34px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--bg-input);
+      color: var(--text-muted); cursor: pointer; display: flex;
+      align-items: center; justify-content: center; transition: all 0.3s;
+    }
+    .conv-item .copy-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .conv-item .copy-btn svg { width: 16px; height: 16px; }
+
+    /* Palette */
+    .palette-section { margin-top: 1rem; }
+    .scheme-label {
+      font-size: 0.75rem; font-weight: 600; color: var(--text-muted);
+      margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .palette-row { display: flex; gap: 4px; margin-bottom: 1rem; }
+    .palette-swatch {
+      flex: 1; height: 48px; border-radius: 8px; position: relative;
+      cursor: pointer; transition: transform 0.2s; border: 1px solid transparent;
+    }
+    .palette-swatch:hover { transform: scaleY(1.1); border-color: rgba(255,255,255,0.2); }
+    .palette-swatch .swatch-hex {
+      position: absolute; bottom: 4px; left: 4px;
+      font-size: 0.6rem; color: rgba(255,255,255,0.8);
+      text-shadow: 0 1px 3px rgba(0,0,0,0.6); pointer-events: none;
+      font-family: monospace;
+    }
+
+    /* Contrast Checker */
+    .contrast-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
+    .contrast-preview {
+      display: flex; align-items: center; justify-content: center;
+      height: 64px; border-radius: 12px; font-size: 1rem; font-weight: 700;
+      border: 1px solid var(--border); margin-bottom: 1rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .contrast-result {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;
+    }
+    .contrast-badge {
+      text-align: center; padding: 0.5rem; border-radius: 8px;
+      border: 1px solid var(--border); font-size: 0.8rem;
+    }
+    .contrast-badge .label { color: var(--text-muted); font-size: 0.7rem; }
+    .contrast-badge .value { font-weight: 700; font-size: 1.1rem; }
+    .contrast-badge .status { font-size: 0.75rem; margin-top: 0.2rem; }
+    .pass { color: var(--success); }
+    .fail { color: var(--danger); }
+
+    /* HSL/HSV sliders */
+    .slider-group { margin-bottom: 0.75rem; }
+    .slider-group .slider-label {
+      display: flex; justify-content: space-between; font-size: 0.75rem;
+      color: var(--text-muted); margin-bottom: 0.2rem;
+    }
+    .slider-group .slider-label span:last-child { font-family: monospace; }
+    .slider-group input[type="range"] {
+      width: 100%; height: 4px; appearance: none;
+      background: var(--border); border-radius: 2px; outline: none;
+    }
+    .slider-group input[type="range"]::-webkit-slider-thumb {
+      appearance: none; width: 16px; height: 16px;
+      background: var(--accent); border-radius: 50%; cursor: pointer;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.65rem 1.2rem; border-radius: var(--radius);
+      font-size: 0.82rem; font-weight: 600; border: none;
+      cursor: pointer; transition: all 0.3s ease; text-decoration: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #8B5CF6, #7c3aed);
+      color: #fff;
+    }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(139,92,246,0.3); }
+
+    /* Footer */
+    .footer {
+      margin-top: auto; text-align: center;
+      padding: 2rem 0; color: var(--text-muted); font-size: 0.8rem;
+    }
+    .footer a { color: var(--text-muted); text-decoration: none; }
+    .footer a:hover { color: var(--text-secondary); }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      background: #1a1a35; border: 1px solid var(--border);
+      padding: 0.65rem 1.3rem; border-radius: 10px; font-size: 0.82rem;
+      color: var(--text); opacity: 0; transition: opacity 0.4s;
+      pointer-events: none; z-index: 999;
+    }
+    .toast.show { opacity: 1; }
+
+    @media (max-width: 480px) {
+      .conv-grid { grid-template-columns: 1fr; }
+      .contrast-row { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 1.25rem; }
+      .card { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="url(#g)"/><defs><linearGradient id="g" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#8B5CF6"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs></svg>
+        <span>CubedHub</span>
+      </a>
+      <a href="/" class="nav-back">&larr; 首頁</a>
+    </nav>
+  </div>
+
+  <div class="container">
+    <div class="hero">
+      <h1>色碼工具</h1>
+      <p>HEX/RGB/HSL/HSV 即時轉換、配色方案生成、對比度檢測</p>
+    </div>
+
+    <!-- Color Picker + Preview -->
+    <div class="card">
+      <div class="card-title">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+        選取顏色
+      </div>
+      <div class="picker-row">
+        <input type="color" id="colorPicker" value="#8B5CF6">
+        <div style="flex:1">
+          <div class="preview-box" id="previewBox"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Conversion -->
+    <div class="card">
+      <div class="card-title">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+        顏色轉換
+      </div>
+      <div class="conv-grid">
+        <div class="conv-item">
+          <input type="text" id="hexInput" spellcheck="false">
+          <button class="copy-btn" data-copy="hexInput" title="複製 HEX"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+        </div>
+        <div class="conv-item">
+          <input type="text" id="rgbInput" spellcheck="false">
+          <button class="copy-btn" data-copy="rgbInput" title="複製 RGB"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+        </div>
+        <div class="conv-item">
+          <input type="text" id="hslInput" spellcheck="false">
+          <button class="copy-btn" data-copy="hslInput" title="複製 HSL"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+        </div>
+        <div class="conv-item">
+          <input type="text" id="hsvInput" spellcheck="false">
+          <button class="copy-btn" data-copy="hsvInput" title="複製 HSV"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HSL + HSV Fine Tuning -->
+    <div class="card">
+      <div class="card-title">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"/></svg>
+        精細調整
+      </div>
+      <div class="slider-group">
+        <div class="slider-label"><span>色相 (H)</span><span id="hueVal">0</span></div>
+        <input type="range" id="hueSlider" min="0" max="360" value="262">
+      </div>
+      <div class="slider-group">
+        <div class="slider-label"><span>飽和度 (S)</span><span id="satVal">0</span></div>
+        <input type="range" id="satSlider" min="0" max="100" value="100">
+      </div>
+      <div class="slider-group">
+        <div class="slider-label"><span>亮度 (L)</span><span id="ligVal">0</span></div>
+        <input type="range" id="ligSlider" min="0" max="100" value="50">
+      </div>
+    </div>
+
+    <!-- Palette Generator -->
+    <div class="card">
+      <div class="card-title">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+        配色方案
+      </div>
+
+      <div class="palette-section">
+        <div class="scheme-label">單色系 Monochromatic</div>
+        <div class="palette-row" id="paletteMono"></div>
+      </div>
+      <div class="palette-section">
+        <div class="scheme-label">互補 Complementary</div>
+        <div class="palette-row" id="paletteComp"></div>
+      </div>
+      <div class="palette-section">
+        <div class="scheme-label">相似色 Analogous</div>
+        <div class="palette-row" id="paletteAnalog"></div>
+      </div>
+      <div class="palette-section">
+        <div class="scheme-label">三等分配色 Triadic</div>
+        <div class="palette-row" id="paletteTriadic"></div>
+      </div>
+    </div>
+
+    <!-- Contrast Checker -->
+    <div class="card">
+      <div class="card-title">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+        對比度檢測
+      </div>
+      <div class="contrast-row">
+        <div class="input-group" style="margin-bottom:0">
+          <label>前景顏色</label>
+          <div style="display:flex;gap:0.5rem;align-items:center">
+            <input type="color" id="fgContrast" value="#f1f5f9" style="width:40px;height:40px;border:none;border-radius:8px;cursor:pointer;background:none;padding:0;flex-shrink:0">
+            <input type="text" id="fgContrastHex" value="#f1f5f9">
+          </div>
+        </div>
+        <div class="input-group" style="margin-bottom:0">
+          <label>背景顏色</label>
+          <div style="display:flex;gap:0.5rem;align-items:center">
+            <input type="color" id="bgContrast" value="#0a0a1a" style="width:40px;height:40px;border:none;border-radius:8px;cursor:pointer;background:none;padding:0;flex-shrink:0">
+            <input type="text" id="bgContrastHex" value="#0a0a1a">
+          </div>
+        </div>
+      </div>
+      <div class="contrast-preview" id="contrastPreview">Aa 範例文字</div>
+      <div class="contrast-result">
+        <div class="contrast-badge">
+          <div class="label">對比度</div>
+          <div class="value" id="contrastRatio">21:1</div>
+        </div>
+        <div class="contrast-badge">
+          <div class="label">AA (一般文字 ≥ 4.5:1)</div>
+          <div class="value" id="aaResult"><span class="pass">通過</span></div>
+        </div>
+        <div class="contrast-badge">
+          <div class="label">AA (大字 ≥ 3:1)</div>
+          <div class="value" id="aaLargeResult"><span class="pass">通過</span></div>
+        </div>
+        <div class="contrast-badge">
+          <div class="label">AAA (一般文字 ≥ 7:1)</div>
+          <div class="value" id="aaaResult"><span class="pass">通過</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:0.5rem 0 1.5rem;color:var(--text-muted);font-size:0.75rem;">— 廣告 —</div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="/privacy-policy.html">隱私權政策</a> &middot; <a href="/contact.html">聯絡我們</a></p>
+      <p style="margin-top:0.3rem;">&copy; 2026 cubedhub.com</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    (function(){
+      // DOM refs
+      var picker = document.getElementById('colorPicker');
+      var preview = document.getElementById('previewBox');
+      var hexIn = document.getElementById('hexInput');
+      var rgbIn = document.getElementById('rgbInput');
+      var hslIn = document.getElementById('hslInput');
+      var hsvIn = document.getElementById('hsvInput');
+      var hueS = document.getElementById('hueSlider');
+      var satS = document.getElementById('satSlider');
+      var ligS = document.getElementById('ligSlider');
+      var hueV = document.getElementById('hueVal');
+      var satV = document.getElementById('satVal');
+      var ligV = document.getElementById('ligVal');
+      var toast = document.getElementById('toast');
+
+      // Contrast refs
+      var fgC = document.getElementById('fgContrast');
+      var bgC = document.getElementById('bgContrast');
+      var fgCHex = document.getElementById('fgContrastHex');
+      var bgCHex = document.getElementById('bgContrastHex');
+      var cPreview = document.getElementById('contrastPreview');
+      var cRatio = document.getElementById('contrastRatio');
+      var aaRes = document.getElementById('aaResult');
+      var aaLRes = document.getElementById('aaLargeResult');
+      var aaaRes = document.getElementById('aaaResult');
+
+      // ===== Color math =====
+      function hexToRgb(hex) {
+        var v = parseInt(hex.replace('#',''), 16);
+        return { r: (v >> 16) & 255, g: (v >> 8) & 255, b: v & 255 };
+      }
+      function rgbToHex(r, g, b) {
+        return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+      }
+      function rgbToHsl(r, g, b) {
+        r /= 255; g /= 255; b /= 255;
+        var mx = Math.max(r,g,b), mn = Math.min(r,g,b);
+        var h, s, l = (mx + mn) / 2;
+        if (mx === mn) { h = s = 0; }
+        else {
+          var d = mx - mn;
+          s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
+          if (mx === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+          else if (mx === g) h = ((b - r) / d + 2) / 6;
+          else h = ((r - g) / d + 4) / 6;
+        }
+        return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+      }
+      function hslToRgb(h, s, l) {
+        h /= 360; s /= 100; l /= 100;
+        if (s === 0) { var v = Math.round(l * 255); return { r: v, g: v, b: v }; }
+        var hue2rgb = function(p, q, t) {
+          if (t < 0) t += 1;
+          if (t > 1) t -= 1;
+          if (t < 1/6) return p + (q - p) * 6 * t;
+          if (t < 1/2) return q;
+          if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+          return p;
+        };
+        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        var p = 2 * l - q;
+        return {
+          r: Math.round(hue2rgb(p, q, h + 1/3) * 255),
+          g: Math.round(hue2rgb(p, q, h) * 255),
+          b: Math.round(hue2rgb(p, q, h - 1/3) * 255)
+        };
+      }
+      function rgbToHsv(r, g, b) {
+        r /= 255; g /= 255; b /= 255;
+        var mx = Math.max(r,g,b), mn = Math.min(r,g,b);
+        var h, s, v = mx;
+        var d = mx - mn;
+        s = mx === 0 ? 0 : d / mx;
+        if (mx === mn) { h = 0; }
+        else {
+          if (mx === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+          else if (mx === g) h = ((b - r) / d + 2) / 6;
+          else h = ((r - g) / d + 4) / 6;
+        }
+        return { h: Math.round(h * 360), s: Math.round(s * 100), v: Math.round(v * 100) };
+      }
+      function hsvToRgb(h, s, v) {
+        h /= 360; s /= 100; v /= 100;
+        var i = Math.floor(h * 6);
+        var f = h * 6 - i;
+        var p = v * (1 - s);
+        var q = v * (1 - f * s);
+        var t = v * (1 - (1 - f) * s);
+        var r, g, b;
+        switch (i % 6) {
+          case 0: r=v; g=t; b=p; break;
+          case 1: r=q; g=v; b=p; break;
+          case 2: r=p; g=v; b=t; break;
+          case 3: r=p; g=q; b=v; break;
+          case 4: r=t; g=p; b=v; break;
+          case 5: r=v; g=p; b=q; break;
+        }
+        return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) };
+      }
+
+      // Relative luminance & contrast
+      function luminance(r, g, b) {
+        var rs = r / 255, gs = g / 255, bs = b / 255;
+        var a = [rs, gs, bs].map(function(v){
+          return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+        });
+        return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
+      }
+      function contrastRatio(c1, c2) {
+        var l1 = luminance(c1.r, c1.g, c1.b);
+        var l2 = luminance(c2.r, c2.g, c2.b);
+        var lighter = Math.max(l1, l2);
+        var darker = Math.min(l1, l2);
+        return (lighter + 0.05) / (darker + 0.05);
+      }
+
+      // ===== State =====
+      var currentHex = picker.value;
+
+      // ===== Update all from RGB =====
+      function updateFromRgb(r, g, b, source) {
+        var hex = rgbToHex(r, g, b);
+        var hsl = rgbToHsl(r, g, b);
+        var hsv = rgbToHsv(r, g, b);
+        if (source !== 'hex') hexIn.value = hex;
+        if (source !== 'rgb') rgbIn.value = 'rgb(' + r + ', ' + g + ', ' + b + ')';
+        if (source !== 'hsl') hslIn.value = 'hsl(' + hsl.h + ', ' + hsl.s + '%, ' + hsl.l + '%)';
+        if (source !== 'hsv') hsvIn.value = 'hsv(' + hsv.h + ', ' + hsv.s + '%, ' + hsv.v + '%)';
+        if (source !== 'picker') picker.value = hex;
+        preview.style.background = hex;
+        currentHex = hex;
+        // sliders
+        if (source !== 'sliders') {
+          hueS.value = hsl.h; satS.value = hsl.s; ligS.value = hsl.l;
+          hueV.textContent = hsl.h; satV.textContent = hsl.s + '%'; ligV.textContent = hsl.l + '%';
+        }
+        updatePalettes(hsl.h, hsl.s, hsl.l);
+        updateContrast();
+      }
+
+      // ===== Update from picker =====
+      function fromPicker(hex) {
+        var rgb = hexToRgb(hex);
+        updateFromRgb(rgb.r, rgb.g, rgb.b, 'picker');
+      }
+
+      // ===== Update from HEX input =====
+      function fromHexInput() {
+        var v = hexIn.value.trim();
+        if (/^#?[0-9a-fA-F]{6}$/.test(v)) {
+          if (v[0] !== '#') v = '#' + v;
+          var rgb = hexToRgb(v);
+          updateFromRgb(rgb.r, rgb.g, rgb.b, 'hex');
+        }
+      }
+
+      // ===== Update from RGB input =====
+      function fromRgbInput() {
+        var m = rgbIn.value.match(/rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/i);
+        if (m) {
+          var r = Math.min(255, Math.max(0, parseInt(m[1])));
+          var g = Math.min(255, Math.max(0, parseInt(m[2])));
+          var b = Math.min(255, Math.max(0, parseInt(m[3])));
+          updateFromRgb(r, g, b, 'rgb');
+        }
+      }
+
+      // ===== Update from HSL input =====
+      function fromHslInput() {
+        var m = hslIn.value.match(/hsl\s*\(\s*(\d+)\s*,\s*(\d+)%\s*,\s*(\d+)%\s*\)/i);
+        if (m) {
+          var h = (parseInt(m[1]) % 360 + 360) % 360;
+          var s = Math.min(100, Math.max(0, parseInt(m[2])));
+          var l = Math.min(100, Math.max(0, parseInt(m[3])));
+          var rgb = hslToRgb(h, s, l);
+          updateFromRgb(rgb.r, rgb.g, rgb.b, 'hsl');
+        }
+      }
+
+      // ===== Update from HSV input =====
+      function fromHsvInput() {
+        var m = hsvIn.value.match(/hsv\s*\(\s*(\d+)\s*,\s*(\d+)%\s*,\s*(\d+)%\s*\)/i);
+        if (m) {
+          var h = (parseInt(m[1]) % 360 + 360) % 360;
+          var s = Math.min(100, Math.max(0, parseInt(m[2])));
+          var v = Math.min(100, Math.max(0, parseInt(m[3])));
+          var rgb = hsvToRgb(h, s, v);
+          updateFromRgb(rgb.r, rgb.g, rgb.b, 'hsv');
+        }
+      }
+
+      // ===== Update from sliders =====
+      function fromSliders() {
+        var h = parseInt(hueS.value);
+        var s = parseInt(satS.value);
+        var l = parseInt(ligS.value);
+        hueV.textContent = h;
+        satV.textContent = s + '%';
+        ligV.textContent = l + '%';
+        var rgb = hslToRgb(h, s, l);
+        updateFromRgb(rgb.r, rgb.g, rgb.b, 'sliders');
+      }
+
+      // ===== Palette generation =====
+      function generatePalette(h, s, l, angles) {
+        var swatches = [];
+        for (var i = 0; i < angles.length; i++) {
+          var nh = ((h + angles[i]) % 360 + 360) % 360;
+          swatches.push({ h: nh, s: s, l: l });
+        }
+        return swatches;
+      }
+
+      function renderPalette(id, colors) {
+        var el = document.getElementById(id);
+        el.innerHTML = '';
+        for (var i = 0; i < colors.length; i++) {
+          var c = colors[i];
+          var rgb = hslToRgb(c.h, c.s, c.l);
+          var hex = rgbToHex(rgb.r, rgb.g, rgb.b);
+          var sw = document.createElement('div');
+          sw.className = 'palette-swatch';
+          sw.style.background = hex;
+          sw.setAttribute('title', hex);
+          sw.addEventListener('click', function(hx){ return function(){ picker.value = hx; fromPicker(hx); }; }(hex));
+          var label = document.createElement('span');
+          label.className = 'swatch-hex';
+          label.textContent = hex;
+          sw.appendChild(label);
+          el.appendChild(sw);
+        }
+      }
+
+      function updatePalettes(h, s, l) {
+        // Monochromatic: vary lightness
+        var mono = [];
+        for (var i = 0; i < 5; i++) { mono.push({ h: h, s: s, l: Math.round(20 + i * 15) }); }
+        renderPalette('paletteMono', mono);
+
+        // Complementary: hue + 180
+        var comp = [];
+        var h2 = (h + 180) % 360;
+        for (var i = 0; i < 5; i++) {
+          var lv = 25 + i * 12.5;
+          var sv = Math.min(100, s + (i - 2) * 10);
+          if (i % 2 === 0) comp.push({ h: h, s: Math.min(100, sv), l: Math.round(lv) });
+          else comp.push({ h: h2, s: Math.min(100, sv), l: Math.round(lv) });
+        }
+        renderPalette('paletteComp', comp);
+
+        // Analogous: h ± 30, ± 60
+        var analog = [];
+        var ang = [0, 30, -30, 60, -60];
+        for (var i = 0; i < ang.length; i++) {
+          var nh = ((h + ang[i]) % 360 + 360) % 360;
+          analog.push({ h: nh, s: s, l: 40 + (i === 0 ? 10 : i < 3 ? 5 : 0) });
+        }
+        renderPalette('paletteAnalog', analog);
+
+        // Triadic: h, h+120, h+240
+        var tri = [];
+        var tAngles = [0, 120, 240];
+        for (var i = 0; i < 5; i++) {
+          var ti = i % 3;
+          var nh = ((h + tAngles[ti]) % 360 + 360) % 360;
+          var tl = 30 + i * 10;
+          tri.push({ h: nh, s: s, l: Math.round(tl) });
+        }
+        renderPalette('paletteTriadic', tri);
+      }
+
+      // ===== Contrast update =====
+      function updateContrast() {
+        var fgHex = fgC.value;
+        var bgHex = bgC.value;
+        fgCHex.value = fgHex;
+        bgCHex.value = bgHex;
+        var fgRgb = hexToRgb(fgHex);
+        var bgRgb = hexToRgb(bgHex);
+        cPreview.style.background = bgHex;
+        cPreview.style.color = fgHex;
+        var ratio = contrastRatio(fgRgb, bgRgb);
+        cRatio.textContent = ratio.toFixed(2) + ':1';
+        setBadge(aaRes, ratio >= 4.5);
+        setBadge(aaLRes, ratio >= 3);
+        setBadge(aaaRes, ratio >= 7);
+      }
+
+      function setBadge(el, pass) {
+        el.innerHTML = pass ? '<span class="pass">通過</span>' : '<span class="fail">未通過</span>';
+      }
+
+      // ===== Copy =====
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(function(){ toast.classList.remove('show'); }, 2000);
+      }
+
+      document.querySelectorAll('.copy-btn').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var id = btn.getAttribute('data-copy');
+          var inp = document.getElementById(id);
+          if (inp) {
+            inp.select();
+            navigator.clipboard.writeText(inp.value).then(function(){
+              showToast('已複製: ' + inp.value);
+            }).catch(function(){
+              document.execCommand('copy');
+              showToast('已複製: ' + inp.value);
+            });
+          }
+        });
+      });
+
+      // ===== Events =====
+      picker.addEventListener('input', function(){ fromPicker(picker.value); });
+      hexIn.addEventListener('input', fromHexInput);
+      rgbIn.addEventListener('input', fromRgbInput);
+      hslIn.addEventListener('input', fromHslInput);
+      hsvIn.addEventListener('input', fromHsvInput);
+      hueS.addEventListener('input', fromSliders);
+      satS.addEventListener('input', fromSliders);
+      ligS.addEventListener('input', fromSliders);
+
+      fgC.addEventListener('input', updateContrast);
+      bgC.addEventListener('input', updateContrast);
+      fgCHex.addEventListener('input', function(){
+        var v = fgCHex.value.trim();
+        if (/^#[0-9a-fA-F]{6}$/.test(v)) { fgC.value = v; updateContrast(); }
+      });
+      bgCHex.addEventListener('input', function(){
+        var v = bgCHex.value.trim();
+        if (/^#[0-9a-fA-F]{6}$/.test(v)) { bgC.value = v; updateContrast(); }
+      });
+
+      // ===== Init =====
+      fromPicker(picker.value);
+      updateContrast();
+    })();
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+</body>
+</html>

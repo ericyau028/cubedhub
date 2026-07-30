@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>單位換算器 — 免費線上單位轉換工具</title>
+  <meta name="description" content="免費線上單位換算工具，支援長度、重量、溫度、面積、體積、速度、時間、資料儲存等類別即時轉換。">
+  <meta name="google-adsense-account" content="ca-pub-4900630860092971">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="單位換算器 — 免費線上單位轉換工具">
+  <meta property="og:description" content="免費線上單位換算工具，支援長度、重量、溫度、面積、體積、速度、時間、資料儲存等類別即時轉換。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cubedhub.com/tools/unit-converter/">
+  <link rel="canonical" href="https://cubedhub.com/tools/unit-converter/">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0a0a1a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4900630860092971" crossorigin="anonymous"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a1a;
+      --bg-card: #111127;
+      --bg-input: #1a1a35;
+      --border: rgba(255,255,255,0.08);
+      --text: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent: #8B5CF6;
+      --accent-light: #a78bfa;
+      --radius: 12px;
+    }
+    html { font-size: 16px; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+    }
+    .container { max-width: 640px; margin: 0 auto; padding: 0 1.25rem; width: 100%; }
+
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 0;
+    }
+    .nav-brand {
+      font-weight: 700; font-size: 1.1rem; color: #fff;
+      display: flex; align-items: center; gap: 0.5rem; text-decoration: none;
+    }
+    .nav-brand span { background: linear-gradient(135deg, #8B5CF6, #06B6D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .nav-back { color: var(--text-muted); font-size: 0.85rem; text-decoration: none; }
+    .nav-back:hover { color: var(--text-secondary); }
+
+    .hero { text-align: center; padding: 2rem 0 1.5rem; }
+    .hero h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .hero p { color: var(--text-secondary); font-size: 0.9rem; max-width: 420px; margin: 0 auto; }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .input-group { margin-bottom: 1.25rem; }
+    .input-group:last-child { margin-bottom: 0; }
+    .input-group label {
+      display: block; font-size: 0.8rem; font-weight: 600;
+      color: var(--text-secondary); margin-bottom: 0.4rem;
+    }
+
+    select, input[type="number"] {
+      width: 100%; padding: 0.75rem 1rem;
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: var(--radius); color: var(--text);
+      font-size: 0.9rem; font-family: inherit;
+      transition: border-color 0.3s; appearance: none;
+    }
+    select {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem;
+    }
+    select:focus, input[type="number"]:focus { outline: none; border-color: var(--accent); }
+    input[type="number"] { -moz-appearance: textfield; }
+    input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+    .value-row {
+      display: flex; gap: 0.75rem;
+    }
+    .value-row input[type="number"] { flex: 1; min-width: 0; }
+    .value-row select { width: auto; min-width: 110px; flex-shrink: 0; }
+
+    .results-title {
+      font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);
+      margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+
+    .result-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.65rem 0.75rem; border-radius: 8px;
+      transition: background 0.2s; border-bottom: 1px solid var(--border);
+    }
+    .result-item:last-child { border-bottom: none; }
+    .result-item:hover { background: rgba(139,92,246,0.04); }
+    .result-item.active {
+      background: rgba(139,92,246,0.1);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px 0 0 8px;
+    }
+    .result-item .unit-label { font-size: 0.85rem; color: var(--text); }
+    .result-item .unit-abbr { font-size: 0.75rem; color: var(--text-muted); margin-left: 0.4rem; }
+    .result-item .unit-value {
+      font-size: 0.95rem; font-weight: 600; font-variant-numeric: tabular-nums;
+      text-align: right; font-family: 'Inter', monospace;
+    }
+
+    .reset-btn {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      padding: 0.5rem 1rem; border-radius: 8px;
+      font-size: 0.8rem; font-weight: 500; border: 1px solid var(--border);
+      cursor: pointer; background: rgba(255,255,255,0.04); color: var(--text-muted);
+      transition: all 0.2s; margin-top: 0.75rem;
+    }
+    .reset-btn:hover { background: rgba(255,255,255,0.08); color: var(--text-secondary); }
+
+    .footer {
+      margin-top: auto; text-align: center;
+      padding: 2rem 0; color: var(--text-muted); font-size: 0.8rem;
+    }
+    .footer a { color: var(--text-muted); }
+    .footer a:hover { color: var(--text-secondary); }
+
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 1.3rem; }
+      .card { padding: 1.25rem; }
+      .value-row { flex-direction: column; }
+      .value-row select { width: 100%; }
+      .result-item { padding: 0.55rem 0.5rem; }
+      .result-item .unit-value { font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="url(#g)"/><defs><linearGradient id="g" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#8B5CF6"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs></svg>
+        <span>CubedHub</span>
+      </a>
+      <a href="/" class="nav-back">&larr; 工具</a>
+    </nav>
+  </div>
+
+  <div class="container">
+    <div class="hero">
+      <h1>單位換算器</h1>
+      <p>免費線上單位換算工具 — 選擇類別、輸入數值，所有單位即時轉換</p>
+    </div>
+
+    <div class="card">
+      <div class="input-group">
+        <label for="category">類別</label>
+        <select id="category">
+          <option value="length">長度</option>
+          <option value="weight">重量</option>
+          <option value="temperature">溫度</option>
+          <option value="area">面積</option>
+          <option value="volume">體積</option>
+          <option value="speed">速度</option>
+          <option value="time">時間</option>
+          <option value="data">資料儲存</option>
+        </select>
+      </div>
+      <div class="input-group" style="margin-bottom:0">
+        <label for="value-input">數值</label>
+        <div class="value-row">
+          <input type="number" id="value-input" placeholder="請輸入數值" step="any">
+          <select id="unit-select"></select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="results-card">
+      <div class="results-title">換算結果</div>
+      <div id="results-list"></div>
+      <button class="reset-btn" id="reset-btn">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v5h5"/><path d="M15 12v-5h-5"/><path d="M13.5 5.5A7 7 0 0 0 2.5 10l-1.5 1M2.5 6l-1.5-1A7 7 0 0 1 13.5 10.5"/></svg>
+        清除
+      </button>
+    </div>
+
+    <div style="text-align:center;padding:0.5rem 0 1.5rem;color:var(--text-muted);font-size:0.75rem;">— 廣告 —</div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="/privacy-policy.html">隱私權政策</a> &middot; <a href="/contact.html">聯絡我們</a></p>
+      <p style="margin-top:0.3rem;">&copy; 2026 cubedhub.com</p>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      var categoryEl = document.getElementById('category');
+      var valueInput = document.getElementById('value-input');
+      var unitSelect = document.getElementById('unit-select');
+      var resultsList = document.getElementById('results-list');
+      var resetBtn = document.getElementById('reset-btn');
+
+      var categories = {
+        length: {
+          name: '長度',
+          units: [
+            { id: 'mm', label: '毫米', abbr: 'mm', toBase: 0.001 },
+            { id: 'cm', label: '公分', abbr: 'cm', toBase: 0.01 },
+            { id: 'm', label: '公尺', abbr: 'm', toBase: 1 },
+            { id: 'km', label: '公里', abbr: 'km', toBase: 1000 },
+            { id: 'inch', label: '英寸', abbr: 'in', toBase: 0.0254 },
+            { id: 'foot', label: '英尺', abbr: 'ft', toBase: 0.3048 },
+            { id: 'yard', label: '碼', abbr: 'yd', toBase: 0.9144 },
+            { id: 'mile', label: '英里', abbr: 'mi', toBase: 1609.344 }
+          ]
+        },
+        weight: {
+          name: '重量',
+          units: [
+            { id: 'mg', label: '毫克', abbr: 'mg', toBase: 0.001 },
+            { id: 'g', label: '公克', abbr: 'g', toBase: 1 },
+            { id: 'kg', label: '公斤', abbr: 'kg', toBase: 1000 },
+            { id: 'ton', label: '公噸', abbr: 't', toBase: 1000000 },
+            { id: 'oz', label: '盎司', abbr: 'oz', toBase: 28.3495 },
+            { id: 'lb', label: '磅', abbr: 'lb', toBase: 453.592 }
+          ]
+        },
+        temperature: {
+          name: '溫度',
+          isTemp: true,
+          units: [
+            { id: 'C', label: '攝氏', abbr: '\u00b0C' },
+            { id: 'F', label: '華氏', abbr: '\u00b0F' },
+            { id: 'K', label: '克氏', abbr: 'K' }
+          ],
+          conv: {
+            C: { to: function(v){return v;}, from: function(v){return v;} },
+            F: { to: function(v){return (v-32)*5/9;}, from: function(v){return v*9/5+32;} },
+            K: { to: function(v){return v-273.15;}, from: function(v){return v+273.15;} }
+          }
+        },
+        area: {
+          name: '面積',
+          units: [
+            { id: 'mm2', label: '平方毫米', abbr: 'mm\u00b2', toBase: 0.000001 },
+            { id: 'cm2', label: '平方公分', abbr: 'cm\u00b2', toBase: 0.0001 },
+            { id: 'm2', label: '平方公尺', abbr: 'm\u00b2', toBase: 1 },
+            { id: 'km2', label: '平方公里', abbr: 'km\u00b2', toBase: 1000000 },
+            { id: 'ha', label: '公頃', abbr: 'ha', toBase: 10000 },
+            { id: 'acre', label: '英畝', abbr: 'ac', toBase: 4046.86 },
+            { id: 'ft2', label: '平方英尺', abbr: 'ft\u00b2', toBase: 0.092903 },
+            { id: 'in2', label: '平方英寸', abbr: 'in\u00b2', toBase: 0.00064516 },
+            { id: 'yd2', label: '平方碼', abbr: 'yd\u00b2', toBase: 0.836127 }
+          ]
+        },
+        volume: {
+          name: '體積',
+          units: [
+            { id: 'ml', label: '毫升', abbr: 'mL', toBase: 0.001 },
+            { id: 'l', label: '公升', abbr: 'L', toBase: 1 },
+            { id: 'm3', label: '立方公尺', abbr: 'm\u00b3', toBase: 1000 },
+            { id: 'gal', label: '加侖', abbr: 'gal', toBase: 3.78541 },
+            { id: 'qt', label: '夸脫', abbr: 'qt', toBase: 0.946353 },
+            { id: 'pt', label: '品脫', abbr: 'pt', toBase: 0.473176 },
+            { id: 'cup', label: '杯', abbr: 'cup', toBase: 0.236588 },
+            { id: 'floz', label: '液量盎司', abbr: 'fl oz', toBase: 0.0295735 }
+          ]
+        },
+        speed: {
+          name: '速度',
+          units: [
+            { id: 'mps', label: '公尺/秒', abbr: 'm/s', toBase: 1 },
+            { id: 'kmh', label: '公里/小時', abbr: 'km/h', toBase: 0.277778 },
+            { id: 'mph', label: '英里/小時', abbr: 'mph', toBase: 0.44704 },
+            { id: 'knot', label: '節', abbr: 'kn', toBase: 0.514444 },
+            { id: 'fps', label: '英尺/秒', abbr: 'ft/s', toBase: 0.3048 }
+          ]
+        },
+        time: {
+          name: '時間',
+          units: [
+            { id: 'ms', label: '毫秒', abbr: 'ms', toBase: 0.001 },
+            { id: 's', label: '秒', abbr: 's', toBase: 1 },
+            { id: 'min', label: '分鐘', abbr: 'min', toBase: 60 },
+            { id: 'hr', label: '小時', abbr: 'hr', toBase: 3600 },
+            { id: 'day', label: '天', abbr: 'day', toBase: 86400 },
+            { id: 'week', label: '週', abbr: 'wk', toBase: 604800 },
+            { id: 'month', label: '月（30天）', abbr: 'mo', toBase: 2592000 },
+            { id: 'year', label: '年（365天）', abbr: 'yr', toBase: 31536000 }
+          ]
+        },
+        data: {
+          name: '資料儲存',
+          units: [
+            { id: 'bit', label: '位元', abbr: 'bit', toBase: 0.125 },
+            { id: 'byte', label: '位元組', abbr: 'B', toBase: 1 },
+            { id: 'kb', label: 'KB', abbr: 'KB', toBase: 1000 },
+            { id: 'mb', label: 'MB', abbr: 'MB', toBase: 1000000 },
+            { id: 'gb', label: 'GB', abbr: 'GB', toBase: 1000000000 },
+            { id: 'tb', label: 'TB', abbr: 'TB', toBase: 1000000000000 },
+            { id: 'pb', label: 'PB', abbr: 'PB', toBase: 1000000000000000 }
+          ]
+        }
+      };
+
+      function populateUnits(catId) {
+        var cat = categories[catId];
+        unitSelect.innerHTML = '';
+        for (var i = 0; i < cat.units.length; i++) {
+          var u = cat.units[i];
+          var opt = document.createElement('option');
+          opt.value = u.id;
+          opt.textContent = u.label + ' (' + u.abbr + ')';
+          unitSelect.appendChild(opt);
+        }
+      }
+
+      function formatNum(n) {
+        if (!isFinite(n)) return '\u2014';
+        if (n === 0) return '0';
+        var abs = Math.abs(n);
+        if (abs >= 1e12) return (n / 1e12).toFixed(2) + '\u202fT';
+        if (abs >= 1e9) return (n / 1e9).toFixed(2) + '\u202fB';
+        if (abs >= 1e6) return (n / 1e6).toFixed(2) + '\u202fM';
+        if (abs >= 1) {
+          var dec = 6 - Math.floor(Math.log10(abs));
+          if (dec < 0) dec = 0;
+          if (dec > 6) dec = 6;
+          var s = n.toFixed(dec);
+          s = s.replace(/(\.[1-9]*)0+$/, '$1').replace(/\.$/, '');
+          return s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+        if (abs >= 0.001) return n.toFixed(Math.min(6, 6 - Math.floor(Math.log10(abs))));
+        return n.toExponential(4);
+      }
+
+      function update() {
+        var catId = categoryEl.value;
+        var cat = categories[catId];
+        var val = parseFloat(valueInput.value);
+        var fromId = unitSelect.value;
+        var fromUnit = null;
+        for (var i = 0; i < cat.units.length; i++) {
+          if (cat.units[i].id === fromId) { fromUnit = cat.units[i]; break; }
+        }
+        if (!fromUnit) return;
+
+        var resultsHtml = '';
+        if (isNaN(val) || val === '') {
+          for (var i = 0; i < cat.units.length; i++) {
+            var u = cat.units[i];
+            var cls = u.id === fromId ? 'result-item active' : 'result-item';
+            resultsHtml += '<div class="' + cls + '"><div><span class="unit-label">' + u.label + '</span><span class="unit-abbr">' + u.abbr + '</span></div><div class="unit-value">\u2014</div></div>';
+          }
+          resultsList.innerHTML = resultsHtml;
+          return;
+        }
+
+        var baseVal;
+        if (cat.isTemp) {
+          baseVal = cat.conv[fromId].to(val);
+        } else {
+          baseVal = val * fromUnit.toBase;
+        }
+
+        for (var i = 0; i < cat.units.length; i++) {
+          var u = cat.units[i];
+          var converted;
+          if (cat.isTemp) {
+            converted = cat.conv[u.id].from(baseVal);
+          } else {
+            converted = baseVal / u.toBase;
+          }
+          var cls = u.id === fromId ? 'result-item active' : 'result-item';
+          resultsHtml += '<div class="' + cls + '"><div><span class="unit-label">' + u.label + '</span><span class="unit-abbr">' + u.abbr + '</span></div><div class="unit-value">' + formatNum(converted) + '</div></div>';
+        }
+        resultsList.innerHTML = resultsHtml;
+      }
+
+      function onCategoryChange() {
+        populateUnits(categoryEl.value);
+        var savedUnit = localStorage.getItem('uc_unit_' + categoryEl.value);
+        if (savedUnit) {
+          var found = false;
+          for (var i = 0; i < unitSelect.options.length; i++) {
+            if (unitSelect.options[i].value === savedUnit) { unitSelect.selectedIndex = i; found = true; break; }
+          }
+        }
+        update();
+        saveState();
+      }
+
+      function saveState() {
+        localStorage.setItem('uc_category', categoryEl.value);
+        localStorage.setItem('uc_unit_' + categoryEl.value, unitSelect.value);
+        localStorage.setItem('uc_value', valueInput.value);
+      }
+
+      function loadState() {
+        var savedCat = localStorage.getItem('uc_category');
+        if (savedCat && categories[savedCat]) {
+          categoryEl.value = savedCat;
+        }
+        populateUnits(categoryEl.value);
+        var savedUnit = localStorage.getItem('uc_unit_' + categoryEl.value);
+        if (savedUnit) {
+          for (var i = 0; i < unitSelect.options.length; i++) {
+            if (unitSelect.options[i].value === savedUnit) { unitSelect.selectedIndex = i; break; }
+          }
+        }
+        var savedVal = localStorage.getItem('uc_value');
+        if (savedVal !== null && savedVal !== '') { valueInput.value = savedVal; }
+      }
+
+      categoryEl.addEventListener('change', onCategoryChange);
+      valueInput.addEventListener('input', function(){ update(); saveState(); });
+      unitSelect.addEventListener('change', function(){ update(); saveState(); });
+
+      resetBtn.addEventListener('click', function(){
+        valueInput.value = '';
+        update();
+        localStorage.removeItem('uc_value');
+        valueInput.focus();
+      });
+
+      loadState();
+      update();
+
+      valueInput.addEventListener('focus', function(){ this.select(); });
+    })();
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+</body>
+</html>

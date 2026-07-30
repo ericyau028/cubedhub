@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>QR碼掃描器 — 免費線上 QR Code 解碼工具</title>
+  <meta name="description" content="免費線上 QR Code 掃描器，使用相機即時掃描或上傳圖片解碼 QR Code，支援複製與開啟連結。">
+  <meta name="google-adsense-account" content="ca-pub-4900630860092971">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="QR碼掃描器 — 免費線上 QR Code 解碼工具">
+  <meta property="og:description" content="免費線上 QR Code 掃描器，使用相機即時掃描或上傳圖片解碼 QR Code，支援複製與開啟連結。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cubedhub.com/tools/qr-scanner/">
+  <link rel="manifest" href="manifest.json">
+  <link rel="canonical" href="https://cubedhub.com/tools/qr-scanner/">
+  <meta name="theme-color" content="#0a0a1a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4900630860092971" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a1a;
+      --bg-card: #111127;
+      --bg-input: #1a1a35;
+      --border: rgba(255,255,255,0.08);
+      --text: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent: #8B5CF6;
+      --accent-light: #a78bfa;
+      --radius: 12px;
+    }
+    html { font-size: 16px; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+    }
+    .container { max-width: 640px; margin: 0 auto; padding: 0 1.25rem; width: 100%; }
+
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 0;
+    }
+    .nav-brand {
+      font-weight: 700; font-size: 1.1rem; color: #fff;
+      display: flex; align-items: center; gap: 0.5rem; text-decoration: none;
+    }
+    .nav-brand span { background: linear-gradient(135deg, #8B5CF6, #06B6D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .nav-back { color: var(--text-muted); font-size: 0.85rem; text-decoration: none; }
+    .nav-back:hover { color: var(--text-secondary); }
+
+    .hero { text-align: center; padding: 2.5rem 0 1.5rem; }
+    .hero h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .hero p { color: var(--text-secondary); font-size: 0.9rem; max-width: 480px; margin: 0 auto; }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .tabs {
+      display: flex; gap: 0.5rem; margin-bottom: 1.25rem;
+    }
+    .tab {
+      flex: 1; padding: 0.65rem 1rem; text-align: center;
+      border-radius: var(--radius); font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; border: 1px solid var(--border);
+      background: transparent; color: var(--text-secondary);
+      transition: all 0.3s;
+    }
+    .tab.active {
+      background: var(--accent); color: #fff; border-color: var(--accent);
+    }
+    .tab:hover:not(.active) { background: rgba(255,255,255,0.04); }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Camera */
+    .scanner-wrap {
+      position: relative; width: 100%; aspect-ratio: 1 / 1;
+      background: #000; border-radius: var(--radius); overflow: hidden;
+      margin-bottom: 1rem;
+    }
+    .scanner-wrap video {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block;
+    }
+    .scanner-overlay {
+      position: absolute; inset: 0;
+      pointer-events: none;
+    }
+    .scanner-overlay .frame {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60%; height: 60%;
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      box-shadow: 0 0 0 9999px rgba(0,0,0,0.5);
+    }
+    .scanner-overlay .corner {
+      position: absolute;
+      width: 24px; height: 24px;
+      border-color: var(--accent); border-style: solid;
+    }
+    .scanner-overlay .corner-tl { top: 20%; left: 20%; border-width: 3px 0 0 3px; border-radius: 4px 0 0 0; }
+    .scanner-overlay .corner-tr { top: 20%; right: 20%; border-width: 3px 3px 0 0; border-radius: 0 4px 0 0; }
+    .scanner-overlay .corner-bl { bottom: 20%; left: 20%; border-width: 0 0 3px 3px; border-radius: 0 0 0 4px; }
+    .scanner-overlay .corner-br { bottom: 20%; right: 20%; border-width: 0 3px 3px 0; border-radius: 0 0 4px 0; }
+
+    .scan-line {
+      position: absolute; left: 20%; width: 60%; height: 2px;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+      animation: scanMove 2s ease-in-out infinite;
+    }
+    @keyframes scanMove {
+      0%, 100% { top: 22%; }
+      50% { top: 76%; }
+    }
+
+    .camera-placeholder {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 100%; aspect-ratio: 1 / 1;
+      background: #000; border-radius: var(--radius);
+      color: var(--text-muted); font-size: 0.85rem; gap: 0.75rem;
+    }
+    .camera-placeholder svg { width: 48px; height: 48px; opacity: 0.4; }
+
+    /* Upload */
+    .upload-zone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem 1rem; text-align: center;
+      cursor: pointer; transition: all 0.3s;
+      margin-bottom: 1rem;
+    }
+    .upload-zone:hover { border-color: var(--accent); background: rgba(139,92,246,0.04); }
+    .upload-zone.dragover { border-color: var(--accent); background: rgba(139,92,246,0.08); }
+    .upload-zone svg { width: 48px; height: 48px; opacity: 0.4; margin-bottom: 0.75rem; }
+    .upload-zone p { color: var(--text-muted); font-size: 0.85rem; }
+    .upload-zone .hint { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem; }
+    .upload-zone input[type="file"] { display: none; }
+    .upload-preview {
+      max-width: 100%; max-height: 300px; border-radius: var(--radius);
+      display: none; margin: 0 auto;
+    }
+
+    /* Result */
+    .result { display: none; }
+    .result.show { display: block; }
+    .result-label {
+      font-size: 0.75rem; font-weight: 600; color: var(--text-secondary);
+      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;
+    }
+    .result-text {
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 0.75rem 1rem;
+      font-size: 0.9rem; word-break: break-all; margin-bottom: 0.75rem;
+      max-height: 120px; overflow-y: auto;
+    }
+    .result-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.7rem 1.4rem; border-radius: var(--radius);
+      font-size: 0.85rem; font-weight: 600; border: none;
+      cursor: pointer; transition: all 0.3s ease; text-decoration: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #8B5CF6, #7c3aed);
+      color: #fff;
+    }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(139,92,246,0.3); }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn-secondary {
+      background: rgba(255,255,255,0.06); color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .btn-secondary:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-success {
+      background: #059669; color: #fff;
+    }
+    .btn-success:hover { opacity: 0.9; }
+
+    .status-msg {
+      text-align: center; padding: 1rem; font-size: 0.85rem;
+      border-radius: var(--radius); margin-bottom: 0.75rem;
+    }
+    .status-msg.error { background: rgba(239,68,68,0.12); color: #fca5a5; border: 1px solid rgba(239,68,68,0.2); }
+    .status-msg.success { background: rgba(5,150,105,0.12); color: #6ee7b7; border: 1px solid rgba(5,150,105,0.2); }
+    .status-msg.info { background: rgba(59,130,246,0.12); color: #93c5fd; border: 1px solid rgba(59,130,246,0.2); }
+    .status-msg.loading { background: rgba(139,92,246,0.12); color: #c4b5fd; border: 1px solid rgba(139,92,246,0.2); }
+    .status-msg.loading::after { content: ''; display: inline-block; width: 14px; height: 14px; margin-left: 0.5rem; border: 2px solid var(--accent); border-top-color: transparent; border-radius: 50%; vertical-align: middle; animation: spin 0.7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* History */
+    .history-title {
+      font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);
+      margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center;
+    }
+    .history-clear {
+      font-size: 0.75rem; color: var(--text-muted); cursor: pointer; background: none; border: none;
+      text-decoration: underline;
+    }
+    .history-clear:hover { color: #ef4444; }
+    .history-list { list-style: none; }
+    .history-item {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.65rem 0.75rem; border-radius: 8px;
+      background: var(--bg-input); margin-bottom: 0.4rem;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .history-item:hover { background: rgba(255,255,255,0.06); }
+    .history-item .h-text {
+      flex: 1; font-size: 0.82rem; color: var(--text);
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .history-item .h-time {
+      font-size: 0.7rem; color: var(--text-muted); white-space: nowrap;
+    }
+    .history-item .h-del {
+      font-size: 0.75rem; color: var(--text-muted); cursor: pointer; background: none; border: none;
+      padding: 0.2rem; line-height: 1;
+    }
+    .history-item .h-del:hover { color: #ef4444; }
+    .history-empty {
+      text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 1.5rem 0;
+    }
+
+    .footer {
+      margin-top: auto; text-align: center;
+      padding: 2rem 0; color: var(--text-muted); font-size: 0.8rem;
+    }
+    .footer a { color: var(--text-muted); }
+    .footer a:hover { color: var(--text-secondary); }
+
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      background: #1a1a35; border: 1px solid var(--border);
+      padding: 0.7rem 1.4rem; border-radius: 10px; font-size: 0.85rem;
+      color: var(--text); opacity: 0; transition: opacity 0.4s;
+      pointer-events: none; z-index: 999;
+    }
+    .toast.show { opacity: 1; }
+
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 1.3rem; }
+      .card { padding: 1.25rem; }
+      .result-actions .btn { flex: 1; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="url(#g)"/><defs><linearGradient id="g" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#8B5CF6"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs></svg>
+        <span>CubedHub</span>
+      </a>
+      <a href="/tools/" class="nav-back">&larr; 工具</a>
+    </nav>
+  </div>
+
+  <div class="container">
+    <div class="hero">
+      <h1>QR Code 掃描器</h1>
+      <p>免費線上 QR Code 掃描器，使用相機即時掃描或上傳圖片解碼 QR Code，支援複製與開啟連結。</p>
+    </div>
+
+    <div class="card">
+      <div class="tabs">
+        <button class="tab active" data-tab="camera">📷 相機掃描</button>
+        <button class="tab" data-tab="upload">🖼️ 上傳圖片</button>
+      </div>
+
+      <!-- Camera tab -->
+      <div class="tab-content active" id="tab-camera">
+        <div class="scanner-wrap" id="scanner-wrap">
+          <video id="video" autoplay playsinline muted></video>
+          <div class="scanner-overlay" id="scanner-overlay">
+            <div class="frame"></div>
+            <div class="corner corner-tl"></div>
+            <div class="corner corner-tr"></div>
+            <div class="corner corner-bl"></div>
+            <div class="corner corner-br"></div>
+            <div class="scan-line"></div>
+          </div>
+        </div>
+        <div class="camera-placeholder" id="camera-placeholder" style="display:none">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"/></svg>
+          <p id="camera-status">正在啟動相機...</p>
+          <button class="btn btn-primary" id="retry-camera" style="display:none">重新開啟相機</button>
+        </div>
+        <div id="camera-controls">
+          <button class="btn btn-primary" id="start-camera">開啟相機</button>
+          <button class="btn btn-secondary" id="stop-camera" style="display:none">關閉相機</button>
+        </div>
+      </div>
+
+      <!-- Upload tab -->
+      <div class="tab-content" id="tab-upload">
+        <div class="upload-zone" id="upload-zone">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+          <p>點擊或拖放圖片到此區域</p>
+          <span class="hint">支援 PNG、JPG、WEBP</span>
+          <input type="file" id="file-input" accept="image/*">
+        </div>
+        <img class="upload-preview" id="upload-preview" alt="上傳的圖片">
+        <div id="upload-controls" style="display:none">
+          <button class="btn btn-primary" id="decode-btn">解碼 QR Code</button>
+        </div>
+      </div>
+
+      <div class="status-msg" id="status-msg"></div>
+
+      <div class="result" id="result">
+        <div class="result-label">掃描結果</div>
+        <div class="result-text" id="result-text"></div>
+        <div class="result-actions">
+          <button class="btn btn-primary" id="copy-btn">📋 複製</button>
+          <button class="btn btn-success" id="open-btn" style="display:none">🔗 開啟連結</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="history-title">
+        <span>掃描記錄</span>
+        <button class="history-clear" id="history-clear">清除全部</button>
+      </div>
+      <ul class="history-list" id="history-list">
+        <li class="history-empty">暫無記錄</li>
+      </ul>
+    </div>
+
+    <div style="text-align:center;padding:0.5rem 0 1.5rem;color:var(--text-muted);font-size:0.75rem;">— 廣告 —</div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="/privacy-policy.html">隱私權政策</a> &middot; <a href="/contact.html">聯絡我們</a></p>
+      <p style="margin-top:0.3rem;">&copy; 2026 cubedhub.com</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    (function(){
+      var video = document.getElementById('video');
+      var scannerWrap = document.getElementById('scanner-wrap');
+      var scannerOverlay = document.getElementById('scanner-overlay');
+      var cameraPlaceholder = document.getElementById('camera-placeholder');
+      var cameraStatus = document.getElementById('camera-status');
+      var startBtn = document.getElementById('start-camera');
+      var stopBtn = document.getElementById('stop-camera');
+      var retryBtn = document.getElementById('retry-camera');
+      var fileInput = document.getElementById('file-input');
+      var uploadZone = document.getElementById('upload-zone');
+      var uploadPreview = document.getElementById('upload-preview');
+      var decodeBtn = document.getElementById('decode-btn');
+      var statusMsg = document.getElementById('status-msg');
+      var resultDiv = document.getElementById('result');
+      var resultText = document.getElementById('result-text');
+      var copyBtn = document.getElementById('copy-btn');
+      var openBtn = document.getElementById('open-btn');
+      var historyList = document.getElementById('history-list');
+      var historyClear = document.getElementById('history-clear');
+      var toast = document.getElementById('toast');
+
+      var stream = null;
+      var scanTimer = null;
+      var isScanning = false;
+      var uploadedImageData = null;
+
+      // Tab switching
+      var tabs = document.querySelectorAll('.tab');
+      tabs.forEach(function(tab){
+        tab.addEventListener('click', function(){
+          tabs.forEach(function(t){ t.classList.remove('active'); });
+          tab.classList.add('active');
+          document.querySelectorAll('.tab-content').forEach(function(tc){ tc.classList.remove('active'); });
+          document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+          hideResult();
+          clearStatus();
+          if (tab.dataset.tab === 'upload') { stopScanning(); }
+          if (tab.dataset.tab === 'camera') { hideUploadPreview(); }
+        });
+      });
+
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(function(){ toast.classList.remove('show'); }, 2500);
+      }
+
+      function setStatus(msg, type) {
+        statusMsg.textContent = msg;
+        statusMsg.className = 'status-msg ' + type;
+        statusMsg.style.display = 'block';
+      }
+
+      function clearStatus() {
+        statusMsg.style.display = 'none';
+        statusMsg.className = 'status-msg';
+      }
+
+      function showResult(text) {
+        resultText.textContent = text;
+        resultDiv.classList.add('show');
+        var isUrl = /^https?:\/\//i.test(text);
+        openBtn.style.display = isUrl ? 'inline-flex' : 'none';
+        if (isUrl) { openBtn.onclick = function(){ window.open(text, '_blank'); }; }
+      }
+
+      function hideResult() {
+        resultDiv.classList.remove('show');
+      }
+
+      function hideUploadPreview() {
+        uploadPreview.style.display = 'none';
+        uploadPreview.src = '';
+        uploadedImageData = null;
+        document.getElementById('upload-controls').style.display = 'none';
+      }
+
+      // Camera
+      function startCamera() {
+        if (stream) { return; }
+        setStatus('正在啟動相機...', 'loading');
+        cameraPlaceholder.style.display = 'flex';
+        scannerWrap.style.display = 'none';
+        startBtn.style.display = 'none';
+        retryBtn.style.display = 'none';
+
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          setStatus('您的瀏覽器不支援相機功能', 'error');
+          cameraStatus.textContent = '您的瀏覽器不支援相機功能';
+          retryBtn.style.display = 'inline-flex';
+          startBtn.style.display = 'inline-flex';
+          return;
+        }
+
+        navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { ideal: 'environment' }, width: { ideal: 640 }, height: { ideal: 640 } },
+          audio: false
+        }).then(function(s){
+          stream = s;
+          video.srcObject = s;
+          video.setAttribute('playsinline', '');
+          cameraPlaceholder.style.display = 'none';
+          scannerWrap.style.display = 'block';
+          startBtn.style.display = 'none';
+          stopBtn.style.display = 'inline-flex';
+          clearStatus();
+          startScanLoop();
+        }).catch(function(err){
+          if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+            cameraStatus.textContent = '相機權限已被拒絕，請在瀏覽器設定中允許相機權限後重試';
+            setStatus('相機權限已被拒絕，請在瀏覽器設定中允許相機權限', 'error');
+          } else if (err.name === 'NotFoundError') {
+            cameraStatus.textContent = '找不到相機裝置';
+            setStatus('找不到相機裝置', 'error');
+          } else {
+            cameraStatus.textContent = '無法開啟相機：' + err.message;
+            setStatus('無法開啟相機：' + err.message, 'error');
+          }
+          retryBtn.style.display = 'inline-flex';
+          startBtn.style.display = 'none';
+        });
+      }
+
+      function stopScanning() {
+        if (scanTimer) { clearInterval(scanTimer); scanTimer = null; }
+        isScanning = false;
+      }
+
+      function startScanLoop() {
+        stopScanning();
+        isScanning = true;
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+
+        scanTimer = setInterval(function(){
+          if (!isScanning || !stream || video.readyState < 2) { return; }
+          var w = video.videoWidth;
+          var h = video.videoHeight;
+          if (w === 0 || h === 0) { return; }
+          var size = Math.min(w, h);
+          canvas.width = size;
+          canvas.height = size;
+          var sx = (w - size) / 2;
+          var sy = (h - size) / 2;
+          ctx.drawImage(video, sx, sy, size, size, 0, 0, size, size);
+          var imageData = ctx.getImageData(0, 0, size, size);
+          var code = jsQR(imageData.data, imageData.width, imageData.height);
+          if (code) {
+            stopScanning();
+            showResult(code.data);
+            addHistory(code.data);
+            showToast('掃描成功！');
+          }
+        }, 500);
+      }
+
+      function stopCamera() {
+        stopScanning();
+        if (stream) {
+          stream.getTracks().forEach(function(t){ t.stop(); });
+          stream = null;
+        }
+        video.srcObject = null;
+        scannerWrap.style.display = 'none';
+        cameraPlaceholder.style.display = 'none';
+        startBtn.style.display = 'inline-flex';
+        stopBtn.style.display = 'none';
+        retryBtn.style.display = 'none';
+      }
+
+      startBtn.addEventListener('click', startCamera);
+      stopBtn.addEventListener('click', stopCamera);
+      retryBtn.addEventListener('click', function(){
+        stopCamera();
+        startCamera();
+      });
+
+      // Upload
+      uploadZone.addEventListener('click', function(){ fileInput.click(); });
+
+      uploadZone.addEventListener('dragover', function(e){
+        e.preventDefault();
+        uploadZone.classList.add('dragover');
+      });
+      uploadZone.addEventListener('dragleave', function(){
+        uploadZone.classList.remove('dragover');
+      });
+      uploadZone.addEventListener('drop', function(e){
+        e.preventDefault();
+        uploadZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length > 0) {
+          handleFile(e.dataTransfer.files[0]);
+        }
+      });
+
+      fileInput.addEventListener('change', function(){
+        if (fileInput.files.length > 0) { handleFile(fileInput.files[0]); }
+      });
+
+      function handleFile(file) {
+        if (!file.type.match(/image\/(png|jpeg|webp|gif|bmp)/)) {
+          setStatus('請上傳圖片檔案（PNG、JPG、WEBP）', 'error');
+          return;
+        }
+        hideResult();
+        clearStatus();
+        var reader = new FileReader();
+        reader.onload = function(e){
+          uploadPreview.src = e.target.result;
+          uploadPreview.style.display = 'block';
+          document.getElementById('upload-controls').style.display = 'block';
+          uploadedImageData = e.target.result;
+          setStatus('圖片已上傳，按「解碼 QR Code」開始掃描', 'info');
+        };
+        reader.readAsDataURL(file);
+      }
+
+      decodeBtn.addEventListener('click', function(){
+        if (!uploadedImageData) { return; }
+        setStatus('正在解碼...', 'loading');
+        var img = new Image();
+        img.onload = function(){
+          var canvas = document.createElement('canvas');
+          var ctx = canvas.getContext('2d');
+          var size = Math.min(img.width, img.height);
+          canvas.width = size;
+          canvas.height = size;
+          ctx.drawImage(img, 0, 0, size, size);
+          var imageData = ctx.getImageData(0, 0, size, size);
+          try {
+            var code = jsQR(imageData.data, imageData.width, imageData.height);
+            if (code) {
+              clearStatus();
+              showResult(code.data);
+              addHistory(code.data);
+              showToast('掃描成功！');
+            } else {
+              setStatus('未偵測到 QR Code，請確認圖片包含清晰的 QR Code', 'error');
+            }
+          } catch(e) {
+            setStatus('解碼失敗：' + e.message, 'error');
+          }
+        };
+        img.onerror = function(){
+          setStatus('圖片載入失敗', 'error');
+        };
+        img.src = uploadedImageData;
+      });
+
+      // Copy
+      copyBtn.addEventListener('click', function(){
+        var text = resultText.textContent;
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(text).then(function(){
+            showToast('已複製到剪貼簿');
+          }).catch(function(){
+            fallbackCopy(text);
+          });
+        } else {
+          fallbackCopy(text);
+        }
+      });
+
+      function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); showToast('已複製到剪貼簿'); } catch(e) { showToast('複製失敗'); }
+        document.body.removeChild(ta);
+      }
+
+      // History
+      function getHistory() {
+        try {
+          var data = localStorage.getItem('qr_scanner_history');
+          return data ? JSON.parse(data) : [];
+        } catch(e) { return []; }
+      }
+
+      function saveHistory(arr) {
+        localStorage.setItem('qr_scanner_history', JSON.stringify(arr));
+      }
+
+      function addHistory(text) {
+        var arr = getHistory();
+        arr.unshift({ text: text, ts: Date.now() });
+        if (arr.length > 20) { arr = arr.slice(0, 20); }
+        saveHistory(arr);
+        renderHistory();
+      }
+
+      function renderHistory() {
+        var arr = getHistory();
+        if (arr.length === 0) {
+          historyList.innerHTML = '<li class="history-empty">暫無記錄</li>';
+          return;
+        }
+        var html = '';
+        arr.forEach(function(item, idx){
+          var timeStr = '';
+          var d = new Date(item.ts);
+          var pad = function(n){ return n < 10 ? '0' + n : n; };
+          timeStr = d.getFullYear() + '/' + pad(d.getMonth()+1) + '/' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+          html += '<li class="history-item">' +
+            '<span class="h-text">' + escapeHtml(item.text) + '</span>' +
+            '<span class="h-time">' + timeStr + '</span>' +
+            '<button class="h-del" data-idx="' + idx + '">&times;</button>' +
+          '</li>';
+        });
+        historyList.innerHTML = html;
+
+        // Click to re-show result
+        historyList.querySelectorAll('.history-item').forEach(function(item, idx){
+          item.addEventListener('click', function(e){
+            if (e.target.classList.contains('h-del')) { return; }
+            var arr = getHistory();
+            if (arr[idx]) { showResult(arr[idx].text); }
+          });
+        });
+
+        // Delete individual
+        historyList.querySelectorAll('.h-del').forEach(function(btn){
+          btn.addEventListener('click', function(e){
+            e.stopPropagation();
+            var idx = parseInt(this.dataset.idx);
+            var arr = getHistory();
+            arr.splice(idx, 1);
+            saveHistory(arr);
+            renderHistory();
+          });
+        });
+      }
+
+      function escapeHtml(str) {
+        var div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      historyClear.addEventListener('click', function(){
+        saveHistory([]);
+        renderHistory();
+        showToast('已清除所有記錄');
+      });
+
+      // Init
+      renderHistory();
+
+      // Cleanup on page unload
+      window.addEventListener('beforeunload', function(){
+        stopCamera();
+      });
+    })();
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+</body>
+</html>

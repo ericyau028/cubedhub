@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>IP 位置查詢 — 免費 IP 地址定位工具</title>
+  <meta name="description" content="免費線上 IP 位置查詢工具，自動偵測當前 IP 並顯示地理位置、ISP 與 ASN 資訊，支援手動查詢任意 IP 地址。">
+  <meta name="google-adsense-account" content="ca-pub-4900630860092971">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="IP 位置查詢 — 免費 IP 地址定位工具">
+  <meta property="og:description" content="免費線上 IP 位置查詢工具，自動偵測當前 IP 並顯示地理位置、ISP 與 ASN 資訊，支援手動查詢任意 IP 地址。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cubedhub.com/tools/ip-lookup/">
+  <link rel="manifest" href="manifest.json">
+  <link rel="canonical" href="https://cubedhub.com/tools/ip-lookup/">
+  <meta name="theme-color" content="#0a0a1a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4900630860092971" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "IP 位置查詢工具",
+    "url": "https://cubedhub.com/tools/ip-lookup/",
+    "description": "免費線上 IP 位置查詢工具，自動偵測當前 IP 並顯示地理位置、ISP 與 ASN 資訊。",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "JavaScript"
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a1a;
+      --bg-card: #111127;
+      --bg-input: #1a1a35;
+      --border: rgba(255,255,255,0.08);
+      --text: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent: #8B5CF6;
+      --accent-light: #a78bfa;
+      --radius: 12px;
+    }
+    html { font-size: 16px; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+    }
+    .container { max-width: 720px; margin: 0 auto; padding: 0 1.25rem; width: 100%; }
+
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 0;
+    }
+    .nav-brand {
+      font-weight: 700; font-size: 1.1rem; color: #fff;
+      display: flex; align-items: center; gap: 0.5rem; text-decoration: none;
+    }
+    .nav-brand span { background: linear-gradient(135deg, #8B5CF6, #06B6D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .nav-back { color: var(--text-muted); font-size: 0.85rem; text-decoration: none; }
+    .nav-back:hover { color: var(--text-secondary); }
+
+    .hero { text-align: center; padding: 2.5rem 0 1.5rem; }
+    .hero h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .hero p { color: var(--text-secondary); font-size: 0.9rem; max-width: 480px; margin: 0 auto; }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 0.6rem;
+    }
+    .search-row input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-size: 0.9rem;
+      font-family: inherit;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .search-row input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(139,92,246,0.15);
+    }
+    .search-row input::placeholder { color: var(--text-muted); }
+    .search-row button {
+      padding: 0.75rem 1.4rem;
+      border-radius: var(--radius);
+      border: none;
+      background: linear-gradient(135deg, #8B5CF6, #7c3aed);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+    .search-row button:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(139,92,246,0.3); }
+    .search-row button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    .result-item {
+      background: var(--bg-input);
+      border-radius: 10px;
+      padding: 0.8rem 1rem;
+    }
+    .result-item.full { grid-column: 1 / -1; }
+    .result-item .label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.2rem;
+    }
+    .result-item .value {
+      font-size: 0.95rem;
+      color: var(--text);
+      font-weight: 500;
+      word-break: break-all;
+    }
+    .result-item .value.accent { color: var(--accent-light); }
+
+    .map-wrap {
+      height: 260px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #1a1a35;
+    }
+    .map-wrap .leaflet-container { background: #1a1a35; }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 2rem 0;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    .spinner {
+      width: 20px; height: 20px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .error-msg {
+      text-align: center;
+      padding: 1.5rem 0;
+      color: #f87171;
+      font-size: 0.85rem;
+    }
+
+    .your-ip-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: rgba(139,92,246,0.1);
+      border: 1px solid rgba(139,92,246,0.2);
+      border-radius: 100px;
+      padding: 0.3rem 0.9rem;
+      margin-bottom: 1rem;
+    }
+    .your-ip-badge .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #10B981;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 0.4; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .result-header h2 {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .map-section { margin-top: 1rem; }
+    .map-section h3 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 0.6rem;
+    }
+    .map-coords {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: monospace;
+    }
+
+    .footer {
+      margin-top: auto; text-align: center;
+      padding: 2rem 0; color: var(--text-muted); font-size: 0.8rem;
+    }
+    .footer a { color: var(--text-muted); }
+    .footer a:hover { color: var(--text-secondary); }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 500px) {
+      .result-grid { grid-template-columns: 1fr; }
+      .search-row { flex-direction: column; }
+      .hero h1 { font-size: 1.3rem; }
+      .card { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="url(#g)"/><defs><linearGradient id="g" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#8B5CF6"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs></svg>
+        <span>CubedHub</span>
+      </a>
+      <a href="/" class="nav-back">&larr; 首頁</a>
+    </nav>
+  </div>
+
+  <div class="container">
+    <div class="hero">
+      <h1>IP 位置查詢</h1>
+      <p>自動偵測當前 IP 並顯示地理位置、ISP 與 ASN 資訊，支援手動查詢任意 IP 地址。</p>
+    </div>
+
+    <div class="card">
+      <div class="search-row">
+        <input type="text" id="ipInput" placeholder="輸入 IP 地址（留空查詢自己的 IP）" spellcheck="false" autocomplete="off">
+        <button id="lookupBtn">查詢</button>
+      </div>
+    </div>
+
+    <div id="loadingIndicator" class="card hidden">
+      <div class="loading">
+        <div class="spinner"></div>
+        <span>正在查詢 IP 資訊...</span>
+      </div>
+    </div>
+
+    <div id="errorDisplay" class="card hidden">
+      <div class="error-msg" id="errorText"></div>
+    </div>
+
+    <div id="resultCard" class="card hidden">
+      <div class="result-header">
+        <div class="your-ip-badge" id="badgeAuto">
+          <span class="dot"></span>
+          <span id="badgeLabel">你的 IP</span>
+        </div>
+        <h2 id="resultIP">---</h2>
+      </div>
+      <div class="result-grid" id="resultGrid"></div>
+      <div class="map-section">
+        <h3>地理位置</h3>
+        <div class="map-wrap" id="mapContainer"></div>
+        <div class="map-coords">
+          <span id="coordLat">緯度: --</span>
+          <span id="coordLng">經度: --</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:0.5rem 0 1.5rem;color:var(--text-muted);font-size:0.75rem;">— 廣告 —</div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="/privacy-policy.html">隱私權政策</a> &middot; <a href="/contact.html">聯絡我們</a></p>
+      <p style="margin-top:0.3rem;">&copy; 2026 cubedhub.com</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    (function() {
+      var ipInput = document.getElementById('ipInput');
+      var lookupBtn = document.getElementById('lookupBtn');
+      var resultCard = document.getElementById('resultCard');
+      var loadingIndicator = document.getElementById('loadingIndicator');
+      var errorDisplay = document.getElementById('errorDisplay');
+      var errorText = document.getElementById('errorText');
+      var resultGrid = document.getElementById('resultGrid');
+      var resultIP = document.getElementById('resultIP');
+      var badgeAuto = document.getElementById('badgeAuto');
+      var badgeLabel = document.getElementById('badgeLabel');
+      var mapContainer = document.getElementById('mapContainer');
+      var coordLat = document.getElementById('coordLat');
+      var coordLng = document.getElementById('coordLng');
+
+      var mapInstance = null;
+      var markerInstance = null;
+
+      function showLoading() {
+        loadingIndicator.classList.remove('hidden');
+        resultCard.classList.add('hidden');
+        errorDisplay.classList.add('hidden');
+      }
+
+      function hideLoading() {
+        loadingIndicator.classList.add('hidden');
+      }
+
+      function showError(msg) {
+        hideLoading();
+        resultCard.classList.add('hidden');
+        errorDisplay.classList.remove('hidden');
+        errorText.textContent = msg;
+      }
+
+      function buildResultGrid(data) {
+        var items = [
+          { label: '國家', value: data.country || '--', full: false },
+          { label: '地區 / 城市', value: [data.regionName, data.city].filter(Boolean).join(' / ') || '--', full: false },
+          { label: 'ISP', value: data.isp || '--', full: true },
+          { label: 'ASN', value: data.as || '--', full: true }
+        ];
+        var html = '';
+        items.forEach(function(item) {
+          html += '<div class="result-item' + (item.full ? ' full' : '') + '">';
+          html += '<div class="label">' + item.label + '</div>';
+          html += '<div class="value">' + escapeHtml(item.value) + '</div>';
+          html += '</div>';
+        });
+        resultGrid.innerHTML = html;
+      }
+
+      function escapeHtml(str) {
+        var div = document.createElement('div');
+        div.appendChild(document.createTextNode(str));
+        return div.innerHTML;
+      }
+
+      function initMap(lat, lng) {
+        if (mapInstance) {
+          mapInstance.setView([lat, lng], 10);
+          if (markerInstance) {
+            markerInstance.setLatLng([lat, lng]);
+          } else {
+            markerInstance = L.marker([lat, lng]).addTo(mapInstance);
+          }
+          return;
+        }
+        mapInstance = L.map(mapContainer, {
+          center: [lat, lng],
+          zoom: 10,
+          zoomControl: true,
+          attributionControl: false
+        });
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 18
+        }).addTo(mapInstance);
+        markerInstance = L.marker([lat, lng]).addTo(mapInstance);
+      }
+
+      function displayResult(data, isAuto) {
+        hideLoading();
+        errorDisplay.classList.add('hidden');
+        resultCard.classList.remove('hidden');
+
+        if (isAuto) {
+          badgeAuto.classList.remove('hidden');
+          badgeLabel.textContent = '你的 IP';
+        } else {
+          badgeAuto.classList.remove('hidden');
+          badgeLabel.textContent = '查詢結果';
+        }
+
+        resultIP.textContent = data.query || '--';
+        buildResultGrid(data);
+
+        var lat = data.lat;
+        var lng = data.lon;
+        if (lat != null && lng != null) {
+          coordLat.textContent = '緯度: ' + lat;
+          coordLng.textContent = '經度: ' + lng;
+          initMap(lat, lng);
+          setTimeout(function() { if (mapInstance) mapInstance.invalidateSize(); }, 200);
+        } else {
+          coordLat.textContent = '緯度: --';
+          coordLng.textContent = '經度: --';
+        }
+      }
+
+      function fetchIP(ip) {
+        showLoading();
+        var url = 'http://ip-api.com/json/' + (ip ? encodeURIComponent(ip) : '') + '?fields=status,message,query,country,regionName,city,isp,as,lat,lon';
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.timeout = 10000;
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            try {
+              var data = JSON.parse(xhr.responseText);
+              if (data.status === 'success') {
+                displayResult(data, !ip);
+              } else {
+                showError(data.message || '查詢失敗，請檢查 IP 地址是否正確。');
+              }
+            } catch(e) {
+              showError('資料解析失敗，請稍後再試。');
+            }
+          } else {
+            showError('伺服器回應錯誤 (' + xhr.status + ')，請稍後再試。');
+          }
+        };
+        xhr.onerror = function() {
+          showError('網路請求失敗，請檢查網路連線。');
+        };
+        xhr.ontimeout = function() {
+          showError('請求逾時，請稍後再試。');
+        };
+        xhr.send();
+      }
+
+      function doLookup() {
+        var val = ipInput.value.trim();
+        fetchIP(val || '');
+      }
+
+      lookupBtn.addEventListener('click', doLookup);
+      ipInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          doLookup();
+        }
+      });
+
+      fetchIP('');
+    })();
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+</body>
+</html>
