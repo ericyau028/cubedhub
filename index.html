@@ -672,6 +672,14 @@
     .section-cta[data-accent="ai"] { background: rgba(6,182,212,0.12); border-color: rgba(6,182,212,0.25); color: var(--color-ai); }
     .section-cta[data-accent="ai"]:hover { background: rgba(6,182,212,0.25); border-color: rgba(6,182,212,0.5); box-shadow: 0 8px 30px rgba(6,182,212,0.2); transform: translateY(-2px); }
 
+    .section-desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      max-width: 520px;
+    }
+
     .section-cta svg {
       transition: transform 0.3s ease;
     }
@@ -714,6 +722,78 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
       margin-bottom: 0.3rem;
+    }
+
+    /* ===== LATEST ARTICLES ===== */
+    .latest-section {
+      padding: 5rem 0;
+      background: var(--bg-secondary);
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .latest-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.4rem;
+    }
+
+    .latest-subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 3rem;
+    }
+
+    .latest-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .latest-card {
+      display: block;
+      background: var(--bg-primary);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 1.5rem;
+      transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      text-decoration: none;
+    }
+
+    .latest-card:hover {
+      border-color: rgba(139,92,246,0.3);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+
+    .latest-card-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.25rem 0.7rem;
+      border-radius: 100px;
+      margin-bottom: 0.8rem;
+    }
+
+    .latest-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+
+    .latest-card p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.8rem;
+      line-height: 1.5;
+    }
+
+    .latest-card-date {
+      font-size: 0.75rem;
+      color: var(--text-muted);
     }
 
     /* ===== RESPONSIVE ===== */
@@ -836,6 +916,7 @@
             <li><span class="check" data-accent="game">&#10003;</span> 角色培養與裝備推薦</li>
             <li><span class="check" data-accent="game">&#10003;</span> 關卡解析與實用技巧</li>
           </ul>
+          <p class="section-desc">從熱門手遊到 AAA 大作，我們提供深度角色培養指南、關卡攻略與版本更新資訊，讓每場冒險都能事半功倍。</p>
           <a href="https://game.cubedhub.com/" class="section-cta" data-accent="game" target="_blank" rel="noopener">
             前往攻略站
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -861,6 +942,7 @@
             <li><span class="check" data-accent="health">&#10003;</span> 運動健身與飲食建議</li>
             <li><span class="check" data-accent="health">&#10003;</span> 心理健康與生活平衡</li>
           </ul>
+          <p class="section-desc">涵蓋運動健身、飲食營養與身心健康三大面向，以科學為基礎提供實用建議，幫助你在忙碌生活中找到健康平衡點。</p>
           <a href="https://health.cubedhub.com/" class="section-cta" data-accent="health" target="_blank" rel="noopener">
             前往健康站
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -886,6 +968,7 @@
             <li><span class="check" data-accent="wfh">&#10003;</span> 時間管理與生產力技巧</li>
             <li><span class="check" data-accent="wfh">&#10003;</span> 在家工作環境設置</li>
           </ul>
+          <p class="section-desc">無論你是遠端新手還是資深 WFH 工作者，我們精選的工具評測與生產力技巧，幫助你提升效率、改善居家辦公體驗。</p>
           <a href="https://wfh.cubedhub.com/" class="section-cta" data-accent="wfh" target="_blank" rel="noopener">
             前往 WFH 站
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -911,6 +994,7 @@
             <li><span class="check" data-accent="hk">&#10003;</span> 交通路線與住宿推薦</li>
             <li><span class="check" data-accent="hk">&#10003;</span> 行程規劃與實用貼士</li>
           </ul>
+          <p class="section-desc">從在地人推薦的隱藏美食到經典觀光路線，我們整理最實用的香港旅遊資訊，讓你的每一趟旅程都充滿驚喜。</p>
           <a href="https://hk.cubedhub.com/" class="section-cta" data-accent="hk" target="_blank" rel="noopener">
             前往旅遊站
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -936,6 +1020,7 @@
             <li><span class="check" data-accent="bus">&#10003;</span> 實時 ETA 班次預報</li>
             <li><span class="check" data-accent="bus">&#10003;</span> 巴士路線圖與轉乘建議</li>
           </ul>
+          <p class="section-desc">即時巴士 ETA、路線圖與轉乘建議，出門前查一查，等車時間更有效率。涵蓋九巴、城巴主要路線資訊，每日通勤必備。</p>
           <a href="https://bus.cubedhub.com/" class="section-cta" data-accent="bus" target="_blank" rel="noopener">
             前往巴士站
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -961,6 +1046,7 @@
             <li><span class="check" data-accent="hk3x3">&#10003;</span> 球隊排名與賽果追蹤</li>
             <li><span class="check" data-accent="hk3x3">&#10003;</span> 籃球訓練與戰術攻略</li>
           </ul>
+          <p class="section-desc">香港學界 3x3 籃球賽事資訊一站整合，包含球隊排名、賽果追蹤與訓練攻略，讓熱愛籃球的你不再錯過任何精彩比賽。</p>
           <a href="https://hk3x3.cubedhub.com/" class="section-cta" data-accent="hk3x3" target="_blank" rel="noopener">
             前往籃球站
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -986,6 +1072,7 @@
             <li><span class="check" data-accent="ai">&#10003;</span> 實用 AI 應用推薦</li>
             <li><span class="check" data-accent="ai">&#10003;</span> 使用技巧與比較評測</li>
           </ul>
+          <p class="section-desc">文案生成、繪圖設計、程式開發——我們親自測試並分類整理最實用的 AI 工具，幫助你在工作和創作中發揮最大生產力。</p>
           <a href="https://ai.cubedhub.com/" class="section-cta" data-accent="ai" target="_blank" rel="noopener">
             前往 AI 站
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -996,6 +1083,52 @@
   </section>
 
   </div>
+
+  <!-- ===== LATEST ARTICLES ===== -->
+  <section class="latest-section">
+    <div class="container">
+      <h2 class="latest-title">最新文章</h2>
+      <p class="latest-subtitle">來自各站的精選內容，持續更新中</p>
+      <div class="latest-grid">
+        <a href="https://game.cubedhub.com/steam/palworld/articles/beginner-guide.html" class="latest-card" target="_blank" rel="noopener">
+          <div class="latest-card-badge" style="background:rgba(139,92,246,0.15);color:#a78bfa;">遊戲攻略</div>
+          <h3>幻獸帕魯新手入門完全指南</h3>
+          <p>初始選擇、快速升級技巧、前期必做事項與推薦捕捉帕魯。</p>
+          <span class="latest-card-date">2026-07-24</span>
+        </a>
+        <a href="https://game.cubedhub.com/steam/wukong/articles/boss-guide.html" class="latest-card" target="_blank" rel="noopener">
+          <div class="latest-card-badge" style="background:rgba(139,92,246,0.15);color:#a78bfa;">遊戲攻略</div>
+          <h3>黑神話悟空全 Boss 攻略</h3>
+          <p>六大章節共 15+ 個 Boss 的詳細打法、弱點屬性與技能組合推薦。</p>
+          <span class="latest-card-date">2026-07-24</span>
+        </a>
+        <a href="https://game.cubedhub.com/blue-archive/articles/tier-list.html" class="latest-card" target="_blank" rel="noopener">
+          <div class="latest-card-badge" style="background:rgba(139,92,246,0.15);color:#a78bfa;">遊戲攻略</div>
+          <h3>蔚藍檔案學生強度排行榜</h3>
+          <p>各職業學生強度評比、開局推薦與總力戰人權角色分析。</p>
+          <span class="latest-card-date">2026-07-24</span>
+        </a>
+        <a href="https://game.cubedhub.com/mabinogi-mobile/articles/pets-guide.html" class="latest-card" target="_blank" rel="noopener">
+          <div class="latest-card-badge" style="background:rgba(139,92,246,0.15);color:#a78bfa;">遊戲攻略</div>
+          <h3>瑪奇 Mobile 寵物養成指南</h3>
+          <p>全寵物能力對比、培養資源規劃與戰鬥出戰組合推薦。</p>
+          <span class="latest-card-date">2026-07-30</span>
+        </a>
+        <a href="https://game.cubedhub.com/maple-classic/articles/jobs-guide.html" class="latest-card" target="_blank" rel="noopener">
+          <div class="latest-card-badge" style="background:rgba(139,92,246,0.15);color:#a78bfa;">遊戲攻略</div>
+          <h3>新楓之谷經典版職業攻略</h3>
+          <p>全職業技能解析、練功效率評比與裝備配點建議。</p>
+          <span class="latest-card-date">2026-07-30</span>
+        </a>
+        <a href="https://game.cubedhub.com/wuthering-waves/articles/beginner-guide.html" class="latest-card" target="_blank" rel="noopener">
+          <div class="latest-card-badge" style="background:rgba(139,92,246,0.15);color:#a78bfa;">遊戲攻略</div>
+          <h3>鳴潮新手入門攻略</h3>
+          <p>開局角色選擇、抽卡策略與前期資源規劃完整教學。</p>
+          <span class="latest-card-date">2026-07-30</span>
+        </a>
+      </div>
+    </div>
+  </section>
 
   <!-- ===== FOOTER ===== -->
   <footer>
