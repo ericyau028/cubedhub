@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>免費線上工具 — CubedHub 工具大全</title>
+  <meta name="description" content="CubedHub 免費線上工具：QR Code 產生與掃描、單位換算、文字轉語音、字數統計、密碼產生器、IP 查詢、顏色工具、番茄鐘，全部免註冊免費使用。">
+  <meta name="google-adsense-account" content="ca-pub-4900630860092971">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="免費線上工具 — CubedHub 工具大全">
+  <meta property="og:description" content="9 個免費線上工具，免註冊免安裝，打開即用。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cubedhub.com/tools/">
+  <link rel="canonical" href="https://cubedhub.com/tools/">
+  <meta name="theme-color" content="#0a0a1a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4900630860092971" crossorigin="anonymous"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a1a;
+      --bg-card: #111127;
+      --border: rgba(255,255,255,0.08);
+      --text: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent: #8B5CF6;
+      --radius: 12px;
+    }
+    html { font-size: 16px; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+    }
+    .container { max-width: 1000px; margin: 0 auto; padding: 0 1.25rem; width: 100%; }
+
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 0;
+    }
+    .nav-brand {
+      font-weight: 700; font-size: 1.1rem; color: #fff;
+      display: flex; align-items: center; gap: 0.5rem; text-decoration: none;
+    }
+    .nav-brand span { background: linear-gradient(135deg, #8B5CF6, #06B6D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .nav-back { color: var(--text-muted); font-size: 0.85rem; text-decoration: none; }
+    .nav-back:hover { color: var(--text-secondary); }
+
+    .hero { text-align: center; padding: 3rem 0 2rem; }
+    .hero h1 { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .hero p { color: var(--text-secondary); font-size: 0.95rem; max-width: 520px; margin: 0 auto; }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+      padding-bottom: 3rem;
+    }
+    .tool-card {
+      display: block;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem 1.25rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative;
+      overflow: hidden;
+    }
+    .tool-card:hover {
+      border-color: rgba(139,92,246,0.35);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(139,92,246,0.15);
+    }
+    .tool-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 0.9rem;
+      background: rgba(139,92,246,0.12);
+      border: 1px solid rgba(139,92,246,0.2);
+    }
+    .tool-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem; }
+    .tool-card p { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; }
+    .tool-card .arrow {
+      position: absolute; top: 1.2rem; right: 1.2rem;
+      color: var(--text-muted); font-size: 1rem;
+      transition: transform 0.3s;
+    }
+    .tool-card:hover .arrow { transform: translate(3px, -3px); color: var(--accent); }
+
+    .footer {
+      margin-top: auto; text-align: center;
+      padding: 2rem 0; color: var(--text-muted); font-size: 0.8rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .footer a { color: var(--text-muted); }
+    .footer a:hover { color: var(--text-secondary); }
+
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="url(#g)"/><defs><linearGradient id="g" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#8B5CF6"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs></svg>
+        <span>CubedHub</span>
+      </a>
+      <a href="/" class="nav-back">&larr; 首頁</a>
+    </nav>
+  </div>
+
+  <div class="container">
+    <div class="hero">
+      <h1>免費線上工具</h1>
+      <p>免註冊、免安裝、打開即用。9 個實用工具，全部免費。</p>
+    </div>
+
+    <div class="tools-grid">
+      <a href="/tools/qr/" class="tool-card">
+        <div class="tool-icon">🔳</div>
+        <h3>QR Code 產生器</h3>
+        <p>自訂顏色、Logo 與樣式，一鍵下載 PNG。</p>
+        <span class="arrow">↗</span>
+      </a>
+      <a href="/tools/qr-scanner/" class="tool-card">
+        <div class="tool-icon">📷</div>
+        <h3>QR 掃描器</h3>
+        <p>相機即時掃描或上傳圖片解碼 QR Code。</p>
+        <span class="arrow">↗</span>
+      </a>
+      <a href="/tools/unit-converter/" class="tool-card">
+        <div class="tool-icon">📏</div>
+        <h3>單位換算器</h3>
+        <p>長度、重量、溫度、資料儲存等 8 大類即時換算。</p>
+        <span class="arrow">↗</span>
+      </a>
+      <a href="/tools/text-to-speech/" class="tool-card">
+        <div class="tool-icon">🔊</div>
+        <h3>文字轉語音</h3>
+        <p>支援國語、粵語、英文朗讀，可調語速與音調。</p>
+        <span class="arrow">↗</span>
+      </a>
+      <a href="/tools/word-counter/" class="tool-card">
+        <div class="tool-icon">📝</div>
+        <h3>字數統計</h3>
+        <p>即時計算字數、字元數與閱讀時間。</p>
+        <span class="arrow">↗</span>
+      </a>
+      <a href="/tools/password/" class="tool-card">
+        <div class="tool-icon">🔑</div>
+        <h3>密碼產生器</h3>
+        <p>自訂長度與字元組合，生成強固密碼。</p>
+        <span class="arrow">↗</span>
+      </a>
+      <a href="/tools/ip-lookup/" class="tool-card">
+        <div class="tool-icon">🌐</div>
+        <h3>IP 位置查詢</h3>
+        <p>查詢 IP 地理位置、ISP 與 ASN 資訊。</p>
+        <span class="arrow">↗</span>
+      </a>
+      <a href="/tools/color-tool/" class="tool-card">
+        <div class="tool-icon">🎨</div>
+        <h3>顏色工具</h3>
+        <p>色碼轉換、調色盤與漸層色產生。</p>
+        <span class="arrow">↗</span>
+      </a>
+      <a href="/tools/timer/" class="tool-card">
+        <div class="tool-icon">⏱️</div>
+        <h3>番茄鐘</h3>
+        <p>專注計時與休息提醒，提升工作效率。</p>
+        <span class="arrow">↗</span>
+      </a>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:0.5rem 0 1.5rem;color:var(--text-muted);font-size:0.75rem;">— 廣告 —</div>
+
+  <footer class="footer">
+    <div class="container">
+      <p><a href="/privacy-policy.html">隱私權政策</a> &middot; <a href="/contact.html">聯絡我們</a></p>
+      <p style="margin-top:0.3rem;">&copy; 2026 cubedhub.com</p>
+    </div>
+  </footer>
+</body>
+</html>

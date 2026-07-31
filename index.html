@@ -688,6 +688,26 @@
       transform: translateX(4px);
     }
 
+    .tool-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.4rem 0.9rem;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text-secondary);
+      transition: all 0.3s ease;
+    }
+
+    .tool-chip:hover {
+      background: rgba(6,182,212,0.15);
+      border-color: rgba(6,182,212,0.4);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
     /* ===== REVEAL ANIMATION ===== */
     .reveal {
       opacity: 0;
@@ -844,6 +864,7 @@
         <a href="#bus">香港巴士</a>
         <a href="#hk3x3">3x3 籃球</a>
         <a href="#ai">AI 工具</a>
+        <a href="#tools">免費工具</a>
       </div>
       <button class="hamburger" id="hamburger" aria-label="開啟選單" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -862,6 +883,7 @@
     <a href="#bus">香港巴士</a>
     <a href="#hk3x3">3x3 籃球</a>
     <a href="#ai">AI 工具</a>
+    <a href="#tools">免費工具</a>
   </div>
 
   <div class="snap-container">
@@ -1082,9 +1104,43 @@
     </div>
   </section>
 
-  </div>
+  <!-- 8. Free Tools -->
+  <section class="section-site" id="tools">
+    <div class="container">
+      <div class="section-inner">
+        <div class="section-visual reveal">
+          <div class="section-icon-wrap" data-accent="ai">🛠️</div>
+        </div>
+        <div class="section-text reveal reveal-delay-1">
+          <span class="section-domain" data-accent="ai">cubedhub.com/tools</span>
+          <h2>免費線上工具</h2>
+          <p class="tagline">9 個免註冊、免安裝的實用工具，打開即用。</p>
+          <ul>
+            <li><span class="check" data-accent="ai">&#10003;</span> QR Code 產生與掃描</li>
+            <li><span class="check" data-accent="ai">&#10003;</span> 單位換算、字數統計、密碼產生</li>
+            <li><span class="check" data-accent="ai">&#10003;</span> 文字轉語音、IP 查詢、番茄鐘</li>
+          </ul>
+          <div class="tool-chips" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.75rem;">
+            <a href="/tools/qr/" class="tool-chip" data-accent="ai">🔳 QR 產生器</a>
+            <a href="/tools/qr-scanner/" class="tool-chip" data-accent="ai">📷 QR 掃描</a>
+            <a href="/tools/unit-converter/" class="tool-chip" data-accent="ai">📏 單位換算</a>
+            <a href="/tools/text-to-speech/" class="tool-chip" data-accent="ai">🔊 文字轉語音</a>
+            <a href="/tools/word-counter/" class="tool-chip" data-accent="ai">📝 字數統計</a>
+            <a href="/tools/password/" class="tool-chip" data-accent="ai">🔑 密碼產生器</a>
+            <a href="/tools/ip-lookup/" class="tool-chip" data-accent="ai">🌐 IP 查詢</a>
+            <a href="/tools/color-tool/" class="tool-chip" data-accent="ai">🎨 顏色工具</a>
+            <a href="/tools/timer/" class="tool-chip" data-accent="ai">⏱️ 番茄鐘</a>
+          </div>
+          <a href="/tools/" class="section-cta" data-accent="ai">
+            查看全部工具
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <!-- ===== LATEST ARTICLES ===== -->
+  </div>
   <section class="latest-section">
     <div class="container">
       <h2 class="latest-title">最新文章</h2>
