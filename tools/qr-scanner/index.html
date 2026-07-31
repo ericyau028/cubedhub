@@ -319,9 +319,6 @@
           <input type="file" id="file-input" accept="image/*">
         </div>
         <img class="upload-preview" id="upload-preview" alt="上傳的圖片">
-        <div id="upload-controls" style="display:none">
-          <button class="btn btn-primary" id="decode-btn">解碼 QR Code</button>
-        </div>
       </div>
 
       <div class="status-msg" id="status-msg"></div>
@@ -371,7 +368,6 @@
       var fileInput = document.getElementById('file-input');
       var uploadZone = document.getElementById('upload-zone');
       var uploadPreview = document.getElementById('upload-preview');
-      var decodeBtn = document.getElementById('decode-btn');
       var statusMsg = document.getElementById('status-msg');
       var resultDiv = document.getElementById('result');
       var resultText = document.getElementById('result-text');
@@ -434,7 +430,6 @@
         uploadPreview.style.display = 'none';
         uploadPreview.src = '';
         uploadedImageData = null;
-        document.getElementById('upload-controls').style.display = 'none';
       }
 
       // Camera
@@ -570,25 +565,25 @@
         reader.onload = function(e){
           uploadPreview.src = e.target.result;
           uploadPreview.style.display = 'block';
-          document.getElementById('upload-controls').style.display = 'block';
           uploadedImageData = e.target.result;
-          setStatus('圖片已上傳，按「解碼 QR Code」開始掃描', 'info');
+          decodeUploadedImage();
         };
         reader.readAsDataURL(file);
       }
 
-      decodeBtn.addEventListener('click', function(){
+      function decodeUploadedImage() {
         if (!uploadedImageData) { return; }
         setStatus('正在解碼...', 'loading');
         var img = new Image();
         img.onload = function(){
           var canvas = document.createElement('canvas');
           var ctx = canvas.getContext('2d');
-          var size = Math.min(img.width, img.height);
-          canvas.width = size;
-          canvas.height = size;
-          ctx.drawImage(img, 0, 0, size, size);
-          var imageData = ctx.getImageData(0, 0, size, size);
+          var maxSize = 1500;
+          var scale = Math.min(1, maxSize / Math.max(img.width, img.height));
+          canvas.width = Math.round(img.width * scale);
+          canvas.height = Math.round(img.height * scale);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
           try {
             var code = jsQR(imageData.data, imageData.width, imageData.height);
             if (code) {
@@ -607,7 +602,7 @@
           setStatus('圖片載入失敗', 'error');
         };
         img.src = uploadedImageData;
-      });
+      }
 
       // Copy
       copyBtn.addEventListener('click', function(){

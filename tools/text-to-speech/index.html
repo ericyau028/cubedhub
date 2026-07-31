@@ -247,7 +247,19 @@
       </div>
 
       <div class="input-group">
-        <label for="voice-select">語言 / 語音</label>
+        <label for="lang-select">語言</label>
+        <div class="select-wrap">
+          <select id="lang-select">
+            <option value="auto">自動（全部）</option>
+            <option value="cmn">國語（普通話）</option>
+            <option value="yue">粵語</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="voice-select">語音</label>
         <div class="select-wrap">
           <select id="voice-select">
             <option value="">載入語音中...</option>
@@ -299,6 +311,7 @@
   <script>
     (function(){
       var textarea = document.getElementById('tts-text');
+      var langSelect = document.getElementById('lang-select');
       var voiceSelect = document.getElementById('voice-select');
       var rateSlider = document.getElementById('rate-slider');
       var pitchSlider = document.getElementById('pitch-slider');
@@ -347,6 +360,28 @@
       }
 
       // Load voices
+      function matchLang(lang) {
+        var l = (lang || '').toLowerCase().replace('_', '-');
+        // Cantonese: yue-HK, zh-HK (HK = Cantonese)
+        if (l.indexOf('yue') === 0 || l === 'zh-hk') return 'yue';
+        // Mandarin: zh-CN, zh-TW, zh-SG, zh
+        if (l.indexOf('zh') === 0) return 'cmn';
+        if (l.indexOf('en') === 0) return 'en';
+        return null;
+      }
+
+      function pickBestVoice(list) {
+        if (!list || list.length === 0) return -1;
+        // Prefer local service (offline, more stable), then default
+        for (var i = 0; i < list.length; i++) {
+          if (list[i].localService) return i;
+        }
+        for (var i = 0; i < list.length; i++) {
+          if (list[i].default) return i;
+        }
+        return 0;
+      }
+
       function loadVoices() {
         var voices = synth.getVoices();
         if (!voices || voices.length === 0) {
@@ -354,27 +389,61 @@
           return;
         }
         allVoices = voices;
-        var filtered = voices.filter(function(v){
-          var lang = v.lang || '';
-          return lang.startsWith('zh') || lang.startsWith('yue') || lang.startsWith('en');
-        });
-        if (filtered.length === 0) filtered = voices;
+        var selectedLang = langSelect.value;
+        var optGroups = [
+          { label: '國語', key: 'cmn' },
+          { label: '粵語', key: 'yue' },
+          { label: 'English', key: 'en' }
+        ];
+        if (selectedLang !== 'auto') {
+          optGroups = optGroups.filter(function(g){ return g.key === selectedLang; });
+        }
+
         voiceSelect.innerHTML = '';
-        filtered.forEach(function(v, i){
-          var opt = document.createElement('option');
-          opt.value = i;
-          var label = v.name + ' (' + v.lang + ')';
-          if (v.default) label += ' [預設]';
-          opt.textContent = label;
-          if (v.default) opt.selected = true;
-          voiceSelect.appendChild(opt);
+        var bestIdx = -1;
+        var groups = 0;
+        optGroups.forEach(function(g){
+          var matched = [];
+          for (var i = 0; i < voices.length; i++) {
+            if (matchLang(voices[i].lang) === g.key) {
+              matched.push(i);
+            }
+          }
+          if (matched.length === 0) return;
+          groups++;
+          var optgroup = document.createElement('optgroup');
+          optgroup.label = g.label;
+          var bestInGroup = pickBestVoice(matched);
+          matched.forEach(function(vi){
+            var v = voices[vi];
+            var opt = document.createElement('option');
+            opt.value = vi;
+            var label = v.name + ' (' + v.lang + ')';
+            if (v.localService) label += ' [離線]';
+            if (v.default) label += ' [預設]';
+            opt.textContent = label;
+            optgroup.appendChild(opt);
+          });
+          if (bestIdx === -1) bestIdx = matched[bestInGroup];
+          voiceSelect.appendChild(optgroup);
         });
+        if (groups === 0) {
+          var opt = document.createElement('option');
+          opt.value = -1;
+          opt.textContent = '找不到語音，請檢查瀏覽器設定';
+          voiceSelect.appendChild(opt);
+          voiceSelect.disabled = true;
+          return;
+        }
+        voiceSelect.disabled = false;
+        if (bestIdx >= 0) voiceSelect.value = bestIdx;
       }
 
       loadVoices();
       if (synth.onvoiceschanged !== undefined) {
         synth.onvoiceschanged = loadVoices;
       }
+      langSelect.addEventListener('change', loadVoices);
 
       // Build word-level display for highlighting
       function buildWordDisplay() {

@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>QR碼產生器 — 免費線上 QR Code 生成工具</title>
-  <meta name="description" content="免費線上 QR Code 產生器。輸入文字或網址，自訂顏色尺寸，一鍵下載 PNG。無需註冊，無浮水印。">
+  <meta name="description" content="免費線上 QR Code 產生器。支援顏色自訂、Logo 置中、圓角樣式、一鍵下載 PNG。無需註冊，無浮水印。">
   <meta name="google-adsense-account" content="ca-pub-4900630860092971">
   <meta name="robots" content="index, follow">
   <meta property="og:title" content="QR碼產生器 — 免費線上 QR Code 工具">
-  <meta property="og:description" content="免費 QR Code 產生器，支援顏色自訂、尺寸調整、PNG 下載。">
+  <meta property="og:description" content="免費 QR Code 產生器，支援顏色、Logo、樣式自訂與 PNG 下載。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://cubedhub.com/tools/qr/">
   <link rel="canonical" href="https://cubedhub.com/tools/qr/">
@@ -21,6 +21,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4900630860092971" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -47,7 +48,6 @@
     }
     .container { max-width: 640px; margin: 0 auto; padding: 0 1.25rem; width: 100%; }
 
-    /* Nav */
     .nav {
       display: flex; align-items: center; justify-content: space-between;
       padding: 1rem 0;
@@ -60,12 +60,10 @@
     .nav-back { color: var(--text-muted); font-size: 0.85rem; text-decoration: none; }
     .nav-back:hover { color: var(--text-secondary); }
 
-    /* Hero */
     .hero { text-align: center; padding: 2.5rem 0 1.5rem; }
     .hero h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.5rem; }
     .hero p { color: var(--text-secondary); font-size: 0.9rem; max-width: 420px; margin: 0 auto; }
 
-    /* Card */
     .card {
       background: var(--bg-card);
       border: 1px solid var(--border);
@@ -74,7 +72,6 @@
       margin-bottom: 1rem;
     }
 
-    /* Input */
     .input-group { margin-bottom: 1.25rem; }
     .input-group label {
       display: block; font-size: 0.8rem; font-weight: 600;
@@ -92,7 +89,6 @@
     }
     .input-group textarea { min-height: 80px; }
 
-    /* Options row */
     .options-row {
       display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
       margin-bottom: 1rem;
@@ -111,7 +107,14 @@
       font-family: monospace;
     }
 
-    /* Size slider */
+    .color-presets { display: flex; gap: 0.5rem; margin-top: 0.6rem; flex-wrap: wrap; }
+    .color-preset {
+      width: 26px; height: 26px; border-radius: 50%; cursor: pointer;
+      border: 2px solid transparent; transition: transform 0.2s, border-color 0.2s;
+    }
+    .color-preset:hover { transform: scale(1.15); }
+    .color-preset.active { border-color: #fff; transform: scale(1.15); }
+
     .size-control { display: flex; align-items: center; gap: 0.75rem; }
     .size-control input[type="range"] {
       flex: 1; height: 4px; appearance: none;
@@ -126,22 +129,44 @@
       font-family: monospace;
     }
 
-    /* QR Output */
+    .seg-group { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .seg {
+      flex: 1; min-width: 80px; padding: 0.5rem 0.3rem;
+      background: var(--bg-input); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text-secondary); font-size: 0.75rem;
+      cursor: pointer; text-align: center; transition: all 0.2s;
+      font-family: inherit;
+    }
+    .seg.active { background: rgba(139,92,246,0.15); border-color: var(--accent); color: var(--accent-light); font-weight: 600; }
+
+    .logo-upload {
+      display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap;
+    }
+    .logo-upload input[type="file"] { display: none; }
+    .logo-upload .upload-btn {
+      padding: 0.5rem 1rem; background: var(--bg-input); border: 1px dashed var(--border);
+      border-radius: 8px; color: var(--text-secondary); font-size: 0.8rem;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .logo-upload .upload-btn:hover { border-color: var(--accent); color: var(--accent-light); }
+    .logo-preview {
+      width: 36px; height: 36px; border-radius: 8px; object-fit: contain;
+      background: var(--bg-input); border: 1px solid var(--border); display: none;
+    }
+
     .qr-output {
       display: flex; flex-direction: column; align-items: center;
       padding: 2rem 1rem; min-height: 260px;
       justify-content: center;
     }
-    .qr-output img {
+    .qr-output canvas {
       max-width: 100%; height: auto; border-radius: 8px;
-      image-rendering: pixelated;
     }
     .qr-placeholder {
       color: var(--text-muted); font-size: 0.85rem; text-align: center;
     }
     .qr-placeholder svg { width: 64px; height: 64px; margin-bottom: 1rem; opacity: 0.3; }
 
-    /* Buttons */
     .btn-group { display: flex; gap: 0.6rem; margin-top: 1rem; flex-wrap: wrap; justify-content: center; }
     .btn {
       display: inline-flex; align-items: center; gap: 0.4rem;
@@ -162,7 +187,6 @@
     .btn-secondary:hover { background: rgba(255,255,255,0.1); color: #fff; }
     .btn-secondary:disabled { opacity: 0.4; cursor: not-allowed; }
 
-    /* Footer */
     .footer {
       margin-top: auto; text-align: center;
       padding: 2rem 0; color: var(--text-muted); font-size: 0.8rem;
@@ -170,7 +194,6 @@
     .footer a { color: var(--text-muted); }
     .footer a:hover { color: var(--text-secondary); }
 
-    /* Toast */
     .toast {
       position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
       background: #1a1a35; border: 1px solid var(--border);
@@ -179,6 +202,11 @@
       pointer-events: none; z-index: 999;
     }
     .toast.show { opacity: 1; }
+
+    .section-title {
+      font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);
+      margin: 1rem 0 0.4rem; display: block;
+    }
 
     @media (max-width: 480px) {
       .options-row { grid-template-columns: 1fr; }
@@ -201,7 +229,7 @@
   <div class="container">
     <div class="hero">
       <h1>QR Code 產生器</h1>
-      <p>輸入文字或網址，免費產生 QR Code — 自訂顏色尺寸、一鍵下載 PNG</p>
+      <p>輸入文字或網址，自訂顏色、Logo 與樣式，一鍵下載高畫質 PNG</p>
     </div>
 
     <div class="card">
@@ -210,14 +238,16 @@
         <textarea id="qr-input" placeholder="輸入文字或網址..."></textarea>
       </div>
 
-      <div class="options-row">
-        <div class="input-group" style="margin-bottom:0">
-          <label>前景顏色</label>
-          <div class="color-input-wrap">
-            <input type="color" id="fg-color" value="#000000">
-            <span class="color-hex" id="fg-hex">#000000</span>
-          </div>
+      <span class="section-title">前景顏色</span>
+      <div class="input-group">
+        <div class="color-input-wrap">
+          <input type="color" id="fg-color" value="#000000">
+          <span class="color-hex" id="fg-hex">#000000</span>
         </div>
+        <div class="color-presets" id="fg-presets"></div>
+      </div>
+
+      <div class="options-row" style="margin-bottom:0.75rem">
         <div class="input-group" style="margin-bottom:0">
           <label>背景顏色</label>
           <div class="color-input-wrap">
@@ -225,13 +255,36 @@
             <span class="color-hex" id="bg-hex">#ffffff</span>
           </div>
         </div>
+        <div class="input-group" style="margin-bottom:0">
+          <label>尺寸</label>
+          <div class="size-control">
+            <input type="range" id="qr-size" min="200" max="1000" value="500" step="50">
+            <span class="size-label" id="size-label">500</span>
+          </div>
+        </div>
       </div>
 
+      <span class="section-title">樣式</span>
+      <div class="seg-group" style="margin-bottom:1rem">
+        <button class="seg active" data-style="square">方塊</button>
+        <button class="seg" data-style="rounded">圓角</button>
+        <button class="seg" data-style="dots">圓點</button>
+        <button class="seg" data-style="classy">經典</button>
+      </div>
+
+      <span class="section-title">邊框</span>
+      <div class="seg-group" style="margin-bottom:1rem">
+        <button class="seg active" data-border="1">有邊框</button>
+        <button class="seg" data-border="0">無邊框</button>
+      </div>
+
+      <span class="section-title">Logo 置中（可選）</span>
       <div class="input-group" style="margin-bottom:0">
-        <label>尺寸</label>
-        <div class="size-control">
-          <input type="range" id="qr-size" min="150" max="600" value="300" step="10">
-          <span class="size-label" id="size-label">300</span>
+        <div class="logo-upload">
+          <input type="file" id="logo-file" accept="image/*">
+          <button class="upload-btn" id="logo-btn">上傳 Logo</button>
+          <img class="logo-preview" id="logo-preview" alt="logo">
+          <button class="upload-btn" id="logo-clear" style="display:none">移除</button>
         </div>
       </div>
     </div>
@@ -239,10 +292,10 @@
     <div class="card">
       <div class="qr-output" id="qr-output">
         <div class="qr-placeholder" id="qr-placeholder">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
           <p>輸入內容後按「產生 QR Code」</p>
         </div>
-        <img id="qr-image" style="display:none" alt="QR Code">
+        <canvas id="qr-canvas" style="display:none"></canvas>
       </div>
 
       <div class="btn-group">
@@ -251,7 +304,6 @@
       </div>
     </div>
 
-    <!-- Ad placement -->
     <div style="text-align:center;padding:0.5rem 0 1.5rem;color:var(--text-muted);font-size:0.75rem;">— 廣告 —</div>
   </div>
 
@@ -269,7 +321,7 @@
       var input = document.getElementById('qr-input');
       var generateBtn = document.getElementById('generate-btn');
       var downloadBtn = document.getElementById('download-btn');
-      var qrImage = document.getElementById('qr-image');
+      var canvas = document.getElementById('qr-canvas');
       var qrPlaceholder = document.getElementById('qr-placeholder');
       var fgColor = document.getElementById('fg-color');
       var bgColor = document.getElementById('bg-color');
@@ -278,7 +330,32 @@
       var qrSize = document.getElementById('qr-size');
       var sizeLabel = document.getElementById('size-label');
       var toast = document.getElementById('toast');
+      var logoFile = document.getElementById('logo-file');
+      var logoBtn = document.getElementById('logo-btn');
+      var logoPreview = document.getElementById('logo-preview');
+      var logoClear = document.getElementById('logo-clear');
       var lastDataUrl = '';
+      var logoDataUrl = '';
+      var styleMode = 'square';
+      var borderEnabled = 1;
+
+      var COLOR_PRESETS = ['#000000', '#1a1a1a', '#8B5CF6', '#2563EB', '#16A34A', '#DC2626', '#D97706', '#06B6D4', '#DB2777'];
+
+      // Build color presets
+      var fgPresets = document.getElementById('fg-presets');
+      COLOR_PRESETS.forEach(function(c, i){
+        var el = document.createElement('div');
+        el.className = 'color-preset' + (i === 0 ? ' active' : '');
+        el.style.background = c;
+        el.title = c;
+        el.addEventListener('click', function(){
+          fgColor.value = c;
+          fgHex.textContent = c;
+          document.querySelectorAll('.color-preset').forEach(function(p){ p.classList.remove('active'); });
+          el.classList.add('active');
+        });
+        fgPresets.appendChild(el);
+      });
 
       // Load saved preferences
       var saved = localStorage.getItem('qr_prefs');
@@ -288,19 +365,67 @@
           if (prefs.fg) fgColor.value = prefs.fg;
           if (prefs.bg) bgColor.value = prefs.bg;
           if (prefs.size) qrSize.value = prefs.size;
+          if (prefs.style) styleMode = prefs.style;
+          if (prefs.border !== undefined) borderEnabled = prefs.border;
         } catch(e) {}
       }
       fgHex.textContent = fgColor.value;
       bgHex.textContent = bgColor.value;
       sizeLabel.textContent = qrSize.value;
+      document.querySelectorAll('.seg[data-style]').forEach(function(btn){
+        if (btn.dataset.style === styleMode) {
+          document.querySelectorAll('.seg[data-style]').forEach(function(b){ b.classList.remove('active'); });
+          btn.classList.add('active');
+        }
+      });
+      document.querySelectorAll('.seg[data-border]').forEach(function(btn){
+        if (parseInt(btn.dataset.border) === borderEnabled) {
+          document.querySelectorAll('.seg[data-border]').forEach(function(b){ b.classList.remove('active'); });
+          btn.classList.add('active');
+        }
+      });
 
       fgColor.addEventListener('input', function(){ fgHex.textContent = fgColor.value; });
       bgColor.addEventListener('input', function(){ bgHex.textContent = bgColor.value; });
       qrSize.addEventListener('input', function(){ sizeLabel.textContent = qrSize.value; });
 
-      // Auto-generate on Enter
+      document.querySelectorAll('.seg[data-style]').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          document.querySelectorAll('.seg[data-style]').forEach(function(b){ b.classList.remove('active'); });
+          btn.classList.add('active');
+          styleMode = btn.dataset.style;
+        });
+      });
+      document.querySelectorAll('.seg[data-border]').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          document.querySelectorAll('.seg[data-border]').forEach(function(b){ b.classList.remove('active'); });
+          btn.classList.add('active');
+          borderEnabled = parseInt(btn.dataset.border);
+        });
+      });
+
       input.addEventListener('keydown', function(e){
         if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); generate(); }
+      });
+
+      logoBtn.addEventListener('click', function(){ logoFile.click(); });
+      logoClear.addEventListener('click', function(){
+        logoDataUrl = '';
+        logoFile.value = '';
+        logoPreview.style.display = 'none';
+        logoClear.style.display = 'none';
+      });
+      logoFile.addEventListener('change', function(){
+        var file = logoFile.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function(ev){
+          logoDataUrl = ev.target.result;
+          logoPreview.src = logoDataUrl;
+          logoPreview.style.display = 'block';
+          logoClear.style.display = 'inline-block';
+        };
+        reader.readAsDataURL(file);
       });
 
       function showToast(msg) {
@@ -309,38 +434,150 @@
         setTimeout(function(){ toast.classList.remove('show'); }, 2500);
       }
 
+      function roundRect(ctx, x, y, w, h, r) {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + w, y, x + w, y + h, r);
+        ctx.arcTo(x + w, y + h, x, y + h, r);
+        ctx.arcTo(x, y + h, x, y, r);
+        ctx.arcTo(x, y, x + w, y, r);
+        ctx.closePath();
+      }
+
       function generate() {
         var text = input.value.trim();
         if (!text) { showToast('請輸入文字或網址'); return; }
 
-        var fg = fgColor.value.replace('#', '');
-        var bg = bgColor.value.replace('#', '');
+        var fg = fgColor.value;
+        var bg = bgColor.value;
         var size = parseInt(qrSize.value);
-        var url = 'https://api.qrserver.com/v1/create-qr-code/?size=' + size + 'x' + size + '&data=' + encodeURIComponent(text) + '&color=' + fg + '&bgcolor=' + bg;
+        var errorLevel = logoDataUrl ? 'H' : 'M';
 
-        generateBtn.disabled = true;
-        generateBtn.textContent = '產生中...';
+        var qr;
+        try {
+          qr = qrcode(0, errorLevel);
+          qr.addData(text);
+          qr.make();
+        } catch(e) {
+          showToast('內容太長，無法產生 QR Code');
+          return;
+        }
 
-        // Save preferences
-        localStorage.setItem('qr_prefs', JSON.stringify({ fg: fgColor.value, bg: bgColor.value, size: size }));
+        var count = qr.getModuleCount();
+        var quiet = borderEnabled ? 4 : 0;
+        var moduleCount = count + quiet * 2;
+        var moduleSize = size / moduleCount;
 
-        var img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.onload = function() {
-          qrImage.src = img.src;
-          qrImage.style.display = 'block';
+        canvas.width = size;
+        canvas.height = size;
+        var ctx = canvas.getContext('2d');
+
+        // Background
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, size, size);
+
+        ctx.fillStyle = fg;
+
+        var radiusFactor = 0.5; // rounded style radius relative to module size
+        var gap = 0;
+
+        if (styleMode === 'dots') {
+          gap = moduleSize * 0.15;
+          radiusFactor = 0.5;
+        } else if (styleMode === 'rounded') {
+          radiusFactor = 0.5;
+        } else if (styleMode === 'classy') {
+          radiusFactor = 0.3;
+        }
+
+        function drawModule(row, col) {
+          var x = (col + quiet) * moduleSize;
+          var y = (row + quiet) * moduleSize;
+          var w = moduleSize - gap * 2;
+          var h = moduleSize - gap * 2;
+          var cx = x + gap;
+          var cy = y + gap;
+
+          if (styleMode === 'square') {
+            ctx.fillRect(cx, cy, w, h);
+          } else {
+            roundRect(ctx, cx, cy, w, h, moduleSize * radiusFactor);
+            ctx.fill();
+          }
+        }
+
+        // Draw finder patterns (corner squares) fully square for scannability
+        function drawFinder(row0, col0) {
+          var o = quiet;
+          var ms = moduleSize;
+          // Outer 7x7 dark
+          ctx.fillRect((col0 + o) * ms, (row0 + o) * ms, ms * 7, ms * 7);
+          // Inner 5x5 white
+          ctx.fillStyle = bg;
+          ctx.fillRect((col0 + o + 1) * ms, (row0 + o + 1) * ms, ms * 5, ms * 5);
+          // Inner 3x3 dark
+          ctx.fillStyle = fg;
+          ctx.fillRect((col0 + o + 2) * ms, (row0 + o + 2) * ms, ms * 3, ms * 3);
+        }
+
+        var finders = [[0,0],[0,count-7],[count-7,0]];
+        // Draw all non-finder modules first
+        for (var row = 0; row < count; row++) {
+          for (var col = 0; col < count; col++) {
+            var inFinder = finders.some(function(f){
+              return row >= f[0] && row < f[0]+7 && col >= f[1] && col < f[1]+7;
+            });
+            if (!inFinder && qr.isDark(row, col)) {
+              drawModule(row, col);
+            }
+          }
+        }
+
+        // Draw finders on top (solid for scannability)
+        drawFinder(0, 0);
+        drawFinder(0, count-7);
+        drawFinder(count-7, 0);
+
+        // Logo overlay
+        if (logoDataUrl) {
+          var logoSize = size * 0.22;
+          var logoX = (size - logoSize) / 2;
+          var logoY = (size - logoSize) / 2;
+          // White padding background
+          ctx.fillStyle = '#ffffff';
+          roundRect(ctx, logoX - size*0.02, logoY - size*0.02, logoSize + size*0.04, logoSize + size*0.04, 8);
+          ctx.fill();
+          var logoImg = new Image();
+          logoImg.onload = function(){
+            ctx.save();
+            ctx.beginPath();
+            roundRect(ctx, logoX, logoY, logoSize, logoSize, 6);
+            ctx.clip();
+            ctx.drawImage(logoImg, logoX, logoY, logoSize, logoSize);
+            ctx.restore();
+            finalize();
+          };
+          logoImg.onerror = function(){ finalize(); };
+          logoImg.src = logoDataUrl;
+        } else {
+          finalize();
+        }
+
+        function finalize() {
+          lastDataUrl = canvas.toDataURL('image/png');
+          canvas.style.display = 'block';
           qrPlaceholder.style.display = 'none';
-          lastDataUrl = img.src;
           downloadBtn.disabled = false;
-          generateBtn.disabled = false;
-          generateBtn.textContent = '產生 QR Code';
-        };
-        img.onerror = function() {
-          showToast('產生失敗，請檢查輸入內容');
-          generateBtn.disabled = false;
-          generateBtn.textContent = '產生 QR Code';
-        };
-        img.src = url;
+          localStorage.setItem('qr_prefs', JSON.stringify({ fg: fgColor.value, bg: bgColor.value, size: size, style: styleMode, border: borderEnabled }));
+        }
+
+        if (!logoDataUrl) {
+          lastDataUrl = canvas.toDataURL('image/png');
+          canvas.style.display = 'block';
+          qrPlaceholder.style.display = 'none';
+          downloadBtn.disabled = false;
+          localStorage.setItem('qr_prefs', JSON.stringify({ fg: fgColor.value, bg: bgColor.value, size: size, style: styleMode, border: borderEnabled }));
+        }
       }
 
       function download() {
@@ -357,7 +594,6 @@
       generateBtn.addEventListener('click', generate);
       downloadBtn.addEventListener('click', download);
 
-      // Auto-generate if there's saved text
       var savedText = localStorage.getItem('qr_text');
       if (savedText) {
         input.value = savedText;

@@ -351,9 +351,9 @@
       function buildResultGrid(data) {
         var items = [
           { label: '國家', value: data.country || '--', full: false },
-          { label: '地區 / 城市', value: [data.regionName, data.city].filter(Boolean).join(' / ') || '--', full: false },
-          { label: 'ISP', value: data.isp || '--', full: true },
-          { label: 'ASN', value: data.as || '--', full: true }
+          { label: '地區 / 城市', value: [data.region, data.city].filter(Boolean).join(' / ') || '--', full: false },
+          { label: 'ISP', value: data.connection ? data.connection.isp || '--' : '--', full: true },
+          { label: 'ASN', value: data.connection ? 'AS' + data.connection.asn + ' ' + (data.connection.org || '') : '--', full: true }
         ];
         var html = '';
         items.forEach(function(item) {
@@ -406,11 +406,11 @@
           badgeLabel.textContent = '查詢結果';
         }
 
-        resultIP.textContent = data.query || '--';
+        resultIP.textContent = data.ip || '--';
         buildResultGrid(data);
 
-        var lat = data.lat;
-        var lng = data.lon;
+        var lat = data.latitude;
+        var lng = data.longitude;
         if (lat != null && lng != null) {
           coordLat.textContent = '緯度: ' + lat;
           coordLng.textContent = '經度: ' + lng;
@@ -424,7 +424,7 @@
 
       function fetchIP(ip) {
         showLoading();
-        var url = 'http://ip-api.com/json/' + (ip ? encodeURIComponent(ip) : '') + '?fields=status,message,query,country,regionName,city,isp,as,lat,lon';
+        var url = 'https://ipwho.is/' + (ip ? encodeURIComponent(ip) : '');
         var xhr = new XMLHttpRequest();
         xhr.open('GET', url, true);
         xhr.timeout = 10000;
@@ -432,7 +432,7 @@
           if (xhr.status === 200) {
             try {
               var data = JSON.parse(xhr.responseText);
-              if (data.status === 'success') {
+              if (data.success) {
                 displayResult(data, !ip);
               } else {
                 showError(data.message || '查詢失敗，請檢查 IP 地址是否正確。');
