@@ -140,6 +140,20 @@
     .footer a { color: var(--text-muted); }
     .footer a:hover { color: var(--text-secondary); }
 
+    .content-section { margin: 2rem 0; }
+    .content-section h2 {
+      font-size: 1.15rem; font-weight: 800; color: #fff;
+      margin: 1.75rem 0 0.75rem;
+    }
+    .content-section h3 {
+      font-size: 0.95rem; font-weight: 700; color: var(--text-secondary);
+      margin: 1.25rem 0 0.4rem;
+    }
+    .content-section p {
+      font-size: 0.9rem; color: var(--text-secondary);
+      line-height: 1.8; margin-bottom: 0.75rem;
+    }
+
     @media (max-width: 480px) {
       .hero h1 { font-size: 1.3rem; }
       .card { padding: 1.25rem; }
@@ -200,6 +214,22 @@
     </div>
 
     <div style="text-align:center;padding:0.5rem 0 1.5rem;color:var(--text-muted);font-size:0.75rem;">— 廣告 —</div>
+
+    <div class="content-section">
+      <h2>單位換算工具使用說明</h2>
+      <p>日常生活與工作中常需要在不同單位之間換算，例如長度（公尺／英呎）、重量（公斤／磅）、溫度（攝氏／華氏）、面積、體積、速度與資料儲存容量等。本工具整合多種類別的單位換算，選好類別後輸入數值即可立即得到結果。</p>
+      <p>使用方式：先在上方選擇單位類別（長度、重量、溫度、面積、體積、速度、資料等），再選取「從哪個單位」與「換算成哪個單位」，輸入數值後結果會即時顯示。例如選「長度」、輸入 1 公尺，切換目標單位為英呎，即可看到約 3.28 英尺的結果。</p>
+      <p>值得注意的是資料儲存容量的換算：本工具遵循二進制標準（1 KiB = 1024 Bytes、1 MiB = 1024 KiB），這是作業系統與硬碟廠商之間常出現的差異來源。若你發現數字與硬碟包裝上的標示不同，通常是因為廠商使用十進制（1 GB = 1000 MB）計算。</p>
+      <p>所有換算都在瀏覽器本機即時運算，不需要上網等待或安裝任何軟體，也沒有使用次數限制，可放心頻繁使用。</p>
+
+      <h2>常見問題 FAQ</h2>
+      <h3>為什麼硬碟容量與系統顯示不同？</h3>
+      <p>硬碟廠商用十進制（1000 進位）標示容量，而作業系統用二進制（1024 進位）計算，導致顯示容量比包裝標示小，這是正常現象。</p>
+      <h3>溫度換算的公式是什麼？</h3>
+      <p>攝氏轉華氏：F = C × 9/5 + 32；華氏轉攝氏：C = (F − 32) × 5/9。本工具已內建這些公式，直接輸入數值即可。</p>
+      <h3>可以一次換算多組數值嗎？</h3>
+      <p>目前一次處理一組輸入數值，換算結果即時顯示，適合逐筆查詢；若需批次換算，可重複輸入不同數值查看結果。</p>
+    </div>
   </div>
 
   <footer class="footer">

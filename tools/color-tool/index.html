@@ -201,6 +201,20 @@
     .footer a { color: var(--text-muted); text-decoration: none; }
     .footer a:hover { color: var(--text-secondary); }
 
+    .content-section { margin: 2rem 0; }
+    .content-section h2 {
+      font-size: 1.15rem; font-weight: 800; color: #fff;
+      margin: 1.75rem 0 0.75rem;
+    }
+    .content-section h3 {
+      font-size: 0.95rem; font-weight: 700; color: var(--text-secondary);
+      margin: 1.25rem 0 0.4rem;
+    }
+    .content-section p {
+      font-size: 0.9rem; color: var(--text-secondary);
+      line-height: 1.8; margin-bottom: 0.75rem;
+    }
+
     /* Toast */
     .toast {
       position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
@@ -365,6 +379,22 @@
     </div>
 
     <div style="text-align:center;padding:0.5rem 0 1.5rem;color:var(--text-muted);font-size:0.75rem;">— 廣告 —</div>
+
+    <div class="content-section">
+      <h2>色碼工具使用說明</h2>
+      <p>顏色是網頁設計、UI 設計與平面設計中最常需要協調的元素。本工具提供 HEX、RGB、HSL 三種最常用色碼格式的雙向即時轉換，只要輸入其中一種格式，另外兩種就會自動更新，省去手動換算的麻煩。</p>
+      <p>最簡單的用法是透過上方的顏色選取器直接挑色，選定後頁面會同時顯示對應的 HEX、RGB 與 HSL 數值，方便直接複製到 CSS 或設計軟體中使用。若你手上已有色碼，也可以直接輸入 HEX（如 #8B5CF6）、RGB（如 rgb(139, 92, 246)）或 HSL 格式，工具會自動辨識並轉換成其他格式。</p>
+      <p>除了基本轉換，本工具還內建配色方案生成功能，可根據你選擇的主色自動產出同色系、互補色、近似色等實用搭配，快速建立色彩系統；對比度檢測功能則能驗證前景與背景顏色組合是否符合無障礙閱讀標準（WCAG AA/AAA），確保文字在所有裝置上都能清晰可讀。</p>
+      <p>所有顏色運算都在瀏覽器本機完成，不傳送任何資料到伺服器，也沒有使用次數限制。無論你是設計師、前端工程師或網頁開發者，都可以免費、無限次使用。</p>
+
+      <h2>常見問題 FAQ</h2>
+      <h3>HEX、RGB、HSL 三者有什麼不同？</h3>
+      <p>HEX 以十六進位色碼（#RRGGBB）表示顏色；RGB 以紅、綠、藍三通道的 0-255 數值表示；HSL 則以色相、飽和度、亮度描述顏色，調整顏色明暗與鮮豔程度時更直覺。</p>
+      <h3>為什麼我的色碼轉換結果與其他工具不同？</h3>
+      <p>不同工具對 RGB 與 HSL 的取整方式略有差異，這是正常現象，數值通常只差 1-2 個單位，實際顯示的顏色幾乎相同。</p>
+      <h3>對比度檢測的分數代表什麼？</h3>
+      <p>分數介於 1 到 21 之間，越高表示對比越強烈。一般正文建議達到 4.5:1 以上（AA 標準），大字或粗體字可放寬至 3:1。</p>
+    </div>
   </div>
 
   <footer class="footer">

@@ -207,6 +207,20 @@
     .footer a { color: var(--text-muted); }
     .footer a:hover { color: var(--text-secondary); }
 
+    .content-section { margin: 2rem 0; }
+    .content-section h2 {
+      font-size: 1.15rem; font-weight: 800; color: #fff;
+      margin: 1.75rem 0 0.75rem;
+    }
+    .content-section h3 {
+      font-size: 0.95rem; font-weight: 700; color: var(--text-secondary);
+      margin: 1.25rem 0 0.4rem;
+    }
+    .content-section p {
+      font-size: 0.9rem; color: var(--text-secondary);
+      line-height: 1.8; margin-bottom: 0.75rem;
+    }
+
     /* Toast */
     .toast {
       position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
@@ -300,6 +314,22 @@
 
     <!-- Ad placement -->
     <div style="text-align:center;padding:0.5rem 0 1.5rem;color:var(--text-muted);font-size:0.75rem;">— 廣告 —</div>
+
+    <div class="content-section">
+      <h2>計時器使用說明</h2>
+      <p>本工具提供可自由設定的倒數計時器與計時功能，支援自訂時間長度、進度環顯示與完成通知，無論是烹飪計時、番茄鐘專注法、運動休息間隔或演講時間控制都很實用。</p>
+      <p>最常見的用法是設定倒數：輸入你需要的時、分、秒（例如 25 分鐘），按下開始後計時器即會倒數，頁面上的進度環會隨時間視覺化流逝，讓你不必一直盯著數字。時間到時會發出提醒音效與通知，避免錯過。</p>
+      <p>搭配「番茄鐘」使用時，可將工作設定為 25 分鐘、短休息 5 分鐘、長休息 15 分鐘循環，有助於提升專注力與工作效率。工具會在你的瀏覽器中繼續運作，即使切換到其他分頁也能在背景計時，結束時一樣會提醒。</p>
+      <p>所有計時皆在瀏覽器本機執行，不需要註冊帳號，也不會收集任何使用資料。你可以將常使用的時間組合記下來，快速重複使用。</p>
+
+      <h2>常見問題 FAQ</h2>
+      <h3>切換到其他分頁時間還準嗎？</h3>
+      <p>準確。計時使用瀏覽器的標準時間計算，切換分頁或縮到背景都會持續計時，結束時會透過通知提醒你。</p>
+      <h3>可以中途暫停再繼續嗎？</h3>
+      <p>可以。按下暫停後計時會凍結，再次按下開始即可從停頓處繼續，不需要重新設定。</p>
+      <h3>時間到沒有聲音通知？</h3>
+      <p>請確認瀏覽器通知權限已開啟、裝置音量未靜音。若仍無聲音，可檢查作業系統是否將瀏覽器的聲音輸出靜音。</p>
+    </div>
   </div>
 
   <footer class="footer">

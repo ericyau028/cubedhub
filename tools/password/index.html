@@ -185,6 +185,20 @@
     .footer a { color: var(--text-muted); }
     .footer a:hover { color: var(--text-secondary); }
 
+    .content-section { margin: 2rem 0; }
+    .content-section h2 {
+      font-size: 1.15rem; font-weight: 800; color: #fff;
+      margin: 1.75rem 0 0.75rem;
+    }
+    .content-section h3 {
+      font-size: 0.95rem; font-weight: 700; color: var(--text-secondary);
+      margin: 1.25rem 0 0.4rem;
+    }
+    .content-section p {
+      font-size: 0.9rem; color: var(--text-secondary);
+      line-height: 1.8; margin-bottom: 0.75rem;
+    }
+
     /* Toast */
     .toast {
       position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
@@ -281,6 +295,22 @@
     </div>
 
     <div style="text-align:center;padding:0.5rem 0 1.5rem;color:var(--text-muted);font-size:0.75rem;">— 廣告 —</div>
+
+    <div class="content-section">
+      <h2>密碼產生器使用說明</h2>
+      <p>使用弱密碼是帳號被盜的首要原因，例如生日、姓名或簡單數字組合都極易被破解。本工具可依你的需求隨機產生高強度密碼，並即時顯示強度評級，幫助你為不同服務建立獨一無二的安全密碼。</p>
+      <p>使用時可依網站要求調整參數：長度（建議至少 12 個字元）、是否包含大寫字母、小寫字母、數字與特殊符號。一般來說，包含全部四類字元且長度達 16 位以上的密碼，被暴力破解所需的時間將大幅拉長。工具的強度指示會根據字元組合與長度即時評估，綠色代表安全性足夠。</p>
+      <p>產生後點擊「複製」即可將密碼複製到剪貼簿。為了安全考量，請勿在公共電腦或截圖中保存密碼，建議使用瀏覽器內建的密碼管理或專業密碼管理工具（如 Bitwarden、1Password）集中儲存，避免每個帳號共用相同密碼。</p>
+      <p>所有密碼都是在你瀏覽器的本機隨機產生，不會傳送到任何伺服器，也不留任何紀錄。本工具使用瀏覽器的加密級隨機數 API（Crypto API），確保隨機品質足夠應付安全需求。</p>
+
+      <h2>常見問題 FAQ</h2>
+      <h3>多長才算安全的密碼？</h3>
+      <p>建議至少 12 個字元，16 個以上更佳。長度比複雜度更重要——長密碼組合數遠多於短密碼，破解難度以指數成長。</p>
+      <h3>產生的密碼會被儲存或外洩嗎？</h3>
+      <p>不會。密碼在你的瀏覽器本機以 Crypto API 隨機產生，完全不經伺服器，也無任何紀錄，可放心使用。</p>
+      <h3>我可以自己選喜歡的密碼組合嗎？</h3>
+      <p>可以。你可以任意勾選或取消大寫、小寫、數字與符號選項，並調整長度，工具會依你的偏好即時產生新的組合。</p>
+    </div>
   </div>
 
   <footer class="footer">

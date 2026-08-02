@@ -194,6 +194,20 @@
     .footer a { color: var(--text-muted); }
     .footer a:hover { color: var(--text-secondary); }
 
+    .content-section { margin: 2rem 0; }
+    .content-section h2 {
+      font-size: 1.15rem; font-weight: 800; color: #fff;
+      margin: 1.75rem 0 0.75rem;
+    }
+    .content-section h3 {
+      font-size: 0.95rem; font-weight: 700; color: var(--text-secondary);
+      margin: 1.25rem 0 0.4rem;
+    }
+    .content-section p {
+      font-size: 0.9rem; color: var(--text-secondary);
+      line-height: 1.8; margin-bottom: 0.75rem;
+    }
+
     .toast {
       position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
       background: #1a1a35; border: 1px solid var(--border);
@@ -305,6 +319,22 @@
     </div>
 
     <div style="text-align:center;padding:0.5rem 0 1.5rem;color:var(--text-muted);font-size:0.75rem;">— 廣告 —</div>
+
+    <div class="content-section">
+      <h2>QR Code 產生器使用說明</h2>
+      <p>QR Code 已成為連結線上內容最方便的橋樑，從名片、海報、菜單到產品包裝處處可見。本工具可將網址、文字、聯絡資訊、Wi-Fi 設定等內容轉換成可掃描的 QR Code，並支援多種個人化設定。</p>
+      <p>使用方式很簡單：在上方選取 QR Code 類型（網址、文字等），輸入對應內容後即會自動產生。你可以依品牌需求自訂前景與背景顏色、調整四種角碼樣式，甚至上傳 Logo 圖片置中（工具會自動以最高容錯等級編碼，確保加上 Logo 後仍可被掃描）。產生的 QR Code 可下載為高解析度 PNG，適合直接放入印刷品或數位素材。</p>
+      <p>為了確保 QR Code 一定能被掃描，建議在深色背景上使用淺色內容，避免使用低對比度的色彩組合；Logo 不宜過大（建議不超過整體面積的四分之一），並在正式印刷前先用多台手機測試掃描。</p>
+      <p>本工具完全免費且無浮水印，所有編碼皆在瀏覽器本機完成，輸入的內容不會傳送到任何伺服器，可安心處理需要保密的資料。</p>
+
+      <h2>常見問題 FAQ</h2>
+      <h3>加上 Logo 後掃不到怎麼辦？</h3>
+      <p>本工具在偵測到 Logo 時會自動使用最高容錯等級（H 級），可容忍約 30% 的圖形被遮蓋。請確認 Logo 佔比不過大，並使用白底襯墊讓 Logo 與背景分明。</p>
+      <h3>下載的圖片可以印刷多大？</h3>
+      <p>工具提供高解析度 PNG 下載，足以應付名片、傳單甚至大型海報的印刷需求。若需向量格式，可改用其他提供 SVG 匯出的方案。</p>
+      <h3>輸入的內容會被上傳嗎？</h3>
+      <p>不會。QR Code 編碼完全在瀏覽器本機執行，你的內容不會離開裝置，也沒有任何伺服器紀錄。</p>
+    </div>
   </div>
 
   <footer class="footer">

@@ -205,6 +205,20 @@
     .footer a { color: var(--text-muted); }
     .footer a:hover { color: var(--text-secondary); }
 
+    .content-section { margin: 2rem 0; }
+    .content-section h2 {
+      font-size: 1.15rem; font-weight: 800; color: #fff;
+      margin: 1.75rem 0 0.75rem;
+    }
+    .content-section h3 {
+      font-size: 0.95rem; font-weight: 700; color: var(--text-secondary);
+      margin: 1.25rem 0 0.4rem;
+    }
+    .content-section p {
+      font-size: 0.9rem; color: var(--text-secondary);
+      line-height: 1.8; margin-bottom: 0.75rem;
+    }
+
     /* Toast */
     .toast {
       position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
@@ -297,6 +311,22 @@
     </div>
 
     <div style="text-align:center;padding:0.5rem 0 1.5rem;color:var(--text-muted);font-size:0.75rem;">— 廣告 —</div>
+
+    <div class="content-section">
+      <h2>文字轉語音工具使用說明</h2>
+      <p>本工具將文字轉換成自然的語音朗讀，支援國語、粵語與英文等多種語言，並可調整語速與語調。適合朗讀長篇文章、學習外語發音、製作影片旁白，或讓眼睛休息時用耳朵聽內容。</p>
+      <p>使用時先在上方選擇語言（可選自動偵測，或直接指定國語、粵語、英文），再將文字貼入輸入框，設定好語速與語調後按下「播放」即可開始朗讀。工具會使用瀏覽器內建的語音引擎，若系統有多個同語言聲音可選，也會列出讓你挑選偏好。</p>
+      <p>粵語內容建議在語言選單中指定「粵語」，工具會自動對應作業系統提供的粵語語音（如 zh-HK），確保發音正確；英文內容則可選擇英文語音，搭配速度調整用於練習聽力效果更佳。按下暫停後可隨時從停頓處繼續，或按停止重新播放。</p>
+      <p>朗讀完全在瀏覽器本機進行，你的文字不會被上傳或儲存。若你使用的是 Chrome、Edge 或 Safari 等主流瀏覽器，語音品質與支援的語言會最完整。</p>
+
+      <h2>常見問題 FAQ</h2>
+      <h3>為什麼我選擇粵語卻聽到國語？</h3>
+      <p>若你的裝置沒有安裝粵語語音，系統可能自動以國語代替。請在語言選單指定「粵語」，並確認作業系統已安裝對應的語音套件。</p>
+      <h3>為什麼沒有聲音？</h3>
+      <p>請確認裝置音量與瀏覽器分頁未被靜音。首次播放時部分瀏覽器會要求與頁面互動後才能啟用語音，再按一次播放即可。</p>
+      <h3>輸入的文字會被上傳嗎？</h3>
+      <p>不會。語音合成完全在瀏覽器本機執行，你的文字不會離開裝置，也不會有任何紀錄。</p>
+    </div>
   </div>
 
   <footer class="footer">

@@ -237,6 +237,20 @@
     .footer a { color: var(--text-muted); }
     .footer a:hover { color: var(--text-secondary); }
 
+    .content-section { margin: 2rem 0; }
+    .content-section h2 {
+      font-size: 1.15rem; font-weight: 800; color: #fff;
+      margin: 1.75rem 0 0.75rem;
+    }
+    .content-section h3 {
+      font-size: 0.95rem; font-weight: 700; color: var(--text-secondary);
+      margin: 1.25rem 0 0.4rem;
+    }
+    .content-section p {
+      font-size: 0.9rem; color: var(--text-secondary);
+      line-height: 1.8; margin-bottom: 0.75rem;
+    }
+
     .hidden { display: none !important; }
 
     @media (max-width: 500px) {
@@ -302,6 +316,22 @@
     </div>
 
     <div style="text-align:center;padding:0.5rem 0 1.5rem;color:var(--text-muted);font-size:0.75rem;">— 廣告 —</div>
+
+    <div class="content-section">
+      <h2>IP 查詢工具使用說明</h2>
+      <p>本工具能即時顯示你目前裝置的公開 IP 位址，並自動帶出對應的地理位置、國家、ISP（網路服務供應商）與 ASN 資訊。頁面載入後會自動偵測一次，若想知道其他 IP 的資料，在輸入框貼上任意 IPv4 或 IPv6 位址並送出即可。</p>
+      <p>常見的使用情境包括：確認 VPN 是否正常運作（連上後查詢可驗證出口國家與 IP 是否改變）、檢查網站或服務的存取地區限制、判斷目前網路是否為公司或學術機構的固定 IP、以及在遇到帳號或服務異常時，向客服提供你的 IP 作為參考依據。</p>
+      <p>查詢結果會顯示 IP 隸屬的國家與地區，通常也會附上城市層級的粗略位置與座標，方便大致判斷網路連線的所在地。不過請注意，公開 IP 的地理定位是根據 ISP 的註冊資訊推估，精確度僅到大約城市範圍，無法定位到確切街道或地址。</p>
+      <p>本工具的查詢使用公開的 IP 資訊服務，不需要登入或安裝任何軟體，且不會記錄你的查詢紀錄。由於網頁在瀏覽器直接執行，你也可以放心使用。</p>
+
+      <h2>常見問題 FAQ</h2>
+      <h3>為什麼查到的地理位置不準？</h3>
+      <p>IP 地理定位是依 ISP 註冊位置推算，只到城市層級。使用 VPN、行動網路或企業專線時，顯示位置可能與實際所在地不同。</p>
+      <h3>IPv4 與 IPv6 都可以查嗎？</h3>
+      <p>可以。工具同時支援 IPv4 與 IPv6 格式的查詢，直接貼入 IP 位址即可自動判別。</p>
+      <h3>查詢會被記錄嗎？會隱私外洩嗎？</h3>
+      <p>不會。查詢直接送往公開的 IP 資訊服務，本工具不儲存任何查詢紀錄；你也可隨時清除瀏覽器資料。</p>
+    </div>
   </div>
 
   <footer class="footer">

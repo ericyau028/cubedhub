@@ -162,6 +162,20 @@
     .footer a { color: var(--text-muted); }
     .footer a:hover { color: var(--text-secondary); }
 
+    .content-section { margin: 2rem 0; }
+    .content-section h2 {
+      font-size: 1.15rem; font-weight: 800; color: #fff;
+      margin: 1.75rem 0 0.75rem;
+    }
+    .content-section h3 {
+      font-size: 0.95rem; font-weight: 700; color: var(--text-secondary);
+      margin: 1.25rem 0 0.4rem;
+    }
+    .content-section p {
+      font-size: 0.9rem; color: var(--text-secondary);
+      line-height: 1.8; margin-bottom: 0.75rem;
+    }
+
     @media (max-width: 480px) {
       .hero h1 { font-size: 1.3rem; }
       .card { padding: 1.25rem; }
@@ -217,6 +231,22 @@
     </div>
 
     <div style="text-align:center;padding:0.5rem 0 1.5rem;color:var(--text-muted);font-size:0.75rem;">— 廣告 —</div>
+
+    <div class="content-section">
+      <h2>字數統計工具使用說明</h2>
+      <p>字數統計是寫作與文案工作中最基本也最重要的工具，無論是撰寫文章、簡報、論文或社群貼文，都需要掌握內容的長度。本工具提供即時的字數、字元數、段落數、句子數與閱讀時間統計，輸入文字後所有數據會立刻更新，不需要點擊任何按鈕。</p>
+      <p>使用方式非常簡單：將文字貼入或直接輸入上方的文字框，下方的統計卡片會同步顯示七項數據。其中「字數」以空白分隔的詞為單位，適合英文與中文混合內容；「字元數（含空格）」與「字元數（不含空格）」適合需要精確計算字元上限的情境，例如簡訊、欄位長度限制或商品標題；「閱讀時間」依每分鐘 200 字的速度估算，「朗讀時間」則依每分鐘 130 字計算，方便準備演講或 Podcast 稿件時控制時長。</p>
+      <p>關鍵字密度分析會統計文字中出現頻率最高的前十個詞，並以條狀圖顯示相對比重，適合在做 SEO 優化時檢查目標關鍵字是否自然分布，避免過度堆砌。點擊「複製統計數據」可將完整的統計結果連同關鍵字分析一次複製到剪貼簿，方便貼入報告或與團隊協作。</p>
+      <p>本工具的所有計算都在你的瀏覽器本機完成，文字不會上傳到任何伺服器，內容安全且有隱私保障。輸入的文字會自動暫存在本機瀏覽器，關閉頁面後重新開啟仍可繼續編輯，點擊右上角的清除按鈕即可重新開始。</p>
+
+      <h2>常見問題 FAQ</h2>
+      <h3>中文與英文的字數計算方式一樣嗎？</h3>
+      <p>本工具以空白分隔的詞作為「字數」計算單位，因此中文字句若未加空白會被視為一整個字串。建議混合內容以「字元數」作為長度依據會更準確。</p>
+      <h3>為什麼顯示的字數與 Word 不同？</h3>
+      <p>不同軟體對「字」的定義不同。Word 對中文會逐字計算，而本工具以空白分隔的詞為單位，兩者數字自然有差異，請依你的需求選擇對應的計數方式。</p>
+      <h3>輸入的文字會被儲存或上傳嗎？</h3>
+      <p>不會。所有統計都在瀏覽器本機即時運算，文字僅暫存於你的裝置供下次開啟恢復，不會傳送到任何伺服器。</p>
+    </div>
   </div>
 
   <footer class="footer">
