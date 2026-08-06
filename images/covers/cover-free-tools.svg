@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="免費線上工具推薦封面">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#15152e"/>
+      <stop offset="1" stop-color="#0a0a1a"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#06B6D4"/>
+    </linearGradient>
+    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <circle cx="1250" cy="180" r="300" fill="#06B6D4" opacity="0.10"/>
+  <circle cx="350" cy="720" r="260" fill="#8B5CF6" opacity="0.10"/>
+  <g transform="translate(800,450)">
+    <rect x="-130" y="-110" width="260" height="220" rx="28" fill="none" stroke="url(#accent)" stroke-width="3"/>
+    <rect x="-100" y="-80" width="200" height="160" rx="20" fill="url(#accent)" opacity="0.12"/>
+    <g stroke="#e0e7ff" stroke-width="3" stroke-linecap="round">
+      <path d="M-70 -40 L-70 40"/>
+      <path d="M-70 0 L-30 -20 L-30 40 Z" fill="#8B5CF6" stroke="none"/>
+      <path d="M0 -40 L0 40"/>
+      <path d="M0 20 L40 0 L40 40 Z" fill="#06B6D4" stroke="none"/>
+      <path d="M70 -40 L70 40"/>
+      <path d="M70 -20 L100 -40 L100 40 Z" fill="#f1f5f9" stroke="none" opacity="0.8"/>
+    </g>
+  </g>
+  <text x="80" y="120" font-family="Noto Sans TC, sans-serif" font-size="52" font-weight="800" fill="#f1f5f9">CubedHub Editorial</text>
+</svg>
