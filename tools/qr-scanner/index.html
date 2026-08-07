@@ -56,6 +56,49 @@
     .nav-brand span { background: linear-gradient(135deg, #8B5CF6, #06B6D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .nav-back { color: var(--text-muted); font-size: 0.85rem; text-decoration: none; }
     .nav-back:hover { color: var(--text-secondary); }
+    /* ===== Navbar (same structure as homepage) ===== */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 64px;
+      background: var(--bg-primary);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      transition: box-shadow 0.3s;
+    }
+    .navbar.scrolled { box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+    .nav-inner { max-width: 1200px; margin: 0 auto; height: 100%; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { display: flex; align-items: center; gap: 0.6rem; color: var(--text-primary); font-weight: 800; font-size: 1.1rem; text-decoration: none; }
+    .nav-logo img { border-radius: 6px; }
+    .nav-links { display: flex; align-items: center; gap: 0.25rem; }
+    .nav-links a { padding: 0.45rem 0.8rem; color: var(--text-secondary); font-size: 0.88rem; font-weight: 600; text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-cta {
+      margin-left: 0.5rem; padding: 0.5rem 1.2rem; border-radius: 40px; font-weight: 700; font-size: 0.86rem;
+      background: #8B5CF6; color: #fff !important; text-decoration: none;
+      transition: transform 0.2s;
+    }
+    .nav-cta:hover { transform: translateY(-1px); color: #fff !important; }
+    .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; flex-direction: column; gap: 5px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text-primary); transition: transform 0.3s, opacity 0.3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; }
+    .mobile-overlay.open { display: block; }
+    .mobile-menu {
+      display: none; position: fixed; top: 0; right: 0; bottom: 0; width: 280px; z-index: 101;
+      background: var(--bg-primary); padding: 1.5rem; flex-direction: column; gap: 0.25rem;
+      transform: translateX(100%); transition: transform 0.3s;
+    }
+    .mobile-menu.open { transform: translateX(0); }
+    .mobile-menu a { padding: 0.8rem 0.5rem; color: var(--text-secondary); font-size: 1rem; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .mobile-menu a:hover { color: var(--text-primary); }
+    .mobile-close { align-self: flex-end; background: none; border: none; color: var(--text-secondary); font-size: 1.6rem; cursor: pointer; padding: 0.2rem 0.6rem; }
+    .mobile-close:hover { color: var(--text-primary); }
+    @media (max-width: 767px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .mobile-menu { display: flex; }
+    }
 
     .hero { text-align: center; padding: 2.5rem 0 1.5rem; }
     .hero h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.5rem; }
@@ -278,14 +321,34 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <nav class="nav">
-      <a href="/" class="nav-brand">
-        <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="url(#g)"/><defs><linearGradient id="g" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#8B5CF6"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs></svg>
+  <div class="container" style="padding-top: 5.5rem;">
+      <nav class="navbar" id="navbar" role="navigation" aria-label="主導航">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo" aria-label="CubedHub 首頁">
+        <img src="../images/logo.png" alt="CubedHub Logo" width="32" height="32">
         <span>CubedHub</span>
       </a>
-      <a href="/tools/" class="nav-back">&larr; 工具</a>
-    </nav>
+      <div class="nav-links" id="navLinks">
+        <a href="/blog/">文章</a>
+        <a href="/explore/">全站探索</a>
+        <a href="https://tools.cubedhub.com/" target="_blank" rel="noopener">工具</a>
+        <a href="/about.html">關於</a>
+        <a href="/explore/" class="nav-cta">開始探索</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="開啟選單" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+  <div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="行動選單">
+    <button class="mobile-close" id="mobileClose" aria-label="關閉選單">&times;</button>
+    <a href="/blog/">文章</a>
+    <a href="/explore/">全站探索</a>
+    <a href="https://tools.cubedhub.com/" target="_blank" rel="noopener">工具</a>
+    <a href="/about.html">關於</a>
+    <a href="/explore/" class="nav-cta" style="text-align:center;margin-top:1rem;">開始探索</a>
+  </div>
   </div>
 
   <div class="container">
@@ -746,5 +809,25 @@
       navigator.serviceWorker.register('sw.js');
     }
   </script>
+
+  <script>
+    (function () {
+      'use strict';
+      var navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', function () {
+        navbar.classList.toggle('scrolled', window.scrollY > 10);
+      });
+      var hamburger = document.getElementById('hamburger');
+      var overlay = document.getElementById('mobileOverlay');
+      var menu = document.getElementById('mobileMenu');
+      var closeBtn = document.getElementById('mobileClose');
+      function openMenu() { menu.classList.add('open'); overlay.classList.add('open'); hamburger.classList.add('open'); hamburger.setAttribute('aria-expanded', 'true'); }
+      function closeMenu() { menu.classList.remove('open'); overlay.classList.remove('open'); hamburger.classList.remove('open'); hamburger.setAttribute('aria-expanded', 'false'); }
+      hamburger.addEventListener('click', openMenu);
+      closeBtn.addEventListener('click', closeMenu);
+      overlay.addEventListener('click', closeMenu);
+    })();
+  </script>
+
 </body>
 </html>

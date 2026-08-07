@@ -183,6 +183,7 @@
 
     /* ===== Editorial grid ===== */
     .editorial { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1.2rem; margin-top: 3rem; }
+    .editorial .card .card-body { text-align: center; }
     .story-main { grid-column: span 6; }
     .story-side { grid-column: span 3; }
     .story-third { grid-column: span 4; }
@@ -220,7 +221,7 @@
     .story-third { text-align: left; }
     .story-third .card { display: flex; align-items: center; gap: 0.9rem; padding: 0.9rem 1.1rem; }
     .story-third .card .t-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; background: var(--bg, #f5f2ec); border: 2px solid var(--ink); }
-    .story-third .card .t-body { flex: 1; min-width: 0; }
+    .story-third .card .t-body { flex: 1; min-width: 0; text-align: center; }
     .story-third .card .t-body h3 { font-size: 0.95rem; font-weight: 700; }
     .story-third .card .arrow { color: var(--muted); flex-shrink: 0; transition: transform 0.2s var(--ease); }
     .story-third .card:hover .arrow { transform: translateX(4px); }
@@ -353,7 +354,7 @@
       <div class="container">
         <div class="hero-grid">
           <div class="hero-lead reveal">
-            <h1>免費工具<br><span class="outline">與實用指南</span><br><span class="accent">一站探索</span></h1>
+            <h1>免費工具<br>與實用指南<br><span class="accent">一站探索</span></h1>
             <p class="lead-text">570 個即時換算工具、14 類別，加上遊戲攻略、香港旅遊、在家工作、健康與巴士的原創內容。繁體、簡體、英文三語系，全部免費。</p>
             <p class="lead-text">CubedHub Editorial 每週挑選實用主題撰寫深度指南——從免費工具實測、香港旅遊行程規劃，到居家辦公設備選購與巴士乘搭教學。每篇文章都標示作者與發布日期，內容以官方來源與實際測試為基礎，並在需要時附上免責聲明。</p>
             <div class="cta-row">
